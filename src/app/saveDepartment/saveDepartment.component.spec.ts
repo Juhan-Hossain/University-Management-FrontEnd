@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { SaveDepartmentComponent } from './save-department.component';
+import { SaveDepartmentComponent } from './saveDepartment.component';
 
 describe('SaveDepartmentComponent', () => {
   let component: SaveDepartmentComponent;
