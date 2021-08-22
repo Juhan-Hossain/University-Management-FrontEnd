@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 
 import { FormBuilder,FormGroup,FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { SaveDepartmentService } from './save-departmentService.service';
 @Component({
   selector: 'app-saveDepartment',
   templateUrl: './saveDepartment.component.html',
@@ -14,6 +15,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 })
 export class SaveDepartmentComponent implements OnInit {
   url = 'https://localhost:44322/api/Departments/';
+  departmentList:any;
   updateMode = false;
   myForm = new FormGroup({
     name: new FormControl(''),
@@ -22,16 +24,24 @@ export class SaveDepartmentComponent implements OnInit {
 
 
 
-  constructor(private http:HttpClient) {
+  constructor(private http:HttpClient,private DepartmentService:SaveDepartmentService) {
 
   }
   ngOnInit(): void {
+    this.getDepartment();
   }
 
   addDepartment()
   {
-    this.http.post(`${this.url}CreateDepartment`, this.myForm.value).subscribe(data => {
+    this.DepartmentService.saveDepartment(this.myForm.value).subscribe(data => {
       console.log(data);
+    });
+  }
+
+  getDepartment()
+  {
+    this.DepartmentService.getDepartment().subscribe(data => {
+      this.departmentList = data.data;
     });
   }
 
