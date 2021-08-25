@@ -4,7 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { SaveDepartmentService } from './save-departmentService.service';
+import { saveDepartmentService } from './save-departmentService.service';
 @Component({
   selector: 'app-saveDepartment',
   templateUrl: './saveDepartment.component.html',
@@ -26,29 +26,27 @@ export class SaveDepartmentComponent implements OnInit {
     this.getDepartment();
   }
 
-<<<<<<< Updated upstream
+
   addDepartment()
   {
     this.DepartmentService.saveDepartment(this.myForm.value).subscribe(data => {
       this.getDepartment();
     });
-=======
+
   constructor(
-    private http: HttpClient,
-    private DepartmentService: SaveDepartmentService
+    private http:HttpClient,private DepartmentService:saveDepartmentService
   ) {}
 
   addDepartment() {
     this.DepartmentService.saveDepartment(this.myForm.value).subscribe(
-      (data) => {
+      (data :any) => {
         this.getDepartment();
       }
     );
->>>>>>> Stashed changes
   }
 
   getDepartment() {
-    this.DepartmentService.getDepartment().subscribe((data) => {
+    this.DepartmentService.getDepartment().subscribe((data:any) => {
       this.departmentList = data.data;
     });
   }

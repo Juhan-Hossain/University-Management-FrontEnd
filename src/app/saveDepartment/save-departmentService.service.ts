@@ -6,7 +6,7 @@ import { serviceResponse } from '../Models/serviceResponse';
 @Injectable({
   providedIn: 'root',
 })
-export class SaveDepartmentService {
+export class saveDepartmentService {
   url: string = 'https://localhost:44322/api/Departments';
 
   constructor(private http: HttpClient) {}
@@ -15,7 +15,7 @@ export class SaveDepartmentService {
     return this.http.post(`${this.url}/CreateDepartment`, data);
   }
 
-  getDepartment():Observable<serviceResponse> {
+  getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.url);
   }
 }
