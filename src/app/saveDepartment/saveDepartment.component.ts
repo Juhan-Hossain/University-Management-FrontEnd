@@ -17,6 +17,7 @@ export class SaveDepartmentComponent implements OnInit {
   url = 'https://localhost:44322/api/Departments/';
   departmentList: any;
   updateMode = false;
+  errors:any
   myForm = new FormGroup({
     name: new FormControl('', Validators.required),
     code: new FormControl('', Validators.required),
@@ -27,20 +28,28 @@ export class SaveDepartmentComponent implements OnInit {
   }
 
   constructor(
-    private http:HttpClient,private DepartmentService:saveDepartmentService
+    private http:HttpClient,private departmentService:saveDepartmentService
   ) {}
 
   addDepartment() {
-    this.DepartmentService.saveDepartment(this.myForm.value).subscribe(
+    this.departmentService.saveDepartment(this.myForm.value).subscribe(
       (data :any) => {
         this.getDepartment();
+        console.log(data.message);
+      },
+      (error: any) => {
+        alert(error.message);
       }
+
     );
   }
 
   getDepartment() {
-    this.DepartmentService.getDepartment().subscribe((data:any) => {
+    this.departmentService.getDepartment().subscribe((data:any) => {
       this.departmentList = data.data;
-    });
+      // console.log(Error.error.message);
+    }
+
+    );
   }
 }

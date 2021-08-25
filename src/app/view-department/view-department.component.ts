@@ -8,6 +8,7 @@ import { saveDepartmentService } from '../saveDepartment/save-departmentService.
 })
 export class ViewDepartmentComponent implements OnInit {
   departmentList: any;
+  errors: any;
   constructor(private viewDepartment: saveDepartmentService) {}
 
   ngOnInit(): void {
@@ -15,6 +16,7 @@ export class ViewDepartmentComponent implements OnInit {
   }
 
   getDepartment() {
+    this.errors = null;
     this.viewDepartment.getDepartment().subscribe(
       (data) => {
         this.departmentList = data.data;
