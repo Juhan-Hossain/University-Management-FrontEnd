@@ -30,7 +30,7 @@ export class SaveDepartmentComponent implements OnInit {
   addDepartment()
   {
     this.DepartmentService.saveDepartment(this.myForm.value).subscribe(data => {
-      console.log(data);
+      this.getDepartment();
     });
 =======
   constructor(
