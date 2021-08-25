@@ -1,5 +1,6 @@
-<div class="Container" style="margin: 300px">
-  <h3>Save Department</h3>
+<div class="Container" style="margin: 100px">
+  <h3 class="header">Save Department</h3>
+  <br />
   <form [formGroup]="myForm" (ngSubmit)="addDepartment()">
     <div class="form-group">
       <div class="row">
@@ -19,10 +20,13 @@
       </div>
 
       <span
-        *ngIf="!myForm.get('name')?.valid && myForm.get('name')?.touched"
-        class="help-block"
-        >Please enter department name</span
+        class="text-danger"
+        *ngIf="
+          registerFormControl.name.invalid && registerFormControl.name.touched
+        "
+        >department name required</span
       >
+      <br />
     </div>
     <div class="form-group">
       <div class="row">
@@ -36,15 +40,29 @@
             class="form-control"
             id="Code"
             placeholder="Dept. Code"
+            #deptcodelength
           />
         </div>
       </div>
+      <span
+        *ngIf="
+          registerFormControl.code.touched &&
+          registerFormControl.code.value.length == 0
+        "
+        class="text-danger"
+        >department code required</span
+      >
 
       <span
-        *ngIf="!myForm.get('code')?.valid && myForm.get('code')?.touched"
-        class="help-block"
-        >Please enter department name</span
+        class="text-danger"
+        *ngIf="
+          registerFormControl.code.touched &&
+          registerFormControl.code.invalid &&
+          registerFormControl.code.value.length != 0
+        "
       >
+        Department code must be between 2 to 7.
+      </span>
     </div>
     <br />
     <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">
