@@ -16,23 +16,32 @@ import { saveDepartmentService } from './save-departmentService.service';
 export class SaveDepartmentComponent implements OnInit {
   url = 'https://localhost:44322/api/Departments/';
   departmentList: any;
-  updateMode = false;
+  isValidFormSubmitted = null;
   errors: any;
-  myForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    code: new FormControl('', Validators.required),
+  myForm = this.formBuilder.group({
+    name: new FormControl('', [Validators.required]),
+    code: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(7),
+    ]),
   });
 
   ngOnInit() {
     this.getDepartment();
   }
-
-
   constructor(
     private http: HttpClient,
-    private departmentService: saveDepartmentService
+    private departmentService: saveDepartmentService,
+    private formBuilder: FormBuilder
   ) {}
 
+  get registerFormControl() {
+    return this.myForm.controls;
+  }
+  get code() {
+    return this.myForm.get('code');
+  }
   addDepartment() {
     this.departmentService.saveDepartment(this.myForm.value).subscribe(
       (data: any) => {
