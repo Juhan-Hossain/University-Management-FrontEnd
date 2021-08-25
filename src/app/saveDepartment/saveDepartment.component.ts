@@ -27,6 +27,7 @@ export class SaveDepartmentComponent implements OnInit {
     this.getDepartment();
   }
 
+
   constructor(
     private http: HttpClient,
     private departmentService: saveDepartmentService
