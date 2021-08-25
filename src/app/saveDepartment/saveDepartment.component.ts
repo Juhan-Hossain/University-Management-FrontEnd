@@ -50,7 +50,7 @@ export class SaveDepartmentComponent implements OnInit {
       },
       (error: any) => {
         console.log(error);
-        alert(error.error.message);
+        alert(error.error);
       }
     );
   }
