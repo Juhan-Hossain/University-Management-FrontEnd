@@ -1,8 +1,8 @@
 import { Component, Injectable, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { NgForm, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 
-import { FormBuilder,FormGroup,FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { SaveDepartmentService } from './save-departmentService.service';
 @Component({
@@ -15,36 +15,41 @@ import { SaveDepartmentService } from './save-departmentService.service';
 })
 export class SaveDepartmentComponent implements OnInit {
   url = 'https://localhost:44322/api/Departments/';
-  departmentList:any;
+  departmentList: any;
   updateMode = false;
   myForm = new FormGroup({
-    name: new FormControl(''),
-    code: new FormControl('')
+    name: new FormControl('', Validators.required),
+    code: new FormControl('', Validators.required),
   });
 
-
-
-  constructor(private http:HttpClient,private DepartmentService:SaveDepartmentService) {
-
-  }
-  ngOnInit(): void {
+  ngOnInit() {
     this.getDepartment();
   }
 
+<<<<<<< Updated upstream
   addDepartment()
   {
     this.DepartmentService.saveDepartment(this.myForm.value).subscribe(data => {
       console.log(data);
     });
+=======
+  constructor(
+    private http: HttpClient,
+    private DepartmentService: SaveDepartmentService
+  ) {}
+
+  addDepartment() {
+    this.DepartmentService.saveDepartment(this.myForm.value).subscribe(
+      (data) => {
+        this.getDepartment();
+      }
+    );
+>>>>>>> Stashed changes
   }
 
-  getDepartment()
-  {
-    this.DepartmentService.getDepartment().subscribe(data => {
+  getDepartment() {
+    this.DepartmentService.getDepartment().subscribe((data) => {
       this.departmentList = data.data;
     });
   }
-
-
 }
-

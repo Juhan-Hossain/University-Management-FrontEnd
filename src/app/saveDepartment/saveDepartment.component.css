@@ -1,0 +1,11 @@
+.Container{
+  padding: 50px;
+  border: 1px solid aliceblue;
+}
+.btn{
+  float: right;
+}
+
+input.ng-invalid.ng-touched{
+  border: 1px solid red;
+}
