@@ -28,11 +28,11 @@ export class SaveDepartmentComponent implements OnInit {
   }
 
 
-  addDepartment()
-  {
-    this.DepartmentService.saveDepartment(this.myForm.value).subscribe(data => {
-      this.getDepartment();
-    });
+  // addDepartment()
+  // {
+  //   this.departmentService.saveDepartment(this.myForm.value).subscribe(data => {
+  //     this.getDepartment();
+  //   });
 
   constructor(
     private http:HttpClient,private departmentService:saveDepartmentService
