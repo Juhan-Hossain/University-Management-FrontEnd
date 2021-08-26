@@ -15,11 +15,11 @@
           aria-label=".form-select-sm example"
           id="departmentId"
           placeholder="Course department"
+          [formControl]="departmentId"
         >
-
           <option
             *ngFor="let department of departmentList"
-            onclick="changeDeptId(department)"
+            [value]="department.id"
           >
             {{ department.name }}
           </option>

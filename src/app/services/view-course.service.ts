@@ -15,9 +15,9 @@ export class ViewCourseService {
     return this.http.get<serviceResponse>(this.depturl);
   }
 
-  // getCourse(query:number) : Observable<serviceResponse> {
-  //   let params = new HttpParams().set("?departmentId=", query);
-  //   return this.http.get(courseurl, {params});
-  // }
+  getCourse(query:number) : Observable<serviceResponse> {
+
+    return this.http.get<serviceResponse>(this.courseurl+`?departmentId=${query}`);
+  }
 
 }

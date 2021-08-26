@@ -22,22 +22,18 @@ export class ViewCourseStatComponent implements OnInit {
 
   departmentList: any;
   courseList: any;
-
+  departmentId = new FormControl();
 
   ngOnInit() {
     this.getDepartment();
-    // this.getCourse();
+    this.departmentId.valueChanges.subscribe(x => {
+
+      this.viewCourseService.getCourse(x).subscribe((data: any) => {
+        this.courseList = data.data;
+        console.log(data.data);
+      });
+    })
   }
-
-
-  // cahnge departmentId by selection
-  changeDeptId(va:any) {
-
-    console.log(va);
-    this.getDepartment();
-
-  }
-
 
   getDepartment() {
     this.viewCourseService.getDepartment().subscribe((data: any) => {
