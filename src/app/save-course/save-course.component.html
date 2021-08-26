@@ -1,0 +1,210 @@
+<div class="Container" style="margin: 100px">
+  <h4 class="header">Save Course</h4>
+  <br />
+  <form [formGroup]="myForm" (ngSubmit)="addCourse()">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label id="name-label" for="exampleInputName">Code</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="code"
+            class="form-control"
+            id="Code"
+            aria-describedby="NameHelp"
+            placeholder="Enter Code of Course."
+          />
+        </div>
+      </div>
+
+      <span
+        class="text-danger"
+        *ngIf="
+          registerFormControl.code.touched &&
+          registerFormControl.code.value.length == 0
+        "
+        >course code required</span
+      >
+      <span
+        class="text-danger"
+        *ngIf="
+          registerFormControl.code.touched &&
+          registerFormControl.code.invalid &&
+          registerFormControl.code.value.length != 0
+        "
+      >
+        Course code atleast 5 char
+      </span>
+      <br />
+    </div>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="Name">Name</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control"
+            id="Name"
+            placeholder="Course Name"
+          />
+        </div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.name.touched &&
+          registerFormControl.name.value.length == 0
+        "
+        class="text-danger"
+        >Course name required</span
+      >
+    </div>
+    <br />
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="Credit">Credit</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="number"
+            formControlName="credit"
+            class="form-control"
+            id="Credit"
+            placeholder="Course Credit"
+          />
+        </div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.credit.touched &&
+          registerFormControl.credit.value == 0
+        "
+        class="text-danger"
+        >Course credit required</span
+      >
+
+      <span
+        class="text-danger"
+        *ngIf="
+          registerFormControl.credit.touched &&
+          registerFormControl.credit.invalid &&
+          registerFormControl.credit.value != 0
+        "
+      >
+        Course credit must be between 0.5 to 5 credit.
+      </span>
+    </div>
+    <br />
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="Description">Description</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="description"
+            class="form-control"
+            id="Description"
+            placeholder="Course Description"
+            style="height: 150px"
+          />
+        </div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.description.touched &&
+          registerFormControl.description.value.length == 0
+        "
+        class="text-danger"
+        >Course description required</span
+      >
+    </div>
+
+    <br />
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="DepartmentId">Department</label>
+        </div>
+        <div class="col-9">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="departmentId"
+            placeholder="Course department"
+            formControlName="departmentId"
+          >
+            <option value="" disabled>Choose department</option>
+            <option
+              *ngFor="let department of departmentList"
+              [ngValue]="department.id"
+              (change)="changeDeptId($event)"
+            >
+              {{ department.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.departmentId.touched &&
+          registerFormControl.departmentId.value == ''
+        "
+        class="text-danger"
+        >Course department required</span
+      >
+    </div>
+
+    <br />
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="Semester">Semester</label>
+        </div>
+        <div class="col-9">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="semesterId"
+            placeholder="Course department"
+            formControlName="semesterId"
+          >
+            <option value="" disabled>Choose Semester</option>
+            <option
+              *ngFor="let semester of semesterList"
+              [ngValue]="semester.id"
+              (change)="changeSemesterId($event)"
+            >
+              {{ semester.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.semesterId.touched &&
+          registerFormControl.semesterId.value == ''
+        "
+        class="text-danger"
+        >Course semester required</span
+      >
+    </div>
+
+    <br />
+
+    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">
+      Save
+    </button>
+  </form>
+</div>

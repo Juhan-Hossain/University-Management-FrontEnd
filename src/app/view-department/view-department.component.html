@@ -1,0 +1,23 @@
+<div class="container" style="margin: 100px;">
+  <div class="header">
+    <h2>
+      View All Departments
+    </h2>
+  </div>
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dept of departmentList; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ dept.name }}</td>
+        <td>{{ dept.code }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
