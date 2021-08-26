@@ -5,6 +5,7 @@ import { HomeComponent } from './home/home.component';
 import { SaveCourseComponent } from './save-course/save-course.component';
 import { SaveTeacherComponent } from './save-teacher/save-teacher.component';
 import { SaveDepartmentComponent } from './saveDepartment/saveDepartment.component';
+import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
 import { ViewDepartmentComponent } from './view-department/view-department.component';
 
 const routes: Routes = [
@@ -16,7 +17,11 @@ const routes: Routes = [
   { path: '', component: HomeComponent },
   {
     path: 'Create-Teacher', component:
-    SaveTeacherComponent },
+      SaveTeacherComponent
+  },
+  {
+    path: 'View-Course', component:
+    ViewCourseStatComponent },
   { path: '', component: HomeComponent },
 ];
 
