@@ -25,13 +25,16 @@ export class SaveCourseComponent implements OnInit {
   isValidFormSubmitted = null;
   errors: any;
   myForm = this.formBuilder.group({
-    name : new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
     code: new FormControl('', [Validators.required, Validators.minLength(5)]),
-    credit: new FormControl('', [Validators.required, Validators.max(5), Validators.min(.5)]),
+    credit: new FormControl('', [
+      Validators.required,
+      Validators.max(5),
+      Validators.min(0.5),
+    ]),
     description: new FormControl('', Validators.required),
     departmentId: new FormControl('', Validators.required),
-    semesterId: new FormControl('', Validators.required)
-
+    semesterId: new FormControl('', Validators.required),
   });
 
   ngOnInit() {
@@ -44,31 +47,31 @@ export class SaveCourseComponent implements OnInit {
     return this.myForm.controls;
   }
 
- // cahnge departmentId by selection
- changeDeptId(e:any) {
+  // cahnge departmentId by selection
+  changeDeptId(e: any) {
     console.log(e);
     console.log(this.myForm.value);
     this.myForm.controls['departmentId'].setValue(e, {
-      onlySelf: true
+      onlySelf: true,
     });
- }
+  }
 
-   // cahnge semesterId by selection
- changeSemesterId(e:any) {
-  console.log(e);
-  console.log(this.myForm.value);
-  this.myForm.controls['semesterId'].setValue(e, {
-    onlySelf: true
-  });
-}
-
-
+  // cahnge semesterId by selection
+  changeSemesterId(e: any) {
+    console.log(e);
+    console.log(this.myForm.value);
+    this.myForm.controls['semesterId'].setValue(e, {
+      onlySelf: true,
+    });
+  }
 
   //add course through value object
   addCourse() {
     this.courseService.saveCourse(this.myForm.value).subscribe(
       (data: any) => {
         console.log(data.message);
+        this.getDepartment();
+        this.getSemester();
       },
       (error: any) => {
         console.log(error);

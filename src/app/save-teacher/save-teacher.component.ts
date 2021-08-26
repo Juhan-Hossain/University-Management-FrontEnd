@@ -31,7 +31,10 @@ export class SaveTeacherComponent implements OnInit {
     contact: new FormControl('', Validators.required),
     departmentId: new FormControl('', Validators.required),
     designationId: new FormControl('', Validators.required),
-    creditToBeTaken: new FormControl('', [Validators.required,Validators.min(0.1)]),
+    creditToBeTaken: new FormControl('', [
+      Validators.required,
+      Validators.min(0.1),
+    ]),
   });
 
   ngOnInit() {
@@ -67,6 +70,8 @@ export class SaveTeacherComponent implements OnInit {
     this.teacherService.saveTeacher(this.myForm.value).subscribe(
       (data: any) => {
         console.log(data.message);
+        this.getDepartment();
+        this.getDesignation();
       },
       (error: any) => {
         console.log(error);
