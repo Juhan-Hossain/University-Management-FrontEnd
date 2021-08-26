@@ -19,6 +19,7 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy{
   courseList: any;
   departmentId = new FormControl();
 
+  //injecting
   constructor(
     private http: HttpClient,
     private viewCourseService: ViewCourseService,
@@ -28,24 +29,21 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy{
 
 
   ngOnInit() {
+    //calling it inside ngOnInit to load on the start
     this.getDepartment();
-    // this.departmentId.valueChanges.subscribe(x => {
-
-    //   this.viewCourseService.getCourse(x).subscribe((data: any) => {
-    //     this.courseList = data.data;
-    //     // console.log(data.data);
-    //   });
-    // })
 
   }
 
+ //getting data from service & apply subscription
+  //for service response<data,message,success>,load dada to department list
   getDepartment() {
     this.viewCourseService.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
-      console.log(data.data);
+      // console.log(data.data);
     });
   }
 
+  //using print() to pass selectedItem to service for query param
   print() {
     console.log(this.selectedItem);
     this.viewCourseService.getCourse(this.selectedItem).subscribe(x => {
@@ -56,9 +54,6 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy{
 
   }
 
-  getId(x: any) {
-// console.log(this.);
-    console.log(x);
-  }
+
 
 }
