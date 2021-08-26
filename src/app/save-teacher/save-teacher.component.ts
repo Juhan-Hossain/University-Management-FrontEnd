@@ -8,14 +8,12 @@ import { TeacherService } from '../services/teacher.service';
 @Injectable({
   providedIn: 'root',
 })
-
 @Component({
   selector: 'app-save-teacher',
   templateUrl: './save-teacher.component.html',
-  styleUrls: ['./save-teacher.component.css']
+  styleUrls: ['./save-teacher.component.css'],
 })
 export class SaveTeacherComponent implements OnInit {
-
   constructor(
     private http: HttpClient,
     private teacherService: TeacherService,
@@ -27,14 +25,13 @@ export class SaveTeacherComponent implements OnInit {
   isValidFormSubmitted = null;
   errors: any;
   myForm = this.formBuilder.group({
-    name : new FormControl('', Validators.required),
+    name: new FormControl('', Validators.required),
     address: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required,Validators.email]),
-    contactNo: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    contact: new FormControl('', Validators.required),
     departmentId: new FormControl('', Validators.required),
     designationId: new FormControl('', Validators.required),
-    creditToBeTaken :new FormControl('',Validators.required)
-
+    creditToBeTaken: new FormControl('', [Validators.required,Validators.min(0.1)]),
   });
 
   ngOnInit() {
@@ -47,24 +44,23 @@ export class SaveTeacherComponent implements OnInit {
     return this.myForm.controls;
   }
 
- // cahnge departmentId by selection
- changeDeptId(e:any) {
+  // cahnge departmentId by selection
+  changeDeptId(e: any) {
     console.log(e);
     console.log(this.myForm.value);
     this.myForm.controls['departmentId'].setValue(e, {
-      onlySelf: true
+      onlySelf: true,
     });
- }
+  }
 
-   // cahnge semesterId by selection
- changeDesignationId(e:any) {
-  console.log(e);
-  console.log(this.myForm.value);
-  this.myForm.controls['designationId'].setValue(e, {
-    onlySelf: true
-  });
-}
-
+  // cahnge semesterId by selection
+  changeDesignationId(e: any) {
+    console.log(e);
+    console.log(this.myForm.value);
+    this.myForm.controls['designationId'].setValue(e, {
+      onlySelf: true,
+    });
+  }
 
   //add course through value object
   addTeacher() {
@@ -82,6 +78,7 @@ export class SaveTeacherComponent implements OnInit {
   getDepartment() {
     this.teacherService.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
+      console.log(data.data);
     });
   }
 
@@ -89,6 +86,7 @@ export class SaveTeacherComponent implements OnInit {
     this.teacherService.getDesignation().subscribe((data: any) => {
       this.designationList = data.data;
       console.log(data.message);
+      console.log(data.data);
     });
   }
 }
