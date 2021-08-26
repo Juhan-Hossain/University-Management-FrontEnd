@@ -16,14 +16,18 @@
           id="departmentId"
           placeholder="Course department"
           [formControl]="departmentId"
+          [(ngModel)]="selectedItem"
+          (change)="print()"
         >
           <option
             *ngFor="let department of departmentList"
             [value]="department.id"
+
           >
             {{ department.name }}
           </option>
         </select>
+
       </div>
     </div>
   </div>
