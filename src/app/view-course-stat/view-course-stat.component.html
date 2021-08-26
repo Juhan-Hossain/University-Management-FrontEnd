@@ -1,1 +1,47 @@
-<p>view-course-stat works!</p>
+<div class="container" style="margin: 100px">
+  <div class="header">
+    <h4>View Course Statistics</h4>
+  </div>
+  <br />
+  <div>
+    <div class="row">
+      <div class="col-3">
+        <label for="DepartmentId">Department</label>
+      </div>
+      <div class="col-9">
+        <select
+          type="text"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          id="departmentId"
+          placeholder="Course department"
+        >
+
+          <option
+            *ngFor="let department of departmentList"
+            onclick="changeDeptId(department)"
+          >
+            {{ department.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <br />
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">id</th>
+        <th scope="col">Name</th>
+        <th scope="col">Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let dept of departmentList; let i = index">
+        <td>{{ i + 1 }}</td>
+        <td>{{ dept.name }}</td>
+        <td>{{ dept.code }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
