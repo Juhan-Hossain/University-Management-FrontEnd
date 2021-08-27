@@ -19,6 +19,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
 
 
 @NgModule({
@@ -32,6 +33,7 @@ import { MatMenuModule } from '@angular/material/menu';
     CourseAssignTOTeacherComponent,
     ViewCourseStatComponent,
     RegisterStudentComponent,
+    CourseEnrollComponent,
   ],
   imports: [
     BrowserModule,
