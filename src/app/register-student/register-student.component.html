@@ -1,1 +1,189 @@
-<p>register-student works!</p>
+<div class="Container" style="margin: 100px">
+  <h4 class="header">Register Student</h4>
+  <br />
+  <form [formGroup]="myForm" (ngSubmit)="addStudent()">
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label id="name" for="exampleInputName">Name</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="name"
+            class="form-control"
+            id="Name"
+            aria-describedby="NameHelp"
+            placeholder="Enter name of student"
+          />
+        </div>
+      </div>
+
+      <span
+        class="text-danger"
+        *ngIf="
+          registerFormControl.name.touched &&
+          registerFormControl.name.value.length == 0
+        "
+        >name required</span
+      >
+    </div>
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label for="email">Email</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="email"
+              formControlName="email"
+              class="form-control"
+              id="email"
+              placeholder="Email"
+            />
+          </div>
+        </div>
+        <span
+          *ngIf="
+            registerFormControl.email.touched &&
+            registerFormControl.email.value.length == 0
+          "
+          class="text-danger"
+          >email required</span
+        >
+
+        <span
+          class="text-danger"
+          *ngIf="
+            registerFormControl.email.touched &&
+            registerFormControl.email.invalid &&
+            registerFormControl.email.value != 0
+          "
+        >
+          please enter a valid email
+        </span>
+      </div>
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label for="contactNumber">Contact No.</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="tel"
+              formControlName="contactNumber"
+              class="form-control"
+              id="contactNumber"
+              placeholder="contact"
+            />
+          </div>
+        </div>
+        <span
+          *ngIf="
+            registerFormControl.contactNumber.touched &&
+            registerFormControl.contactNumber.value == 0
+          "
+          class="text-danger"
+          >contact required</span
+        >
+      </div>
+
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label for="Contact">Date</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="date"
+              formControlName="date"
+              class="form-control"
+              id="date"
+              placeholder="date"
+            />
+          </div>
+        </div>
+        <span
+          *ngIf="
+            registerFormControl.date.touched &&
+            registerFormControl.date.value == 0
+          "
+          class="text-danger"
+          >date required</span
+        >
+      </div>
+
+      <br />
+
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="address">Address</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="address"
+            class="form-control"
+            id="address"
+            placeholder="Address"
+            style="height: 150px"
+          />
+        </div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.address.touched &&
+          registerFormControl.address.value.length == 0
+        "
+        class="text-danger"
+        >address required</span
+      >
+    </div>
+
+    <br />
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label for="DepartmentId">Department</label>
+        </div>
+        <div class="col-9">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="departmentId"
+            placeholder="Course department"
+            formControlName="departmentId"
+          >
+            <option value="" disabled>Choose department</option>
+            <option
+              *ngFor="let department of departmentList"
+              [ngValue]="department.id"
+              (change)="changeDeptId($event)"
+            >
+              {{ department.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <span
+        *ngIf="
+          registerFormControl.departmentId.touched &&
+          registerFormControl.departmentId.value == ''
+        "
+        class="text-danger"
+        >department required</span
+      >
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">
+      Save
+    </button>
+  </form>
+</div>

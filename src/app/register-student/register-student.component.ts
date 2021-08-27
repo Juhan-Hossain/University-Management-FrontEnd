@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/internal/Observable';
 
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { RegisterStudentService } from '../services/register-student.service';
 
 
 
@@ -21,9 +22,68 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 
 export class RegisterStudentComponent implements OnInit {
 
-  constructor() { }
+  constructor(
+    private http: HttpClient,
+    private registerStudent: RegisterStudentService,
+    private formBuilder: FormBuilder
+  ) { }
 
-  ngOnInit(): void {
+  departmentList: any;
+  semesterList: any;
+
+  myForm = this.formBuilder.group({
+    name: new FormControl('', Validators.required),
+    email: new FormControl('', [Validators.required, Validators.email]),
+    contactNumber: new FormControl('', Validators.required),
+    date: new FormControl('', Validators.required),
+    departmentId: new FormControl('', Validators.required),
+    address:new FormControl('',Validators.required)
+
+  });
+  ngOnInit() {
+    this.getDepartment();
+
   }
 
+  //get helper method manipulation
+  get registerFormControl() {
+    return this.myForm.controls;
+  }
+
+  // cahnge departmentId by selection
+  changeDeptId(e: any) {
+    console.log(e);
+    console.log(this.myForm.value);
+    this.myForm.controls['departmentId'].setValue(e, {
+      onlySelf: true
+    });
+  }
+
+
+  //add course through value object
+  addStudent() {
+    this.registerStudent.saveStudent(this.myForm.value).subscribe(
+      (obj: any) => {
+        console.log(obj.data);
+        console.log(this.myForm.value);
+
+      },
+      (error: any) => {
+        console.log(error);
+        alert(error.error.message);
+      }
+    );
+  }
+
+  getDepartment() {
+    this.registerStudent.getDepartment().subscribe((data: any) => {
+      this.departmentList = data.data;
+    });
+  }
+
+
 }
+
+
+
+
