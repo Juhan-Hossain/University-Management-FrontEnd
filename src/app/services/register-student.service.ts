@@ -16,7 +16,7 @@ export class RegisterStudentService {
     return this.http.get<serviceResponse>(this.depturl);
   }
 
-  saveCourse(data: any) {
+  saveStudent(data: any) {
     return this.http.post(`${this.registerStudentUrl}/CreateStudent`, data);
   }
 
