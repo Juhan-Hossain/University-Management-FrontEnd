@@ -23,6 +23,7 @@ import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
 import { RegisterStudentComponent } from './register-student/register-student.component';
 import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
 import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
+import { AllocateClassroomComponent } from './allocate-classroom/allocate-classroom.component';
 
 @NgModule({
   declarations: [
@@ -36,6 +37,7 @@ import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.com
     ViewCourseStatComponent,
     RegisterStudentComponent,
     CourseEnrollComponent,
+    AllocateClassroomComponent,
   ],
   imports: [
     BrowserModule,
