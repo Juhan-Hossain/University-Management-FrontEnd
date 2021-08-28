@@ -97,6 +97,7 @@ changeFormControl(x: any)
     this.courseEnroll.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
     });
+    console.log(new Date().toLocaleTimeString());
   }
   getDepartments() {
     this.courseEnroll.getDepartment().subscribe((data: any) => {
