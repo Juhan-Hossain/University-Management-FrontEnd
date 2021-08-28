@@ -8,9 +8,9 @@ import { SaveDepartmentComponent } from './saveDepartment/saveDepartment.compone
 import { ViewDepartmentComponent } from './view-department/view-department.component';
 import { SaveCourseComponent } from './save-course/save-course.component';
 import { SaveTeacherComponent } from './save-teacher/save-teacher.component';
-import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
-import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
-import { RegisterStudentComponent } from './register-student/register-student.component';
+// import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
+// import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
+// import { RegisterStudentComponent } from './register-student/register-student.component';
 import * as ngxBootstrap from 'ngx-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,7 +20,9 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
-
+import { RegisterStudentComponent } from './register-student/register-student.component';
+import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
+import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,7 @@ import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
     ReactiveFormsModule,
     HttpClientModule,
     MatSidenavModule,
-    MatMenuModule
+    MatMenuModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

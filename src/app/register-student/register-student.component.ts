@@ -6,27 +6,20 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RegisterStudentService } from '../services/register-student.service';
 
-
-
 @Component({
   selector: 'app-register-student',
   templateUrl: './register-student.component.html',
-  styleUrls: ['./register-student.component.css']
+  styleUrls: ['./register-student.component.css'],
 })
-
-
 @Injectable({
   providedIn: 'root',
 })
-
-
 export class RegisterStudentComponent implements OnInit {
-
   constructor(
     private http: HttpClient,
     private registerStudent: RegisterStudentService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
   departmentList: any;
   semesterList: any;
@@ -37,12 +30,10 @@ export class RegisterStudentComponent implements OnInit {
     contactNumber: new FormControl('', Validators.required),
     date: new FormControl('', Validators.required),
     departmentId: new FormControl('', Validators.required),
-    address:new FormControl('',Validators.required)
-
+    address: new FormControl('', Validators.required),
   });
   ngOnInit() {
     this.getDepartment();
-
   }
 
   //get helper method manipulation
@@ -55,10 +46,9 @@ export class RegisterStudentComponent implements OnInit {
     console.log(e);
     console.log(this.myForm.value);
     this.myForm.controls['departmentId'].setValue(e, {
-      onlySelf: true
+      onlySelf: true,
     });
   }
-
 
   //add course through value object
   addStudent() {
@@ -66,7 +56,6 @@ export class RegisterStudentComponent implements OnInit {
       (obj: any) => {
         console.log(obj.data);
         console.log(this.myForm.value);
-
       },
       (error: any) => {
         console.log(error);
@@ -80,10 +69,4 @@ export class RegisterStudentComponent implements OnInit {
       this.departmentList = data.data;
     });
   }
-
-
 }
-
-
-
-

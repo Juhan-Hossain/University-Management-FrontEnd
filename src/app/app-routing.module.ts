@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
+import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterStudentComponent } from './register-student/register-student.component';
 import { SaveCourseComponent } from './save-course/save-course.component';
@@ -14,20 +15,25 @@ const routes: Routes = [
   { path: 'Create-Department', component: SaveDepartmentComponent },
   { path: 'View-Department', component: ViewDepartmentComponent },
   {
-    path: 'Create-Course', component:
-      SaveCourseComponent },
+    path: 'Create-Course',
+    component: SaveCourseComponent,
+  },
   { path: '', component: HomeComponent },
   {
-    path: 'Create-Teacher', component:
-      SaveTeacherComponent
+    path: 'Create-Teacher',
+    component: SaveTeacherComponent,
   },
   {
-    path: 'View-Course', component:
-      ViewCourseStatComponent
+    path: 'View-Course',
+    component: ViewCourseStatComponent,
   },
   {
-    path: 'Register-Student', component:
-      RegisterStudentComponent
+    path: 'Register-Student',
+    component: RegisterStudentComponent,
+  },
+  {
+    path: 'Course-Enroll',
+    component: CourseEnrollComponent,
   },
 
   { path: '', component: HomeComponent },
