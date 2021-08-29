@@ -90,13 +90,14 @@ changeFormControl(x: any)
 {
 
    this.myForm.controls.courseId.setValue(x);
-  }
+}
 
   //add course through value object
   getStudents() {
     this.courseEnroll.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
     });
+    console.log(new Date().toLocaleTimeString());
   }
   getDepartments() {
     this.courseEnroll.getDepartment().subscribe((data: any) => {
@@ -110,9 +111,10 @@ changeFormControl(x: any)
     this.myForm.controls.name.setValue('');
     this.myForm.controls.email.setValue('');
     this.myForm.controls.department.setValue('');
-    console.log(this.myFormControl);
+    // console.log(this.myFormControl);
     this.courseEnroll.addCourseEnroll(this.myForm.value).subscribe(((obj:any) => {
       console.log(obj.data);
+      alert(obj.message);
     }),
       (er: any) => {
         alert(er.error.message
