@@ -1,1 +1,147 @@
-<p>allocate-classroom works!</p>
+<div class="Container" style="margin: 100px">
+  <h4 class="header">Allocate Classrooms</h4>
+  <br />
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="Department">Department</label>
+        </div>
+        <div class="col-5">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="department"
+            placeholder="department"
+            formControlName="departmentId"
+            (change)="changeDeptId(selectField.value)"
+            #selectField
+          >
+            <option
+              *ngFor="let department of departmentList"
+              [value]="department.id"
+            >
+              {{ department.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="Course">Course</label>
+        </div>
+        <div class="col-5">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="course"
+            placeholder="course"
+            formControlName="courseCode"
+            (change)="print()"
+          >
+            <option *ngFor="let course of courseList" [value]="course.code">
+              {{ course.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="Room No.">Room No.</label>
+        </div>
+        <div class="col-5">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="room"
+            placeholder="room"
+            formControlName="roomId"
+            (change)="print()"
+          >
+            <option *ngFor="let room of roomList" [value]="room.id">
+              {{ room.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="Day">Day</label>
+        </div>
+        <div class="col-5">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="day"
+            placeholder="day"
+            formControlName="dayId"
+            (change)="print()"
+          >
+            <option *ngFor="let day of dayList" [value]="day.id">
+              {{ day.dayName }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="input_starttime">From</label>
+        </div>
+        <div class="col-5" style="width: auto; height: auto">
+          <div class="md-form">
+            <input
+              placeholder="Selected time"
+              type="time"
+              id="input_starttime"
+              class="form-control timepicker"
+              formControlName="startTime"
+              (change)="changeTime()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="input_starttime">To</label>
+        </div>
+        <div class="col-5" style="width: auto; height: auto">
+          <div class="md-form">
+            <input
+              placeholder="Selected time"
+              type="time"
+              id="input_starttime"
+              class="form-control timepicker"
+              formControlName="endTime"
+              (change)="changeTime()"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <br />
+    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">
+      Allocate
+    </button>
+  </form>
+</div>
