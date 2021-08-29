@@ -24,6 +24,7 @@ import { RegisterStudentComponent } from './register-student/register-student.co
 import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
 import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
 import { AllocateClassroomComponent } from './allocate-classroom/allocate-classroom.component';
+import { SaveResultComponent } from './save-result/save-result.component';
 
 @NgModule({
   declarations: [
@@ -38,6 +39,7 @@ import { AllocateClassroomComponent } from './allocate-classroom/allocate-classr
     RegisterStudentComponent,
     CourseEnrollComponent,
     AllocateClassroomComponent,
+    SaveResultComponent,
   ],
   imports: [
     BrowserModule,
