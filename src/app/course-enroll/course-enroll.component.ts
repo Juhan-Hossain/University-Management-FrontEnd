@@ -113,7 +113,7 @@ export class CourseEnrollComponent implements OnInit {
         alert(obj.message);
         this.myForm.controls.studentRegNo.setValue('');
         this.myForm.controls.courseCode.setValue('');
-        this.myForm.controls.date.setValue('');
+        // this.myForm.controls.date.setValue('');
       },
       (er: any) => {
         alert(er.error.message);
