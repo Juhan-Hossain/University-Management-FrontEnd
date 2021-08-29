@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AllocateClassroomComponent } from './allocate-classroom/allocate-classroom.component';
 import { AppComponent } from './app.component';
 import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
 import { HomeComponent } from './home/home.component';
@@ -34,6 +35,10 @@ const routes: Routes = [
   {
     path: 'Course-Enroll',
     component: CourseEnrollComponent,
+  },
+  {
+    path: 'Allocate-Classroom',
+    component: AllocateClassroomComponent,
   },
 
   { path: '', component: HomeComponent },
