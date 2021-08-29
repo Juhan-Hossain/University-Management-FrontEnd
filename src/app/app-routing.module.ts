@@ -6,6 +6,7 @@ import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterStudentComponent } from './register-student/register-student.component';
 import { SaveCourseComponent } from './save-course/save-course.component';
+import { SaveResultComponent } from './save-result/save-result.component';
 import { SaveTeacherComponent } from './save-teacher/save-teacher.component';
 import { SaveDepartmentComponent } from './saveDepartment/saveDepartment.component';
 import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
@@ -39,6 +40,10 @@ const routes: Routes = [
   {
     path: 'Allocate-Classroom',
     component: AllocateClassroomComponent,
+  },
+  {
+    path: 'Save-Result',
+    component: SaveResultComponent,
   },
 
   { path: '', component: HomeComponent },
