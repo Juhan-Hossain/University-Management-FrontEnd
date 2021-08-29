@@ -22,10 +22,10 @@ export class CourseEnrollComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
   studentList: any;
-  courseList: course[]=[];
+  courseList: course[] = [];
   depatmentList: any;
   selectedStudent: any;
-  selectedCourse: course[]=[];
+  selectedCourse: course[] = [];
   // selectedStdDeptId: any;
   myForm = this.formBuilder.group({
     name: new FormControl(''),
@@ -71,13 +71,11 @@ export class CourseEnrollComponent implements OnInit {
         let departmentName = this.depatmentList.find(
           (x: { id: any }) => x.id === selectedStdDeptId
         ).name;
-        // console.log(department);
+
         this.myForm.controls.department.setValue(departmentName);
-        // this.print();
 
         this.myForm.controls.name.setValue(selectedStdName);
         this.myForm.controls.email.setValue(selectedStdEmail);
-
       },
       (er1: any) => {
         console.log(er1);
@@ -86,11 +84,9 @@ export class CourseEnrollComponent implements OnInit {
     );
   }
 
-changeFormControl(x: any)
-{
-
-   this.myForm.controls.courseId.setValue(x);
-}
+  changeFormControl(x: any) {
+    this.myForm.controls.courseId.setValue(x);
+  }
 
   //add course through value object
   getStudents() {
@@ -105,23 +101,23 @@ changeFormControl(x: any)
     });
   }
 
-
-  onSubmit()
-  {
+  onSubmit() {
     this.myForm.controls.name.setValue('');
     this.myForm.controls.email.setValue('');
     this.myForm.controls.department.setValue('');
-    // console.log(this.myFormControl);
-    this.courseEnroll.addCourseEnroll(this.myForm.value).subscribe(((obj:any) => {
-      console.log(obj.data);
-      alert(obj.message);
-    }),
+
+    this.courseEnroll.addCourseEnroll(this.myForm.value).subscribe(
+      (obj: any) => {
+        console.log(obj.data);
+
+        alert(obj.message);
+        this.myForm.controls.studentRegNo.setValue('');
+        this.myForm.controls.courseCode.setValue('');
+        this.myForm.controls.date.setValue('');
+      },
       (er: any) => {
-        alert(er.error.message
-        );
+        alert(er.error.message);
       }
     );
   }
-
-
 }
