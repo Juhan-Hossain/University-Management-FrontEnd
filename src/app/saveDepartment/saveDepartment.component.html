@@ -20,7 +20,7 @@
       </div>
 
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.name.invalid && registerFormControl.name.touched
         "
@@ -49,12 +49,12 @@
           registerFormControl.code.touched &&
           registerFormControl.code.value.length == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >department code required</span
       >
 
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.code.touched &&
           registerFormControl.code.invalid &&
