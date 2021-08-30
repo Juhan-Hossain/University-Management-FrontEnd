@@ -25,6 +25,7 @@ import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/cours
 import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
 import { AllocateClassroomComponent } from './allocate-classroom/allocate-classroom.component';
 import { SaveResultComponent } from './save-result/save-result.component';
+import { ViewResultComponent } from './view-result/view-result.component';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { SaveResultComponent } from './save-result/save-result.component';
     CourseEnrollComponent,
     AllocateClassroomComponent,
     SaveResultComponent,
+    ViewResultComponent,
   ],
   imports: [
     BrowserModule,
