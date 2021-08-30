@@ -28,6 +28,7 @@ import { SaveResultComponent } from './save-result/save-result.component';
 import { ViewResultComponent } from './view-result/view-result.component';
 import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-classroom.component';
 
 
 @NgModule({
@@ -46,6 +47,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     SaveResultComponent,
     ViewResultComponent,
     UnassignCoursesComponent,
+    UnallocateClassroomComponent,
   ],
   imports: [
     BrowserModule,
