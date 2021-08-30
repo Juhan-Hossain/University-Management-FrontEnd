@@ -27,6 +27,8 @@ import { AllocateClassroomComponent } from './allocate-classroom/allocate-classr
 import { SaveResultComponent } from './save-result/save-result.component';
 import { ViewResultComponent } from './view-result/view-result.component';
 import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [
@@ -55,6 +57,9 @@ import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.co
     HttpClientModule,
     MatSidenavModule,
     MatMenuModule,
+    NgbModule,
+    
+
   ],
   providers: [],
   bootstrap: [AppComponent],
