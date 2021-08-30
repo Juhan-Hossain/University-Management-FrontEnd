@@ -1,9 +1,17 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { serviceResponse } from '../Models/serviceResponse';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class UnallocateClassroomService {
+export class UnallocateClassService {
+  constructor(private http: HttpClient) {}
+  Unallocatingurl: string =
+    'https://localhost:44322/api/DeletedCourseAssign/UnAssaignAllCourses';
 
-  constructor() { }
+  UnallocatingClasses(): Observable<serviceResponse> {
+    return this.http.delete<serviceResponse>(this.Unallocatingurl);
+  }
 }
