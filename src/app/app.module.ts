@@ -26,6 +26,7 @@ import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.com
 import { AllocateClassroomComponent } from './allocate-classroom/allocate-classroom.component';
 import { SaveResultComponent } from './save-result/save-result.component';
 import { ViewResultComponent } from './view-result/view-result.component';
+import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.component';
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { ViewResultComponent } from './view-result/view-result.component';
     AllocateClassroomComponent,
     SaveResultComponent,
     ViewResultComponent,
+    UnassignCoursesComponent,
   ],
   imports: [
     BrowserModule,
