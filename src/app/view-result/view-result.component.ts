@@ -79,6 +79,7 @@ export class ViewResultComponent implements OnInit {
         this.getDepartments();
         this.courseList = obj1.data;
 
+        
         let selectedStdDeptId = this.studentList.find(
           (x:any) =>
             x.registrationNumber === this.selectedStudent
