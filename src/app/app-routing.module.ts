@@ -12,6 +12,7 @@ import { SaveDepartmentComponent } from './saveDepartment/saveDepartment.compone
 import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
 
 import { ViewDepartmentComponent } from './view-department/view-department.component';
+import { ViewResultComponent } from './view-result/view-result.component';
 
 const routes: Routes = [
   { path: 'Create-Department', component: SaveDepartmentComponent },
@@ -44,6 +45,10 @@ const routes: Routes = [
   {
     path: 'Save-Result',
     component: SaveResultComponent,
+  },
+  {
+    path: 'View-Result',
+    component: ViewResultComponent,
   },
 
   { path: '', component: HomeComponent },
