@@ -5,10 +5,11 @@ import { UnassignCoursesService } from '../services/unassign-courses.service';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import Swal from 'sweetalert2';
 import { UnallocateClassService } from '../services/unallocate-classroom.service';
+
 @Component({
-  selector: 'app-unassign-courses',
-  templateUrl: './unassign-courses.component.html',
-  styleUrls: ['./unassign-courses.component.css'],
+  selector: 'app-unallocate-classroom',
+  templateUrl: './unallocate-classroom.component.html',
+  styleUrls: ['./unallocate-classroom.component.css'],
 })
 export class UnallocateClassroomComponent implements OnInit {
   constructor(
@@ -23,7 +24,7 @@ export class UnallocateClassroomComponent implements OnInit {
   onConfirm() {
     this.unallocateClassService.UnallocatingClasses().subscribe(
       (obj) => {
-        Swal.fire('Unassigned all courses');
+        Swal.fire('Unallocate all courses');
       },
       (er) => {
         Swal.fire('The Internet?', 'That thing is still around?', 'question');
