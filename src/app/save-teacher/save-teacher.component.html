@@ -20,7 +20,7 @@
       </div>
 
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.name.touched &&
           registerFormControl.name.value.length == 0
@@ -50,7 +50,7 @@
           registerFormControl.address.touched &&
           registerFormControl.address.value.length == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >teacher address required</span
       >
     </div>
@@ -75,12 +75,12 @@
           registerFormControl.email.touched &&
           registerFormControl.email.value.length == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >teacher email required</span
       >
 
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.email.touched &&
           registerFormControl.email.invalid &&
@@ -112,7 +112,7 @@
           registerFormControl.contact.touched &&
           registerFormControl.contact.value == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >teacher contact required</span
       >
     </div>
@@ -148,7 +148,7 @@
           registerFormControl.designationId.touched &&
           registerFormControl.designationId.value == ''
         "
-        class="text-danger"
+        class="text-danger error"
         >teacher designation required</span
       >
     </div>
@@ -184,7 +184,7 @@
           registerFormControl.departmentId.touched &&
           registerFormControl.departmentId.value == ''
         "
-        class="text-danger"
+        class="text-danger error"
         >Course department required</span
       >
     </div>
@@ -209,11 +209,11 @@
           registerFormControl.creditToBeTaken.touched &&
           registerFormControl.creditToBeTaken.value == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >credit to be taken required</span
       >
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.creditToBeTaken.touched &&
           registerFormControl.creditToBeTaken.invalid &&

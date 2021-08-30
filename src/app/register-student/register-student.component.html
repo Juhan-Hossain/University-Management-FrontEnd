@@ -20,7 +20,7 @@
       </div>
 
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.name.touched &&
           registerFormControl.name.value.length == 0
@@ -49,12 +49,12 @@
             registerFormControl.email.touched &&
             registerFormControl.email.value.length == 0
           "
-          class="text-danger"
+          class="text-danger error"
           >email required</span
         >
 
         <span
-          class="text-danger"
+          class="text-danger  error"
           *ngIf="
             registerFormControl.email.touched &&
             registerFormControl.email.invalid &&
@@ -85,7 +85,7 @@
             registerFormControl.contactNumber.touched &&
             registerFormControl.contactNumber.value == 0
           "
-          class="text-danger"
+          class="text-danger  error"
           >contact required</span
         >
       </div>
@@ -111,7 +111,7 @@
             registerFormControl.date.touched &&
             registerFormControl.date.value == 0
           "
-          class="text-danger"
+          class="text-danger error"
           >date required</span
         >
       </div>
@@ -139,7 +139,7 @@
           registerFormControl.address.touched &&
           registerFormControl.address.value.length == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >address required</span
       >
     </div>
@@ -176,7 +176,7 @@
           registerFormControl.departmentId.touched &&
           registerFormControl.departmentId.value == ''
         "
-        class="text-danger"
+        class="text-danger error"
         >department required</span
       >
     </div>
