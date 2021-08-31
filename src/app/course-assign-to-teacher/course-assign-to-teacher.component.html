@@ -17,7 +17,7 @@
             aria-label=".form-select-sm example"
             id="department"
             placeholder="department"
-            formControlName="department"
+            formControlName="departmentId"
             (change)="changeDeptId(selectField.value)"
             #selectField
           >
@@ -44,11 +44,11 @@
             aria-label=".form-select-sm example"
             id="Teacher"
             placeholder="Teacher"
-            formControlName="teacher"
-            (click)="changeTeacher(selectField.value)"
-            #selectField
+            formControlName="teacherId"
+            (change)="changeTeacher()"
+           
           >
-            <option *ngFor="let teacher of teacherList" [value]="teacher.name">
+            <option *ngFor="let teacher of teacherList" [value]="teacher.id">
               {{ teacher.name }}
             </option>
           </select>
@@ -72,7 +72,7 @@
             id="creditToBeTaken"
             aria-describedby="NameHelp"
             placeholder="credit To Be Taken"
-            
+
           />
         </div>
       </div>
