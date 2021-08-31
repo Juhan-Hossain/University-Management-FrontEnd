@@ -13,21 +13,19 @@ import { CourseAssignService } from '../services/course-assign.service';
 @Injectable({
   providedIn: 'root',
 })
-
 @Component({
   selector: 'app-course-assign-to-teacher',
   templateUrl: './course-assign-to-teacher.component.html',
-  styleUrls: ['./course-assign-to-teacher.component.css']
+  styleUrls: ['./course-assign-to-teacher.component.css'],
 })
 export class CourseAssignTOTeacherComponent implements OnInit {
-
   constructor(
     private http: HttpClient,
     private courseAssign: CourseAssignService,
     private formBuilder: FormBuilder
-  ) { }
+  ) {}
 
-  studentList: student[]=[];
+  studentList: student[] = [];
   courseList: course[] = [];
   depatmentList: department[] = [];
   teacherList: any;
@@ -37,13 +35,14 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   selectedCode: any;
 
   myForm = this.formBuilder.group({
-    courseName: new FormControl(''),
-    departmentId: new FormControl('',Validators.required),
-    teacherId: new FormControl('',Validators.required),
-    creditToBeTaken: new FormControl(''),
-    remainingCredit:new FormControl(''),
-    courseCode: new FormControl('', Validators.required),
-    courseCredit:new FormControl('')
+    courseName: new FormControl(),
+
+    departmentId: new FormControl('', Validators.required),
+    teacherId: new FormControl('', Validators.required),
+    creditToBeTaken: new FormControl(),
+    remainingCredit: new FormControl(),
+    code: new FormControl('', Validators.required),
+    courseCredit: new FormControl(),
   });
   ngOnInit(): void {
     this.getDepartments();
@@ -58,15 +57,14 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       this.depatmentList = data.data;
       // this.selectedDepartment = this.myForm.controls
       //   .department.value;
-
     });
   }
 
   onSubmit() {
-    this.myForm.controls.courseName.setValue('');
-    this.myForm.controls.creditToBeTaken.setValue('');
-    this.myForm.controls.remainingCredit.setValue('');
-    this.myForm.controls.courseCredit.setValue('');
+    // this.myForm.controls.courseName.setValue('');
+    // this.myForm.controls.creditToBeTaken.setValue('');
+    // this.myForm.controls.remainingCredit.setValue('');
+    // this.myForm.controls.courseCredit.setValue('');
 
     console.log(this.myForm.value);
     this.courseAssign.addCourseAssign(this.myForm.value).subscribe(
@@ -74,42 +72,53 @@ export class CourseAssignTOTeacherComponent implements OnInit {
         console.log(obj.data);
 
         alert(obj.message);
-        // this.myForm.controls.studentRegNo.setValue('');
-        // this.myForm.controls.courseName.setValue('');
-        // this.myForm.controls.gradeLetter.setValue('');
+
       },
       (er: any) => {
         alert(er.error.message);
       }
     );
-
   }
   changeDeptId(x: any) {
     this.courseAssign.getTeacher(x).subscribe(
       (obj1) => {
         // this.getDepartments();
         this.teacherList = obj1.data;
-        // console.log(this.teacherList);
+        this.selectedTeacher = this.myForm.controls.teacherId.value;
+        let selectedCreditToTaken = this.teacherList.find(
+          (px: any) => px.id == this.selectedTeacher
+        )?.creditToBeTaken;
+        this.myForm.controls.creditToBeTaken.setValue(selectedCreditToTaken);
+        let selectedRemainingCredit = this.teacherList.find(
+          (px: any) => px.id == this.selectedTeacher
+        )?.remainingCredit;
+
+        console.log(selectedCreditToTaken);
 
 
-        // console.log(this.myForm.value);
-
-
+        this.myForm.controls.remainingCredit.setValue(selectedRemainingCredit);
       },
       (er1: any) => {
         console.log(er1);
-        // alert(er1.error.message);
+        alert(er1.error.message);
       }
     );
 
     //---------------------------------
     this.courseAssign.getCourse(x).subscribe(
       (obj1) => {
-        // this.getDepartments();
         this.courseList = obj1.data;
-        // console.log(this.courseList);
-        // console.log(this.myForm.value);
+        this.selectedCode = this.myForm.controls.code.value;
+        let selectedcourseName = this.courseList.find(
+          (px: any) => px.code == this.selectedCode
+        )?.name;
+        let selectedCourseCredit = this.courseList.find(
+          (x: any) => x.code == this.selectedCode
+        )?.credit;
 
+        this.myForm.controls.courseName.setValue(selectedcourseName);
+
+        this.myForm.controls.courseCredit.setValue(selectedCourseCredit);
       },
       (erMain: any) => {
         console.log(erMain);
@@ -118,58 +127,40 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     );
   }
 
-
-
-  changeTeacher()
-  {
+  changeTeacher() {
     this.getDepartments();
     this.changeDeptId(this.myForm.controls.departmentId.value);
-    let y = this.myForm.controls
-      .teacherId.value;
-    console.log(y);
+    let y = this.myForm.controls.teacherId.value;
+
     this.selectedTeacher = y;
-    console.log(y);
-    console.log(this.teacherList);
-    this.selectedTeacher= this.myForm.controls
-    .teacherId.value;
+
+    this.selectedTeacher = this.myForm.controls.teacherId.value;
     let selectedCreditToTaken = this.teacherList.find(
-      (px: any) =>
-        px.id === y
+      (px: any) => px.id === y
     )?.creditToBeTaken;
     let selectedRemainingCredit = this.teacherList.find(
-      (px: any) =>
-        px.id === y
+      (px: any) => px.id === y
     )?.remainingCredit;
 
-    console.log(selectedCreditToTaken);
+
     this.myForm.controls.courseName.setValue(selectedCreditToTaken);
 
     this.myForm.controls.remainingCredit.setValue(selectedRemainingCredit);
-    console.log(this.myForm.controls.remainingCredit.value);
-      console.log(this.myForm.controls.creditToBeTaken.value);
-
 
   }
-  changeCourseControl(x:any) {
-
+  changeCourseControl(x: string) {
     this.getDepartments();
-    this.selectedCode = x;
-    console.log(x);
-    console.log(this.courseList);
+    this.selectedCode = this.myForm.controls.code.value;
+
     let selectedcourseName = this.courseList.find(
-      (px: any) =>
-        px.code === this.selectedCode
+      (px: any) => px.code == this.selectedCode
     )?.name;
     let selectedCourseCredit = this.courseList.find(
-      (x: any) =>
-        x.code === this.selectedCode
+      (x: any) => x.code == this.selectedCode
     )?.credit;
-    console.log(this.selectedCode);
-    console.log(selectedcourseName);
-    console.log(selectedCourseCredit);
-    // this.myForm.controls['courseName'].setValue(selectedcourseName);
 
-    // this.myForm.controls['courseCredit'].setValue(selectedCourseCredit);
+    this.myForm.controls.courseName.setValue(selectedcourseName);
+
+    this.myForm.controls.courseCredit.setValue(selectedCourseCredit);
   }
-
 }
