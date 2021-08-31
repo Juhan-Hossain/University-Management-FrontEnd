@@ -1,1 +1,167 @@
-<p>course-assign-to-teacher works!</p>
+<div class="Container" style="margin: 100px">
+  <h4 class="header">Course Assign To Teacher</h4>
+  <br />
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+
+
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="department">Department</label>
+        </div>
+        <div class="col-5">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="department"
+            placeholder="department"
+            formControlName="departmentId"
+            (change)="changeDeptId(selectField.value)"
+            #selectField
+          >
+            <option
+              *ngFor="let department of depatmentList"
+              [value]="department.id"
+            >
+              {{ department.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div>
+      <div class="row">
+        <div class="col-4">
+          <label for="Teacher">Teacher</label>
+        </div>
+        <div class="col-5">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="Teacher"
+            placeholder="Teacher"
+            formControlName="teacherId"
+            (change)="changeTeacher()"
+
+          >
+            <option *ngFor="let teacher of teacherList" [value]="teacher.id">
+              {{ teacher.name }}
+            </option>
+          </select>
+          <!-- <span *ngIf="this.teacherList.length===0" class="text-danger error">
+            don't have teachers yet!!
+          </span> -->
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label id="creditToTake" for="creditToTake">Credit To Be Taken</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="creditToBeTaken"
+            class="form-control"
+            id="creditToBeTaken"
+            aria-describedby="NameHelp"
+            placeholder="credit To Be Taken"
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label id="remainingCredit" for="remainingCredit">Remaining Credit</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="remainingCredit"
+            class="form-control"
+            id="remainingCredit"
+            aria-describedby="departmentHelp"
+            placeholder="Remaining Credit"
+            readonly
+
+          />
+        </div>
+      </div>
+    </div>
+    <br>
+    <div>
+      <div class="row">
+        <div class="col-3">
+          <label for="courseCode">Course Code</label>
+        </div>
+        <div class="col-5">
+          <select
+            type="text"
+            class="form-select form-select-sm"
+            aria-label=".form-select-sm example"
+            id="courseCode"
+            placeholder="courseCode"
+            formControlName="code"
+            (change)="changeCourseControl(selectField.value)"
+            #selectField
+          >
+            <option *ngFor="let course of courseList" [(value)]="course.code">
+              {{ course.name }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+    <br />
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label id="courseCode" for="courseName">Name</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="courseName"
+            class="form-control"
+            id="courseName"
+            aria-describedby="departmentHelp"
+            placeholder="Course Name"
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+    <br>
+    <div class="form-group">
+      <div class="row">
+        <div class="col-3">
+          <label id="courseCredit" for="courseCredit">Credit</label>
+        </div>
+        <div class="col-9">
+          <input
+            type="text"
+            formControlName="courseCredit"
+            class="form-control"
+            id="courseCredit"
+            aria-describedby="departmentHelp"
+            placeholder="Course Credit"
+            readonly
+          />
+        </div>
+      </div>
+    </div>
+    <br>
+    <button type="submit" class="btn btn-primary" >
+      Assign
+    </button>
+  </form>
+</div>

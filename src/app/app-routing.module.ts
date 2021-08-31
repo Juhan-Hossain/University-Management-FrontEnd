@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AllocateClassroomComponent } from './allocate-classroom/allocate-classroom.component';
 import { AppComponent } from './app.component';
+import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
 import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
 import { HomeComponent } from './home/home.component';
 import { RegisterStudentComponent } from './register-student/register-student.component';
@@ -63,6 +64,11 @@ const routes: Routes = [
   {
     path: 'Unallocate-Classrooms',
     component: UnallocateClassroomComponent,
+  },
+
+  {
+    path: 'Course-Assign',
+    component: CourseAssignTOTeacherComponent,
   },
 
   { path: '', component: HomeComponent },
