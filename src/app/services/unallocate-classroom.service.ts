@@ -9,7 +9,7 @@ import { serviceResponse } from '../Models/serviceResponse';
 export class UnallocateClassService {
   constructor(private http: HttpClient) {}
   Unallocatingurl: string =
-    'https://localhost:44322/api/DeletedCourseAssign/UnAssaignAllCourses';
+    'https://localhost:44322/api/DeletedRoomAllocation/UnAllocateRooms';
 
   UnallocatingClasses(): Observable<serviceResponse> {
     return this.http.delete<serviceResponse>(this.Unallocatingurl);
