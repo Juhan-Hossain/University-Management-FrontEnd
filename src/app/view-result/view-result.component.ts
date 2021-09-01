@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable } from '@angular/core';
+import { Component, OnInit, Injectable, AfterViewInit } from '@angular/core';
 import { NgForm, Validators } from '@angular/forms';
 import { Observable } from 'rxjs/internal/Observable';
 
@@ -11,13 +11,15 @@ import { ViewResultService } from '../services/view-result.service';
 import { viewResult } from '../Models/viewResult';
 import { studentResult } from '../Models/studentResult';
 import Swal from 'sweetalert2';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-view-result',
   templateUrl: './view-result.component.html',
   styleUrls: ['./view-result.component.css'],
 })
-export class ViewResultComponent implements OnInit {
+export class ViewResultComponent implements OnInit, AfterViewInit{
   constructor(
     private http: HttpClient,
     private viewResult: ViewResultService,
@@ -26,6 +28,9 @@ export class ViewResultComponent implements OnInit {
   ngOnInit(): void {
     this.getStudents();
     this.getStudents();
+  }
+  ngAfterViewInit() {
+    // this.openPDF();
   }
 
   studentList: student[] = [];
@@ -123,4 +128,20 @@ export class ViewResultComponent implements OnInit {
       }
     );
   }
+  public openPDF():void {
+    let DATA = document.getElementById('pdf')!;
+
+    html2canvas(DATA).then(canvas => {
+
+        let fileWidth = 208;
+        let fileHeight = canvas.height * fileWidth / canvas.width;
+
+        const FILEURI = canvas.toDataURL('image/png')
+        let PDF = new jsPDF('p', 'mm', 'a4');
+        let position = 0;
+        PDF.addImage(FILEURI, 'PNG', 0, position, fileWidth, fileHeight)
+
+        PDF.save(`${this.selectedStudent}.pdf`);
+    });
+    }
 }

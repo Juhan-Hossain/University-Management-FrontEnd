@@ -8,3 +8,12 @@
   border: 1px solid aliceblue;
   align-content: center;
 }
+.pdfGenerator{
+  float: right;
+  margin-right: 42px;
+}
+.pdfContainer{
+  padding: 40px;
+
+  align-content: center;
+}
