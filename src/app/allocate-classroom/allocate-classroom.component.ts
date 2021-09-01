@@ -9,6 +9,7 @@ import { department } from '../Models/department';
 import { course } from '../Models/course';
 import { room } from '../Models/Room';
 import { day } from '../Models/day';
+import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root',
 })
@@ -105,11 +106,11 @@ export class AllocateClassroomComponent implements OnInit {
   onSubmit() {
     this.allocateClassroom.allocateClass(this.myForm.value).subscribe(
       (obj: any) => {
-        alert(obj.message);
+        Swal.fire(obj.message);
       },
       (er: any) => {
         console.log(er.error.message);
-        alert(er.error.message);
+        Swal.fire(er.error.message);
       }
     );
   }

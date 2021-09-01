@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { saveDepartmentService } from '../saveDepartment/save-departmentService.service';
-
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-view-department',
   templateUrl: './view-department.component.html',
@@ -21,9 +21,11 @@ export class ViewDepartmentComponent implements OnInit {
       (data) => {
         this.departmentList = data.data;
         console.log(data);
+
       },
       (ex) => {
         console.log(ex);
+        Swal.fire(ex.error);
       }
     );
   }

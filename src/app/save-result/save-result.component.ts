@@ -9,6 +9,7 @@ import { SaveResultService } from '../services/save-result.service';
 import { student } from '../Models/student';
 import { department } from '../Models/department';
 import { studentGrades } from '../Models/studentGrades';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -126,13 +127,13 @@ export class SaveResultComponent implements OnInit {
       (obj: any) => {
         console.log(obj.data);
 
-        alert(obj.message);
+        Swal.fire(obj.message);
         this.myForm.controls.studentRegNo.setValue('');
         this.myForm.controls.courseName.setValue('');
         this.myForm.controls.gradeLetter.setValue('');
       },
       (er: any) => {
-        alert(er.error.message);
+        Swal.fire(er.error.message);
       }
     );
   }
