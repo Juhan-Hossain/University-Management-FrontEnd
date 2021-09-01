@@ -12,47 +12,35 @@ import { ViewResultService } from '../services/view-result.service';
 @Component({
   selector: 'app-view-result',
   templateUrl: './view-result.component.html',
-  styleUrls: ['./view-result.component.css']
+  styleUrls: ['./view-result.component.css'],
 })
 export class ViewResultComponent implements OnInit {
-
   constructor(
     private http: HttpClient,
     private viewResult: ViewResultService,
     private formBuilder: FormBuilder
-  ) { }
-
-  studentList: student[]=[];
-  courseList: course[] = [];
-  depatmentList: department[]=[];
-  selectedStudent: student[]=[];
-  selectedCourse: course[] = [];
-
-  myForm = this.formBuilder.group({
-    name: new FormControl(''),
-    department: new FormControl(''),
-    email: new FormControl(''),
-    studentRegNo: new FormControl('', Validators.required),
-    // courseName: new FormControl('')
-  });
-
-
-
-  ngOnInit() {
+  ) {}
+  ngOnInit(): void {
     this.getStudents();
-    this.getDepartments();
   }
 
-  get myFormControl() {
-    return this.myForm.controls;
-  }
+  studentList: student[] = [];
+  courseList: course[] = [];
+  depatmentList: department[] = [];
+  selectedStudent: student[] = [];
+  selectedCourse: course[] = [];
+  enrolledCourseList: any;
+
+  name = new FormControl('');
+  department = new FormControl('');
+  email = new FormControl('');
+  studentRegNo = new FormControl('', Validators.required);
 
   //add course through value object
   getStudents() {
     this.viewResult.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
     });
-    console.log(new Date().toLocaleTimeString());
   }
   getDepartments() {
     this.viewResult.getDepartment().subscribe((data: any) => {
@@ -60,49 +48,51 @@ export class ViewResultComponent implements OnInit {
     });
   }
 
+  // changeFormControl(x: any) {
+  //   this.myForm.controls.courseName.setValue(x);
+  // }
 
-  changeFormControl(x: any) {
-    this.myForm.controls.courseName.setValue(x);
-  }
-
-  changeGradeControl() {
-    // this.myForm.controls.grade.setValue(x);
-    console.log(this.myForm.value);
-  }
+  // changeGradeControl() {
+  //   // this.myForm.controls.grade.setValue(x);
+  //   console.log(this.myForm.value);
+  // }
 
   changeId(x: any) {
     this.selectedStudent = x;
-    this.myForm.controls.studentRegNo.setValue(x);
+    this.studentRegNo.setValue(x);
+    // console.log(x);
 
     this.viewResult.getCourse(x).subscribe(
       (obj1) => {
         this.getDepartments();
         this.courseList = obj1.data;
+        // if(this.courseList.indexOf() !== -1) {
+        //   $scope.message = 'artNr already exists!';
+        // }
 
-        
         let selectedStdDeptId = this.studentList.find(
-          (x:any) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber == this.selectedStudent
         )?.departmentId;
 
         let selectedStdName = this.studentList.find(
-          (x: any) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber == this.selectedStudent
         )?.name;
         let selectedStdEmail = this.studentList.find(
-          (x: any ) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber == this.selectedStudent
         )?.email;
 
         let departmentName = this.depatmentList.find(
-          (x:any) => x.id === selectedStdDeptId
+          (x: any) => x.id == selectedStdDeptId
         )?.name;
 
-        this.myForm.controls.department.setValue(departmentName);
+        // console.log(selectedStdDeptId, selectedStdName,
+        //   selectedStdEmail,departmentName);
+        this.department.setValue(departmentName);
 
-        this.myForm.controls.name.setValue(selectedStdName);
-        this.myForm.controls.email.setValue(selectedStdEmail);
-        console.log(this.myForm.value);
+        this.name.setValue(selectedStdName);
+        this.email.setValue(selectedStdEmail);
+        // console.log(this.name.value,this.email.value,this.department.value);
+        console.log(this.courseList);
       },
       (er1: any) => {
         console.log(er1);
@@ -110,26 +100,4 @@ export class ViewResultComponent implements OnInit {
       }
     );
   }
-
-  onSubmit() {
-
-    this.myForm.controls.name.setValue('');
-    this.myForm.controls.email.setValue('');
-    this.myForm.controls.department.setValue('');
-    console.log(this.myForm.value);
-    // this.viewResult.addStudentResult(this.myForm.value).subscribe(
-    //   (obj: any) => {
-    //     console.log(obj.data);
-
-    //     alert(obj.message);
-    //     this.myForm.controls.studentRegNo.setValue('');
-    //     this.myForm.controls.courseName.setValue('');
-    //     this.myForm.controls.gradeLetter.setValue('');
-    //   },
-    //   (er: any) => {
-    //     alert(er.error.message);
-    //   }
-    // );
-  }
-
 }
