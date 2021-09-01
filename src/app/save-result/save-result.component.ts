@@ -11,6 +11,9 @@ import { department } from '../Models/department';
 import { studentGrades } from '../Models/studentGrades';
 import Swal from 'sweetalert2';
 
+
+
+
 @Component({
   selector: 'app-save-result',
   templateUrl: './save-result.component.html',
@@ -120,7 +123,15 @@ export class SaveResultComponent implements OnInit {
     this.saveResult.addStudentResult(this.myForm.value).subscribe(
       (obj: any) => {
         console.log(obj.data);
+
         Swal.fire(obj.message);
+
+
+
+        this.myForm.controls.studentRegNo.setValue('');
+        this.myForm.controls.courseName.setValue('');
+        this.myForm.controls.gradeLetter.setValue('');
+
       },
       (er: any) => {
         Swal.fire(er.error.message);

@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { UnallocateClassroomComponent } from './unallocate-classroom.component';
 
-import UnallocateClassroomComponent from './unallocate-classroom.component';
+
 
 describe('UnallocateClassroomComponent', () => {
   let component: UnallocateClassroomComponent;

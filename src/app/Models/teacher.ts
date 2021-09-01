@@ -1,4 +1,4 @@
-export class room {
+export class teacher {
   constructor(
     public id: number,
     public name: string,

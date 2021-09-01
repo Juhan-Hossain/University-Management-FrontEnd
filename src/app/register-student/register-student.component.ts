@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RegisterStudentService } from '../services/register-student.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-register-student',
@@ -56,10 +57,11 @@ export class RegisterStudentComponent implements OnInit {
       (obj: any) => {
         console.log(obj.data);
         console.log(this.myForm.value);
+        Swal.fire(obj.message);
       },
       (error: any) => {
         console.log(error);
-        alert(error.error.message);
+        Swal.fire(error.error.message);
       }
     );
   }

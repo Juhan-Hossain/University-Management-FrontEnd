@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CourseEnrollService } from '../services/course-enroll.service';
 import { course } from '../Models/course';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -110,13 +111,13 @@ export class CourseEnrollComponent implements OnInit {
       (obj: any) => {
         console.log(obj.data);
 
-        alert(obj.message);
+        Swal.fire(obj.message);
         this.myForm.controls.studentRegNo.setValue('');
         this.myForm.controls.courseCode.setValue('');
         // this.myForm.controls.date.setValue('');
       },
       (er: any) => {
-        alert(er.error.message);
+        Swal.fire(er.error.message);
       }
     );
   }
