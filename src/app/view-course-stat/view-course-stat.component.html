@@ -4,7 +4,7 @@
   </div>
   <br />
   <div>
-    <div class="row" >
+    <div class="row">
       <div class="col-3">
         <label for="DepartmentId">Department</label>
       </div>
@@ -22,12 +22,10 @@
           <option
             *ngFor="let department of departmentList"
             [value]="department.id"
-
           >
             {{ department.name }}
           </option>
         </select>
-
       </div>
     </div>
   </div>
@@ -39,7 +37,6 @@
         <th scope="col">Name</th>
         <th scope="col">Semester</th>
         <th scope="col">Assign To</th>
-
       </tr>
     </thead>
     <tbody>
@@ -47,12 +44,12 @@
         <td>{{ course.code }}</td>
         <td>{{ course.name }}</td>
         <td>{{ course.semesterName }}</td>
-        <td class="text-danger"
-        *ngIf="course.assignTo==='Not Assigned Yet!'"
-        >{{ course.assignTo }}</td>
-        <td
-        *ngIf="course.assignTo!=='Not Assigned Yet!'"
-        >{{ course.assignTo }}</td>
+        <td class="text-danger" *ngIf="course.assignTo === 'Not Assigned Yet!'">
+          {{ course.assignTo }}
+        </td>
+        <td *ngIf="course.assignTo !== 'Not Assigned Yet!'">
+          {{ course.assignTo }}
+        </td>
       </tr>
     </tbody>
   </table>
