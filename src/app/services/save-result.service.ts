@@ -17,6 +17,7 @@ export class SaveResultService {
   saveResultUrl: string = 'https://localhost:44322/api/StudentResult/CreateStudentResult';
   gradeUrl: string = 'https://localhost:44322/api/Grades/GetGrades';
 
+
   getStudent(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.studentUrl);
   }
@@ -26,6 +27,10 @@ export class SaveResultService {
     return this.http.get<serviceResponse>(this.studentCourseUrl + `?stdRegNo=${query}`);
 
   }
+
+
+
+
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.departmentUrl);
   }
