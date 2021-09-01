@@ -8,51 +8,44 @@ import { course } from '../Models/course';
 import { student } from '../Models/student';
 import { department } from '../Models/department';
 import { ViewResultService } from '../services/view-result.service';
+import { viewResult } from '../Models/viewResult';
+import { studentResult } from '../Models/studentResult';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-view-result',
   templateUrl: './view-result.component.html',
-  styleUrls: ['./view-result.component.css']
+  styleUrls: ['./view-result.component.css'],
 })
 export class ViewResultComponent implements OnInit {
-
   constructor(
     private http: HttpClient,
     private viewResult: ViewResultService,
     private formBuilder: FormBuilder
-  ) { }
-
-  studentList: student[]=[];
-  courseList: course[] = [];
-  depatmentList: department[]=[];
-  selectedStudent: student[]=[];
-  selectedCourse: course[] = [];
-
-  myForm = this.formBuilder.group({
-    name: new FormControl(''),
-    department: new FormControl(''),
-    email: new FormControl(''),
-    studentRegNo: new FormControl('', Validators.required),
-    // courseName: new FormControl('')
-  });
-
-
-
-  ngOnInit() {
+  ) {}
+  ngOnInit(): void {
     this.getStudents();
-    this.getDepartments();
+    this.getStudents();
   }
 
-  get myFormControl() {
-    return this.myForm.controls;
-  }
+  studentList: student[] = [];
+  courseList: course[] = [];
+  depatmentList: department[] = [];
+  selectedStudent: student[] = [];
+  selectedCourse: course[] = [];
+  enrolledCourseList: any;
+  resultView: viewResult[]=[];
+
+  name = new FormControl('');
+  department = new FormControl('');
+  email = new FormControl('');
+  studentRegNo = new FormControl('', Validators.required);
 
   //add course through value object
   getStudents() {
     this.viewResult.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
     });
-    console.log(new Date().toLocaleTimeString());
   }
   getDepartments() {
     this.viewResult.getDepartment().subscribe((data: any) => {
@@ -61,75 +54,73 @@ export class ViewResultComponent implements OnInit {
   }
 
 
-  changeFormControl(x: any) {
-    this.myForm.controls.courseName.setValue(x);
-  }
-
-  changeGradeControl() {
-    // this.myForm.controls.grade.setValue(x);
-    console.log(this.myForm.value);
-  }
 
   changeId(x: any) {
     this.selectedStudent = x;
-    this.myForm.controls.studentRegNo.setValue(x);
+    this.studentRegNo.setValue(x);
+    // console.log(x);
 
-    this.viewResult.getCourse(x).subscribe(
+    this.viewResult.getEnrolledCourse(x).subscribe(
       (obj1) => {
         this.getDepartments();
-        this.courseList = obj1.data;
 
-        
         let selectedStdDeptId = this.studentList.find(
-          (x:any) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber == this.selectedStudent
         )?.departmentId;
 
         let selectedStdName = this.studentList.find(
-          (x: any) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber == this.selectedStudent
         )?.name;
         let selectedStdEmail = this.studentList.find(
-          (x: any ) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber == this.selectedStudent
         )?.email;
 
         let departmentName = this.depatmentList.find(
-          (x:any) => x.id === selectedStdDeptId
+          (x: any) => x.id == selectedStdDeptId
         )?.name;
 
-        this.myForm.controls.department.setValue(departmentName);
+        this.department.setValue(departmentName);
 
-        this.myForm.controls.name.setValue(selectedStdName);
-        this.myForm.controls.email.setValue(selectedStdEmail);
-        console.log(this.myForm.value);
+        this.name.setValue(selectedStdName);
+        this.email.setValue(selectedStdEmail);
+
+
+        this.courseList = obj1.data;
+        if (this.courseList.length === 0)
+        {
+          Swal.fire("This student doesn't enrolled any course yet! ");
+          }
+        this.resultView = [];
+        for (let i = 0; i < this.courseList.length; i++)
+        {
+          let value: viewResult= new viewResult('','','') ;
+           value.courseName = this.courseList[i].name;
+
+          value.courseCode = this.courseList[i].code;
+          let p = this.courseList[i].courseEnrolls;
+
+          for (let j = 0; j < p.length; j++)
+          {
+            if (p[j].studentRegNo === this.selectedStudent)
+            {
+              if (p[j].grade !== null)
+              {
+                value.gradeLetter = p[j].grade;
+              }
+              else
+              {
+                value.gradeLetter = "not graded yet!";
+              }
+
+            }
+          }
+          this.resultView.push(value);
+        }
       },
       (er1: any) => {
         console.log(er1);
-        alert(er1.error.message);
+        Swal.fire(er1.error.message);
       }
     );
   }
-
-  onSubmit() {
-
-    this.myForm.controls.name.setValue('');
-    this.myForm.controls.email.setValue('');
-    this.myForm.controls.department.setValue('');
-    console.log(this.myForm.value);
-    // this.viewResult.addStudentResult(this.myForm.value).subscribe(
-    //   (obj: any) => {
-    //     console.log(obj.data);
-
-    //     alert(obj.message);
-    //     this.myForm.controls.studentRegNo.setValue('');
-    //     this.myForm.controls.courseName.setValue('');
-    //     this.myForm.controls.gradeLetter.setValue('');
-    //   },
-    //   (er: any) => {
-    //     alert(er.error.message);
-    //   }
-    // );
-  }
-
 }

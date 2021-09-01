@@ -12,23 +12,24 @@ import { studentGrades } from '../Models/studentGrades';
 import Swal from 'sweetalert2';
 
 
+
+
 @Component({
   selector: 'app-save-result',
   templateUrl: './save-result.component.html',
-  styleUrls: ['./save-result.component.css']
+  styleUrls: ['./save-result.component.css'],
 })
 export class SaveResultComponent implements OnInit {
-
   constructor(
     private http: HttpClient,
     private saveResult: SaveResultService,
     private formBuilder: FormBuilder
   ) {}
 
-  studentList: student[]=[];
+  studentList: student[] = [];
   courseList: course[] = [];
-  depatmentList: department[]=[];
-  selectedStudent: student[]=[];
+  depatmentList: department[] = [];
+  selectedStudent: student[] = [];
   selectedCourse: course[] = [];
   gradeList: studentGrades[] = [];
 
@@ -38,7 +39,7 @@ export class SaveResultComponent implements OnInit {
     email: new FormControl(''),
     studentRegNo: new FormControl('', Validators.required),
     courseName: new FormControl('', Validators.required),
-    gradeLetter:new FormControl('', Validators.required)
+    gradeLetter: new FormControl('', Validators.required),
   });
   ngOnInit() {
     this.getStudents();
@@ -87,21 +88,18 @@ export class SaveResultComponent implements OnInit {
         this.courseList = obj1.data;
 
         let selectedStdDeptId = this.studentList.find(
-          (x:any) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber === this.selectedStudent
         )?.departmentId;
 
         let selectedStdName = this.studentList.find(
-          (x: any) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber === this.selectedStudent
         )?.name;
         let selectedStdEmail = this.studentList.find(
-          (x: any ) =>
-            x.registrationNumber === this.selectedStudent
+          (x: any) => x.registrationNumber === this.selectedStudent
         )?.email;
 
         let departmentName = this.depatmentList.find(
-          (x:any) => x.id === selectedStdDeptId
+          (x: any) => x.id === selectedStdDeptId
         )?.name;
 
         this.myForm.controls.department.setValue(departmentName);
@@ -118,25 +116,26 @@ export class SaveResultComponent implements OnInit {
   }
 
   onSubmit() {
-
-    this.myForm.controls.name.setValue('');
-    this.myForm.controls.email.setValue('');
-    this.myForm.controls.department.setValue('');
+    // this.myForm.controls.name.setValue('');
+    // this.myForm.controls.email.setValue('');
+    // this.myForm.controls.department.setValue('');
     console.log(this.myForm.value);
     this.saveResult.addStudentResult(this.myForm.value).subscribe(
       (obj: any) => {
         console.log(obj.data);
 
         Swal.fire(obj.message);
+
+
+
         this.myForm.controls.studentRegNo.setValue('');
         this.myForm.controls.courseName.setValue('');
         this.myForm.controls.gradeLetter.setValue('');
+
       },
       (er: any) => {
         Swal.fire(er.error.message);
       }
     );
   }
-
-
 }

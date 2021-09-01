@@ -1,0 +1,10 @@
+.form-group {
+  width: 350px;
+  margin-right: 30px;
+}
+
+.Container {
+  padding: 50px;
+  border: 1px solid aliceblue;
+  align-content: center;
+}

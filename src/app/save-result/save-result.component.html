@@ -1,7 +1,9 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Save Student Result</h4>
   <br />
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
+  style="max-width: 400px;"
+  >
 
 
     <br />
@@ -118,7 +120,7 @@
     <div>
       <div class="row">
         <div class="col-3">
-          <label for="grade">Select Grade Letter</label>
+          <label for="grade">Select Grade</label>
         </div>
         <div class="col-5">
           <select
