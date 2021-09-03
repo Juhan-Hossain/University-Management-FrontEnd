@@ -14,6 +14,7 @@ import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-
 
 
 import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.component';
+import { ViewAllocatedRoomsComponent } from './view-allocated-rooms/view-allocated-rooms.component';
 
 import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
 
@@ -70,7 +71,10 @@ const routes: Routes = [
     path: 'Course-Assign',
     component: CourseAssignTOTeacherComponent,
   },
-
+  {
+    path: 'View-RoomAllocation',
+    component: ViewAllocatedRoomsComponent,
+  },
   { path: '', component: HomeComponent },
 ];
 
