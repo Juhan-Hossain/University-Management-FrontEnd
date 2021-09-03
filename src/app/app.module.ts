@@ -29,6 +29,7 @@ import { ViewResultComponent } from './view-result/view-result.component';
 import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-classroom.component';
+import { ViewAllocatedRoomsComponent } from './view-allocated-rooms/view-allocated-rooms.component';
 
 
 @NgModule({
@@ -48,6 +49,7 @@ import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-
     ViewResultComponent,
     UnassignCoursesComponent,
     UnallocateClassroomComponent,
+    ViewAllocatedRoomsComponent,
   ],
   imports: [
     BrowserModule,
