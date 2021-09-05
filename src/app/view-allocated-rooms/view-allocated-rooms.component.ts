@@ -36,8 +36,8 @@ export class ViewAllocatedRoomsComponent implements OnInit {
   departmentId = new FormControl();
   roomList: room[] = [];
   dayList: day[] = [];
-  roomAllocationList: any[] = [];
-  scheduleInfof: viewAllocatedRooms[] = [];
+  roomAllocationList: any[] = []; //any=<any>{};
+  scheduleInfof: any[] = [];
 
   ngOnInit() {
     this.getDepartment();
@@ -53,85 +53,109 @@ export class ViewAllocatedRoomsComponent implements OnInit {
   getRoom() {
     this.viewAllocatedRooms.getRoom().subscribe((data: any) => {
       this.roomList = data.data;
-      console.log(this.roomList);
+      // console.log(this.roomList);
     });
   }
   getDay() {
     this.viewAllocatedRooms.getDay().subscribe((data: any) => {
       this.dayList = data.data;
-      console.log(this.dayList);
+      // console.log(this.dayList);
     });
   }
   count: number = 0;
-  code: string = "";
-  name: string = "";
+  code: string = '';
+  name: string = '';
   print() {
     this.courseList = [];
     this.scheduleInfof = [];
-    // this.viewAllocatedRooms
+    // this.roomAllocationList = [];
     this.viewAllocatedRooms.getCourse(this.departmentId.value).subscribe(
       (x) => {
+
         this.courseList = x.data;
         console.log(this.courseList);
-        let list: any[] = [];
-        let scheduleInfo = new viewAllocatedRooms('','','');
+
+
         for (let i = 0; i < this.courseList.length; i++) {
-          // this.scheduleInfof = this.courseList[i].code;
           this.code = this.courseList[i].code;
           this.name = this.courseList[i].name;
-          this.getRoomAllocation(this.courseList[i].code);
-          // console.log(this.roomAllocationList);
-          // if (this.roomAllocationList.length > 0) {
-          //   for (let j = 0; j < this.roomAllocationList.length; j++) {
 
-          //   }
-          // }
+          this.getRoomAllocation(this.courseList[i].code);
+
           this.count++;
         }
+
+        for (let i = 0; i < this.roomAllocationList.length; i++) {
+          let coursecode = this.roomAllocationList[i].courseCode;
+          let coursename = this.courseList.find(
+            (x: any) => x.code === coursecode
+          )?.name;
+          let name = coursename;
+          let roomid = this.roomAllocationList[i].roomId;
+          let roomno = this.roomList.find((x: any) => x.id == roomid)?.name;
+          let dayid = this.roomAllocationList[i].dayId;
+          let day = this.dayList.find((x: any) => x.id == dayid)?.dayName;
+          let starttime = this.parseDate(this.roomAllocationList[i].startTime);
+          let endtime = this.parseDate(this.roomAllocationList[i].endTime);
+          let scheduleinfo = '';
+          scheduleinfo += `R. No:${roomno},${day},${starttime}-${endtime}`;
+
+          let temp: any = <any>{
+            courseCode: coursecode,
+            name: name,
+            scheduleInfo: [scheduleinfo],
+          };
+          if (
+            this.scheduleInfof.find(
+              (x) => x.courseCode === coursecode && x.name === name
+            )
+          ) {
+            let tempid = this.scheduleInfof.findIndex(
+              (x) => x.courseCode === coursecode
+            );
+            this.scheduleInfof[tempid].scheduleInfo += '\n  ' + scheduleinfo;
+            // this.roomAllocationList = [];
+          } else {
+            this.scheduleInfof.push(temp);
+
+            // this.roomAllocationList = [];
+          }
+        }
+
+
+
+        console.log(this.scheduleInfof);
+        console.log(this.roomAllocationList);
+        // console.log(xx);
+        // this.roomAllocationList = [];
       },
       (er) => {
-        Swal.fire('no dept');
+        Swal.fire('no dept data found');
       }
     );
   }
 
   getRoomAllocation(courseCode: string) {
-    // this.roomAllocationList=
 
     this.viewAllocatedRooms.getRoomsByCode(courseCode).subscribe(
       (obj) => {
-        this.roomAllocationList.push(obj.data);
-        if (this.count == this.courseList.length) {
-          let schedule:viewAllocatedRooms = new viewAllocatedRooms('','','');
-          console.log(this.roomAllocationList);
-
-          // console.log(schedule.name);
-          for (let j = 0; j < this.roomAllocationList.length; j++) {
-
-
-            schedule.courseCode = this.roomAllocationList[j].courseCode;
-            let coursename = this.courseList.find(
-              (x: any) => x.code == schedule.courseCode
-            )?.name;
-            schedule.name = coursename;
-            let roomid = this.roomAllocationList[j].roomId;
-            console.log(roomid);
-            let roomno = this.roomList.find(
-              (x: any) => x.id == roomid
-            )?.name;
-            let dayid = this.roomAllocationList[j].dayId;
-            let day = this.dayList.find(
-              (x: any) => x.id == dayid
-            )?.dayName;
-            let starttime = this.roomAllocationList[j].dayId;
-            let endtime = this.roomAllocationList[j].dayId;
-            schedule.scheduleInfo += `R. No:${roomno},${day},${starttime}-${endtime};%0A`;
-            this.scheduleInfof.push(schedule);
+        // console.log(obj.data);
+        if (obj.data.length >= 0) {
+          for (let i = 0; i < obj.data.length; i++) {
+            this.roomAllocationList.push(obj.data[i]);
           }
         }
-        console.log(this.scheduleInfof);
       },
       (er) => {}
     );
+    // console.log(this.roomAllocationList);
+  }
+
+  public parseDate(date: any): string {
+    var temp = new Date(date);
+    var hour = temp.getHours() + 6;
+    var min = temp.getMinutes();
+    if (hour <= 12) return hour + ':' + min + ' AM';
+    return hour - 12 + ':' + min + ' PM';
   }
 }

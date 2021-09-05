@@ -2,7 +2,7 @@
 style="max-width: 800px;"
 >
   <div class="header">
-    <h4>View Course Statistics</h4>
+    <h4>View Class Schedule and Room Allocation Information</h4>
   </div>
   <br />
   <div>
@@ -34,17 +34,16 @@ style="max-width: 800px;"
   <table class="table table-bordered">
     <thead class="thead-dark">
       <tr>
-        <th scope="id">Code</th>
-        <th scope="col">Name</th>
-        <th scope="col">Semester</th>
-        <th scope="col">Assign To</th>
+        <th scope="id"style="background-color: springgreen">Code</th>
+        <th scope="col"style="background-color: springgreen">Name</th>
+        <th scope="col"style="background-color: springgreen">Schedule Info</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let course of courseList; let i = index">
-        <td>{{ course.code }}</td>
-        <td>{{ course.name }}</td>
-        <td>{{ course.name }}</td>
+      <tr *ngFor="let info of scheduleInfof">
+        <td style="width: 100px;">{{ info.courseCode }}</td>
+        <td>{{ info.name }}</td>
+        <td>{{ info.scheduleInfo }}</td>
 
       </tr>
     </tbody>
