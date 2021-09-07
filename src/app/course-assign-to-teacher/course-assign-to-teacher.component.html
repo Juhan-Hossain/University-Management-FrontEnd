@@ -47,8 +47,9 @@
             id="Teacher"
             placeholder="Teacher"
             formControlName="teacherId"
-            (change)="changeTeacher()"
 
+            (change)="changeTeacher()"
+            
           >
             <option *ngFor="let teacher of teacherList" [value]="teacher.id">
               {{ teacher.name }}
