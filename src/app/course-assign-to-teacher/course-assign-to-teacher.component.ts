@@ -9,6 +9,7 @@ import { course } from '../Models/course';
 import { student } from '../Models/student';
 import { department } from '../Models/department';
 import { CourseAssignService } from '../services/course-assign.service';
+import Swal from 'sweetalert2';
 
 @Injectable({
   providedIn: 'root',
@@ -61,46 +62,32 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.myForm.controls.courseName.setValue('');
-    // this.myForm.controls.creditToBeTaken.setValue('');
-    // this.myForm.controls.remainingCredit.setValue('');
-    // this.myForm.controls.courseCredit.setValue('');
+    this.myForm.controls.courseName.setValue('');
+    this.myForm.controls.creditToBeTaken.setValue('');
+    this.myForm.controls.remainingCredit.setValue('');
+    this.myForm.controls.courseCredit.setValue('');
 
     console.log(this.myForm.value);
     this.courseAssign.addCourseAssign(this.myForm.value).subscribe(
       (obj: any) => {
         console.log(obj.data);
 
-        alert(obj.message);
-
+        Swal.fire(obj.message);
       },
       (er: any) => {
-        alert(er.error.message);
+        Swal.fire(er.error.message);
       }
     );
   }
   changeDeptId(x: any) {
     this.courseAssign.getTeacher(x).subscribe(
       (obj1) => {
-        // this.getDepartments();
         this.teacherList = obj1.data;
         this.selectedTeacher = this.myForm.controls.teacherId.value;
-        let selectedCreditToTaken = this.teacherList.find(
-          (px: any) => px.id == this.selectedTeacher
-        )?.creditToBeTaken;
-        this.myForm.controls.creditToBeTaken.setValue(selectedCreditToTaken);
-        let selectedRemainingCredit = this.teacherList.find(
-          (px: any) => px.id == this.selectedTeacher
-        )?.remainingCredit;
-
-        console.log(selectedCreditToTaken);
-
-
-        this.myForm.controls.remainingCredit.setValue(selectedRemainingCredit);
       },
       (er1: any) => {
         console.log(er1);
-        alert(er1.error.message);
+        Swal.fire(er1.error.message);
       }
     );
 
@@ -122,34 +109,31 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       },
       (erMain: any) => {
         console.log(erMain);
-        alert(erMain.error.message);
+        Swal.fire(erMain.error.message);
       }
     );
   }
 
   changeTeacher() {
-    this.getDepartments();
-    this.changeDeptId(this.myForm.controls.departmentId.value);
     let y = this.myForm.controls.teacherId.value;
-
-    this.selectedTeacher = y;
 
     this.selectedTeacher = this.myForm.controls.teacherId.value;
     let selectedCreditToTaken = this.teacherList.find(
-      (px: any) => px.id === y
+      (px: any) => px.id == this.myForm.controls.teacherId.value
     )?.creditToBeTaken;
     let selectedRemainingCredit = this.teacherList.find(
-      (px: any) => px.id === y
+      (px: any) => px.id == this.myForm.controls.teacherId.value
     )?.remainingCredit;
+    console.log(this.myForm.controls.teacherId.value);
 
-
-    this.myForm.controls.courseName.setValue(selectedCreditToTaken);
+    this.myForm.controls.creditToBeTaken.setValue(selectedCreditToTaken);
 
     this.myForm.controls.remainingCredit.setValue(selectedRemainingCredit);
 
+    console.log(this.myForm.value);
   }
   changeCourseControl(x: string) {
-    this.getDepartments();
+    // this.getDepartments();
     this.selectedCode = this.myForm.controls.code.value;
 
     let selectedcourseName = this.courseList.find(
