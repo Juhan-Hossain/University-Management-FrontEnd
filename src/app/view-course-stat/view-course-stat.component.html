@@ -45,7 +45,7 @@ style="max-width: 800px;"
       <tr *ngFor="let course of courseList; let i = index">
         <td>{{ course.code }}</td>
         <td>{{ course.name }}</td>
-        <td>{{ course.semesterName }}</td>
+        <td>{{ course.semesterId }}</td>
         <td class="text-danger" *ngIf="course.assignTo === 'Not Assigned Yet!'">
           {{ course.assignTo }}
         </td>

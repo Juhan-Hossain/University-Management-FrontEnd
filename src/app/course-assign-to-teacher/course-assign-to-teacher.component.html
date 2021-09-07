@@ -49,15 +49,13 @@
             formControlName="teacherId"
 
             (change)="changeTeacher()"
-            
+
           >
             <option *ngFor="let teacher of teacherList" [value]="teacher.id">
               {{ teacher.name }}
             </option>
           </select>
-          <!-- <span *ngIf="this.teacherList.length===0" class="text-danger error">
-            don't have teachers yet!!
-          </span> -->
+          
         </div>
       </div>
     </div>

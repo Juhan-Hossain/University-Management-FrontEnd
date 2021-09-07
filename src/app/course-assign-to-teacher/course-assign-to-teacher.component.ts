@@ -87,7 +87,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       },
       (er1: any) => {
         console.log(er1);
-        alert(er1.error.message);
+        Swal.fire(er1.error.message);
       }
     );
 
@@ -109,11 +109,10 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       },
       (erMain: any) => {
         console.log(erMain);
-        alert(erMain.error.message);
+        Swal.fire(erMain.error.message);
       }
     );
   }
-
 
   changeTeacher() {
     let y = this.myForm.controls.teacherId.value;
