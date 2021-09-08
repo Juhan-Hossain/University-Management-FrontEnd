@@ -10,7 +10,6 @@ import Swal from 'sweetalert2';
   selector: 'app-saveDepartment',
   templateUrl: './saveDepartment.component.html',
   styleUrls: ['./saveDepartment.component.css'],
-
 })
 @Injectable({
   providedIn: 'root',
@@ -48,11 +47,12 @@ export class SaveDepartmentComponent implements OnInit {
     this.departmentService.saveDepartment(this.myForm.value).subscribe(
       (data: any) => {
         this.getDepartment();
+        console.log(data.data);
         Swal.fire(data.message);
       },
       (error: any) => {
         console.log(error);
-        Swal.fire(error.error)
+        Swal.fire(error.error.message);
       }
     );
   }
