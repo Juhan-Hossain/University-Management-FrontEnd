@@ -7,17 +7,18 @@ import { serviceResponse } from '../Models/serviceResponse';
   providedIn: 'root'
 })
 export class RegisterStudentService {
+
   constructor(private http: HttpClient) { }
   depturl: string = 'https://localhost:44322/api/Departments';
-  saveStudent: string = 'https://localhost:44322/api/Students/CreateStudent';
-  // saveTeacher(data: any) {
-  //   return this.http.post(`${this.teacherurl}/CreateTeacher`, data);
-  // }
+  registerStudentUrl:string ="https://localhost:44322/api/Students"
 
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.depturl);
   }
-  // getDesignation(): Observable<serviceResponse> {
-  //   return this.http.get<serviceResponse>(this.designationurl);
-  // }
+
+  saveStudent(data: any) {
+    return this.http.post(`${this.registerStudentUrl}/CreateStudent`, data);
+  }
+
+
 }

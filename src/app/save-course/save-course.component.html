@@ -1,7 +1,9 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Save Course</h4>
   <br />
-  <form [formGroup]="myForm" (ngSubmit)="addCourse()">
+  <form [formGroup]="myForm" (ngSubmit)="addCourse()"
+  style="max-width: 400px;"
+  >
     <div class="form-group">
       <div class="row">
         <div class="col-3">
@@ -20,7 +22,7 @@
       </div>
 
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.code.touched &&
           registerFormControl.code.value.length == 0
@@ -28,7 +30,7 @@
         >course code required</span
       >
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.code.touched &&
           registerFormControl.code.invalid &&
@@ -59,7 +61,7 @@
           registerFormControl.name.touched &&
           registerFormControl.name.value.length == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >Course name required</span
       >
     </div>
@@ -84,12 +86,12 @@
           registerFormControl.credit.touched &&
           registerFormControl.credit.value == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >Course credit required</span
       >
 
       <span
-        class="text-danger"
+        class="text-danger error"
         *ngIf="
           registerFormControl.credit.touched &&
           registerFormControl.credit.invalid &&
@@ -122,7 +124,7 @@
           registerFormControl.description.touched &&
           registerFormControl.description.value.length == 0
         "
-        class="text-danger"
+        class="text-danger error"
         >Course description required</span
       >
     </div>
@@ -159,7 +161,7 @@
           registerFormControl.departmentId.touched &&
           registerFormControl.departmentId.value == ''
         "
-        class="text-danger"
+        class="text-danger error"
         >Course department required</span
       >
     </div>
@@ -196,7 +198,7 @@
           registerFormControl.semesterId.touched &&
           registerFormControl.semesterId.value == ''
         "
-        class="text-danger"
+        class="text-danger error"
         >Course semester required</span
       >
     </div>

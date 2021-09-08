@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CourseService } from '../services/course.service';
+import Swal from 'sweetalert2';
 @Component({
   selector: 'app-save-course',
   templateUrl: './save-course.component.html',
@@ -70,12 +71,11 @@ export class SaveCourseComponent implements OnInit {
     this.courseService.saveCourse(this.myForm.value).subscribe(
       (data: any) => {
         console.log(data.message);
-        this.getDepartment();
-        this.getSemester();
+        Swal.fire(data.message);
       },
       (error: any) => {
         console.log(error);
-        alert(error.error.message);
+        Swal.fire(error.error.message);
       }
     );
   }

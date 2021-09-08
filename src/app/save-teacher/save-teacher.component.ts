@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TeacherService } from '../services/teacher.service';
+import Swal from 'sweetalert2';
 @Injectable({
   providedIn: 'root',
 })
@@ -72,10 +73,11 @@ export class SaveTeacherComponent implements OnInit {
         console.log(data.message);
         this.getDepartment();
         this.getDesignation();
+        Swal.fire(data.message);
       },
       (error: any) => {
         console.log(error);
-        alert(error.error.message);
+        Swal.fire(error.error.message);
       }
     );
   }

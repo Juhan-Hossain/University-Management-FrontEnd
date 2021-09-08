@@ -8,9 +8,9 @@ import { SaveDepartmentComponent } from './saveDepartment/saveDepartment.compone
 import { ViewDepartmentComponent } from './view-department/view-department.component';
 import { SaveCourseComponent } from './save-course/save-course.component';
 import { SaveTeacherComponent } from './save-teacher/save-teacher.component';
-import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
-import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
-import { RegisterStudentComponent } from './register-student/register-student.component';
+// import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
+// import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
+// import { RegisterStudentComponent } from './register-student/register-student.component';
 import * as ngxBootstrap from 'ngx-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +19,19 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
+import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
+import { RegisterStudentComponent } from './register-student/register-student.component';
+import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
+import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
+import { AllocateClassroomComponent } from './allocate-classroom/allocate-classroom.component';
+import { SaveResultComponent } from './save-result/save-result.component';
+import { ViewResultComponent } from './view-result/view-result.component';
+import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.component';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-classroom.component';
+import { ViewAllocatedRoomsComponent } from './view-allocated-rooms/view-allocated-rooms.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -32,6 +45,15 @@ import { MatMenuModule } from '@angular/material/menu';
     CourseAssignTOTeacherComponent,
     ViewCourseStatComponent,
     RegisterStudentComponent,
+    CourseEnrollComponent,
+    AllocateClassroomComponent,
+    SaveResultComponent,
+    ViewResultComponent,
+    UnassignCoursesComponent,
+    UnallocateClassroomComponent,
+    ViewAllocatedRoomsComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,7 +64,10 @@ import { MatMenuModule } from '@angular/material/menu';
     ReactiveFormsModule,
     HttpClientModule,
     MatSidenavModule,
-    MatMenuModule
+    MatMenuModule,
+    NgbModule,
+    
+
   ],
   providers: [],
   bootstrap: [AppComponent],

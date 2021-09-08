@@ -1,0 +1,53 @@
+<div class="container" style="margin: 100px"
+style="max-width: 800px;"
+>
+  <div class="header">
+    <h4>View Class Schedule and Room Allocation Information</h4>
+  </div>
+  <br />
+  <div>
+    <div class="row">
+      <div class="col-3">
+        <label for="DepartmentId">Department</label>
+      </div>
+      <div class="col-5">
+        <select
+          type="text"
+          class="form-select form-select-sm"
+          aria-label=".form-select-sm example"
+          id="departmentId"
+          placeholder="Course department"
+          [formControl]="departmentId"
+          (change)="print()"
+        >
+          <option
+            *ngFor="let department of departmentList"
+            [value]="department.id"
+          >
+            {{ department.name }}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <br />
+  <table class="table table-bordered">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="id"style="background-color: springgreen">Code</th>
+        <th scope="col"style="background-color: springgreen">Name</th>
+        <th scope="col"style="background-color: springgreen">Schedule Info</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let info of data">
+        <td style="width: 100px;">{{ info.code }}</td>
+        <td>{{ info.name }}</td>
+        <td>
+          <p *ngFor="let room of info.roomAllocations"> R. No : {{ fixRoom(room.roomId) }}, {{ fixDay(room.dayId) }}, {{ dateConversion(room.startTime) }} - {{ dateConversion(room.endTime) }} </p>
+          <p *ngIf="info.roomAllocations.length == 0"> Not Scheduled Yet </p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

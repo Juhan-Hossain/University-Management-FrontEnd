@@ -9,6 +9,10 @@
 
 input.ng-invalid.ng-touched {
   border: 1px solid red;
+
+}
+.error{
+  margin-left: 107px;
 }
 error{
   margin-left: 107;

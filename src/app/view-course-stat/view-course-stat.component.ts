@@ -5,6 +5,8 @@ import { Observable } from 'rxjs/internal/Observable';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ViewCourseService } from '../services/view-course.service';
+import Swal from 'sweetalert2';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -13,7 +15,7 @@ import { ViewCourseService } from '../services/view-course.service';
   templateUrl: './view-course-stat.component.html',
   styleUrls: ['./view-course-stat.component.css'],
 })
-export class ViewCourseStatComponent implements OnInit, OnDestroy{
+export class ViewCourseStatComponent implements OnInit, OnDestroy {
   selectedItem: any;
   departmentList: any;
   courseList: any;
@@ -25,40 +27,31 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy{
     private formBuilder: FormBuilder
   ) {}
 
-
-
   ngOnInit() {
+
     this.getDepartment();
-    // this.departmentId.valueChanges.subscribe(x => {
-
-    //   this.viewCourseService.getCourse(x).subscribe((data: any) => {
-    //     this.courseList = data.data;
-    //     // console.log(data.data);
-    //   });
-    // })
-
   }
+
 
   getDepartment() {
     this.viewCourseService.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
-      console.log(data.data);
+
     });
   }
 
+
   print() {
     console.log(this.selectedItem);
-    this.viewCourseService.getCourse(this.selectedItem).subscribe(x => {
-      this.courseList = x.data;
-    })
+    this.courseList = [];
+    this.viewCourseService.getCourse(this.selectedItem).subscribe(
+      (x) => {
+        this.courseList = x.data;
+      },
+      (er) => {
+        Swal.fire(er.error.message);
+      }
+    );
   }
-  ngOnDestroy() {
-
-  }
-
-  getId(x: any) {
-// console.log(this.);
-    console.log(x);
-  }
-
+  ngOnDestroy() {}
 }

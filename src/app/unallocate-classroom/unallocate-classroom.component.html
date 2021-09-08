@@ -1,0 +1,33 @@
+<div class="unassignCourse">
+  <h3 class="center"> Unallocate Classrooms </h3>
+  <button type="button" class="center" style=" padding: 20px; background-color: red; margin-left: 259px; font-size: medium;"
+  (click)="triggerModal(modalData)"
+  >Unallocate Classrooms</button>
+</div>
+
+
+
+<!-- <button class="btn btn-danger" (click)="triggerModal(modalData)">Open Modal</button> -->
+
+<ng-template #modalData let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Unallocate Classrooms Confirmation</h4>
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">×</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p><strong>Are you sure you want to <span class="text-primary">"Unallocate all Classrooms"</span> ?</strong></p>
+
+    <p>All data related to unallocate classroom will be removed permanently.
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click'); onConfirm()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="modal.close('Save click')">NO</button>
+  </div>
+</ng-template>
+
+
+
+

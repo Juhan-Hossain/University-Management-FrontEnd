@@ -1,0 +1,146 @@
+<link
+  href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css"
+  rel="stylesheet"
+  id="bootstrap-css"
+/>
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+<div class="Container" style="margin: 100px">
+
+<form [formGroup]="myForm" autocomplete="off" (ngSubmit)="register()">
+  <h4 class="header">Register</h4>
+  <label>
+    <p class="label-txt">ENTER YOUR USERNAME</p>
+    <input type="text" formControlName="userName" class="input" id="userName" />
+    <div class="line-box">
+      <div class="line"></div>
+    </div>
+    <span
+        *ngIf="
+          registerFormControl.userName.touched &&
+          registerFormControl.userName.value.length == 0
+        "
+        class="text-danger error"
+        >username required</span
+      >
+  </label>
+
+
+  <label>
+    <p class="label-txt">ENTER YOUR FIRSTNAME</p>
+    <input
+      type="text"
+      formControlName="firstName"
+      class="input"
+      id="firstName"
+    />
+    <div class="line-box">
+      <div class="line"></div>
+    </div>
+    <span
+        *ngIf="
+          registerFormControl.firstName.touched &&
+          registerFormControl.firstName.value.length == 0
+        "
+        class="text-danger error"
+        >firstname required</span
+      >
+  </label>
+  <label>
+    <p class="label-txt">ENTER YOUR LASTNAME</p>
+    <input type="text" formControlName="lastName" class="input" id="lastName" />
+    <div class="line-box">
+      <div class="line"></div>
+    </div>
+    <span
+        *ngIf="
+          registerFormControl.lastName.touched &&
+          registerFormControl.lastName.value.length == 0
+        "
+        class="text-danger error"
+        >lastname required</span
+      >
+  </label>
+  <label>
+    <p class="label-txt">ENTER YOUR EMAIL</p>
+    <input type="text" formControlName="email" class="input" id="email" />
+    <div class="line-box">
+      <div class="line"></div>
+    </div>
+    <span
+        *ngIf="
+          registerFormControl.email.touched &&
+          registerFormControl.email.value.length == 0
+        "
+        class="text-danger error"
+        >email required</span
+      >
+      <span
+        class="text-danger error"
+        *ngIf="
+          registerFormControl.email.touched &&
+          registerFormControl.email.invalid &&
+          registerFormControl.email.value != 0
+        "
+      >
+        please enter a valid email
+      </span>
+  </label>
+  <div >
+    <label>
+      <p class="label-txt">ENTER YOUR PASSWORD</p>
+      <input
+        type="password"
+        formControlName="password"
+        class="input"
+        id="password"
+      />
+      <div class="line-box">
+        <div class="line"></div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.password.touched &&
+          registerFormControl.password.value.length == 0
+        "
+        class="text-danger error"
+        >password required</span
+      >
+    </label>
+    <label>
+      <p class="label-txt">ENTER CONFIRMED PASSWORD</p>
+      <input
+        type="password"
+        formControlName="confirmPassword"
+        class="input"
+        id="confirmPassword"
+      />
+      <div class="line-box">
+        <div class="line"></div>
+      </div>
+      <span
+        *ngIf="
+          registerFormControl.confirmPassword.touched &&
+          registerFormControl.confirmPassword.value.length == 0
+        "
+        class="text-danger error"
+        >confirmpassword required</span
+      >
+      <span
+        *ngIf="
+        registerFormControl.confirmPassword.value.length >0 &&
+          registerFormControl.confirmPassword.dirty &&
+          registerFormControl.confirmPassword.value !==registerFormControl.password.value
+        "
+        class="text-danger error"
+        >please match with given password</span
+      >
+    </label>
+  </div>
+
+  <button type="submit" [disabled]="!myForm.valid ||(registerFormControl.confirmPassword.value !==registerFormControl.password.value) " (click)="register()">SignUp</button>
+</form>
+</div>
+
+

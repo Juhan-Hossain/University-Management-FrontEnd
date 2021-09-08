@@ -1,6 +1,12 @@
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 form{
-  max-width: 400px ;
+  max-width: 300px ;
 
 }
+
+/* .Container {
+  padding: 50px;
+  border: 1px solid aliceblue;
+  align-content: center;
+} */

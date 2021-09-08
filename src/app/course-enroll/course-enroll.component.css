@@ -1,0 +1,11 @@
+.error {
+  margin-left: 107px;
+}
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+.Container {
+  padding: 50px;
+  border: 1px solid aliceblue;
+  align-content: center;
+}
