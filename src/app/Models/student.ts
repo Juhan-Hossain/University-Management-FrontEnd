@@ -7,7 +7,6 @@ export class student {
     public contactNumber: string,
     public address: string,
     public departmentId: number,
-    public registrationNumber:string
+    public registrationNumber: string
   ) {}
 }
-
