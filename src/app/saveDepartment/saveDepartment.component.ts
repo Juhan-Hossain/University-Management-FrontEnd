@@ -52,6 +52,7 @@ export class SaveDepartmentComponent implements OnInit {
       },
       (error: any) => {
         console.log(error);
+
         Swal.fire(error.error.message);
       }
     );
