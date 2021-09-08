@@ -30,6 +30,8 @@ import { UnassignCoursesComponent } from './unassign-courses/unassign-courses.co
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-classroom.component';
 import { ViewAllocatedRoomsComponent } from './view-allocated-rooms/view-allocated-rooms.component';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -50,6 +52,8 @@ import { ViewAllocatedRoomsComponent } from './view-allocated-rooms/view-allocat
     UnassignCoursesComponent,
     UnallocateClassroomComponent,
     ViewAllocatedRoomsComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,

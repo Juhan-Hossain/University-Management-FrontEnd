@@ -5,7 +5,9 @@ import { AppComponent } from './app.component';
 import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
 import { CourseEnrollComponent } from './course-enroll/course-enroll.component';
 import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
 import { RegisterStudentComponent } from './register-student/register-student.component';
+import { RegisterComponent } from './register/register.component';
 import { SaveCourseComponent } from './save-course/save-course.component';
 import { SaveResultComponent } from './save-result/save-result.component';
 import { SaveTeacherComponent } from './save-teacher/save-teacher.component';
@@ -74,6 +76,14 @@ const routes: Routes = [
   {
     path: 'View-RoomAllocation',
     component: ViewAllocatedRoomsComponent,
+  },
+  {
+    path: 'Login',
+    component: LoginComponent,
+  },
+  {
+    path: 'Register',
+    component: RegisterComponent,
   },
   { path: '', component: HomeComponent },
 ];
