@@ -12,7 +12,7 @@ export class ViewAllocatedroomsService {
   RoomByDeptIdUrl: string =
     'https://localhost:44322/api/RoomAllocation/DepartmentId';
   courseurl: string =
-    'https://localhost:44322/api/Courses/ViewCoursesByDepartment';
+    'https://localhost:44322/api/Courses/GetCoursesByDepartment';
   roomUrl: string = 'https://localhost:44322/api/Room/GetRooms';
   dayUrl: string = 'https://localhost:44322/api/Day/GetDays';
   RoomsByCodeUrl: string = 'https://localhost:44322/api/RoomAllocation/CourseCode';
