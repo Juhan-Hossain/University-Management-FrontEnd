@@ -6,6 +6,9 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ViewCourseService } from '../services/view-course.service';
 import Swal from 'sweetalert2';
+import { serviceResponse } from '../Models/serviceResponse';
+import { department } from '../Models/department';
+import { course } from '../Models/course';
 
 @Injectable({
   providedIn: 'root',
@@ -16,9 +19,8 @@ import Swal from 'sweetalert2';
   styleUrls: ['./view-course-stat.component.css'],
 })
 export class ViewCourseStatComponent implements OnInit, OnDestroy {
-  selectedItem: any;
-  departmentList: any;
-  courseList: any;
+  departmentList: department[]=[];
+  courseList: course[]=[];
   departmentId = new FormControl();
 
   constructor(
@@ -34,7 +36,7 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy {
 
 
   getDepartment() {
-    this.viewCourseService.getDepartment().subscribe((data: any) => {
+    this.viewCourseService.getDepartment().subscribe((data: serviceResponse) => {
       this.departmentList = data.data;
 
     });
@@ -42,9 +44,8 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy {
 
 
   print() {
-    console.log(this.selectedItem);
     this.courseList = [];
-    this.viewCourseService.getCourse(this.selectedItem).subscribe(
+    this.viewCourseService.getCourse(this.departmentId.value).subscribe(
       (x) => {
         this.courseList = x.data;
       },

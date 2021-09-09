@@ -7,7 +7,7 @@ style="max-width: 800px;"
   <br />
   <div>
     <div class="row">
-      <div class="col-3">
+      <div class="col-3 nav">
         <label for="DepartmentId">Department</label>
       </div>
       <div class="col-5">
@@ -18,7 +18,6 @@ style="max-width: 800px;"
           id="departmentId"
           placeholder="Course department"
           [formControl]="departmentId"
-          [(ngModel)]="selectedItem"
           (change)="print()"
         >
           <option
@@ -35,10 +34,10 @@ style="max-width: 800px;"
   <table class="table table-bordered">
     <thead class="thead-dark">
       <tr>
-        <th scope="id">Code</th>
-        <th scope="col">Name</th>
-        <th scope="col">Semester</th>
-        <th scope="col">Assign To</th>
+        <th scope="id"style="background-color: springgreen">Code</th>
+        <th scope="col"style="background-color: springgreen">Name</th>
+        <th scope="col"style="background-color: springgreen">Semester</th>
+        <th scope="col"style="background-color: springgreen">Assign To</th>
       </tr>
     </thead>
     <tbody>
