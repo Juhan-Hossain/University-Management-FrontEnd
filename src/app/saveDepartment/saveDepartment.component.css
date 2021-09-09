@@ -14,3 +14,6 @@ input.ng-invalid.ng-touched {
 .error{
   margin-left: 107px;
 }
+error{
+  margin-left: 107;
+}
