@@ -24,7 +24,7 @@ export class UnallocateClassroomComponent implements OnInit {
   onConfirm() {
     this.unallocateClassService.UnallocatingClasses().subscribe(
       (obj) => {
-        Swal.fire('Unallocate all courses');
+        Swal.fire('Unallocate all classrooms');
       },
       (er) => {
         Swal.fire('The Internet?', 'That thing is still around?', 'question');
