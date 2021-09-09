@@ -101,52 +101,6 @@ export class ViewAllocatedRoomsComponent implements OnInit {
         });
 
         console.log('mapped data', this.data);
-
-        // this.roomAllocationList = [];
-        // for (let i = 0; i < this.courseList.length; i++) {
-        //   this.roomAllocationList.push(this.courseList[i].roomAllocationLists);
-        // }
-        // console.log(this.roomAllocationList);
-
-        // for (let i = 0; i < this.roomAllocationList.length; i++) {
-        //   let coursecode = this.roomAllocationList[i].courseCode;
-        //   let coursename = this.courseList.find(
-        //     (x: any) => x.code === coursecode
-        //   )?.name;
-        //   let name = coursename;
-        //   let roomid = this.roomAllocationList[i].roomId;
-        //   let roomno = this.roomList.find((x: any) => x.id == roomid)?.name;
-        //   let dayid = this.roomAllocationList[i].dayId;
-        //   let day = this.dayList.find((x: any) => x.id == dayid)?.dayName;
-        //   let starttime = this.parseDate(this.roomAllocationList[i].startTime);
-        //   let endtime = this.parseDate(this.roomAllocationList[i].endTime);
-        //   let scheduleinfo = '';
-        //   scheduleinfo += `R. No:${roomno},${day},${starttime}-${endtime}`;
-
-        //   let temp: any = <any>{
-        //     courseCode: coursecode,
-        //     name: name,
-        //     scheduleInfo: [scheduleinfo],
-        //   };
-        //   if (
-        //     data.find(
-        //       (x) => x.code === coursecode && x.name === name
-        //     )
-        //   ) {
-        //     let tempid = data.findIndex(
-        //       (x) => x.code === coursecode
-        //     );
-        //     this.scheduleInfof[tempid]. += '\n  ' + scheduleinfo;
-        //     // this.roomAllocationList = [];
-        //   } else {
-        //     this.scheduleInfof.push(temp);
-        //   }
-        // }
-
-        // console.log(this.scheduleInfof);
-        // console.log(this.roomAllocationList);
-        // console.log(xx);
-        // this.roomAllocationList = [];
       },
       (er) => {
         Swal.fire('no dept data found');
