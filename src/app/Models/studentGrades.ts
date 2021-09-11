@@ -1,3 +1,3 @@
 export class studentGrades {
-  constructor(public id: number, public grade: string) {}
+  constructor(public value: number, public grade: string) {}
 }

@@ -66,6 +66,8 @@ export class SaveResultComponent implements OnInit {
   getGrades() {
     this.saveResult.getGrade().subscribe((data: any) => {
       this.gradeList = data.data;
+      this.gradeList = this.gradeList.sort((a, b) => a.value>b.value?1:-1);
+      console.log(data.data);
     });
   }
 
@@ -128,9 +130,9 @@ export class SaveResultComponent implements OnInit {
 
 
 
-        this.myForm.controls.studentRegNo.setValue('');
-        this.myForm.controls.courseName.setValue('');
-        this.myForm.controls.gradeLetter.setValue('');
+        // this.myForm.controls.studentRegNo.setValue('');
+        // this.myForm.controls.courseName.setValue('');
+        // this.myForm.controls.gradeLetter.setValue('');
 
       },
       (er: any) => {
