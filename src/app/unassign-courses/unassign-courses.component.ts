@@ -29,9 +29,7 @@ export class UnassignCoursesComponent implements OnInit {
     },
       er => {
         Swal.fire(
-          'The Internet?',
-          'That thing is still around?',
-          'question'
+          'there is no course to unassign!'
         )
 
       }
