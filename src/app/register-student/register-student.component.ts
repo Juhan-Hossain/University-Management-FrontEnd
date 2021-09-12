@@ -58,6 +58,12 @@ export class RegisterStudentComponent implements OnInit {
   addStudent() {
     this.registerStudent.saveStudent(this.myForm.value).subscribe(
       (obj: any) => {
+        this.myForm.controls['address'].setValue('');
+        this.myForm.controls['departmentId'].setValue('');
+        this.myForm.controls['date'].setValue('');
+        this.myForm.controls['contactNumber'].setValue('');
+        this.myForm.controls['email'].setValue('');
+        this.myForm.controls['name'].setValue('');
         console.log('student Data', obj.data);
         Swal.fire(
           `RegistrationNumber: ${obj.data.registrationNumber}`,
