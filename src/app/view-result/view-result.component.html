@@ -18,7 +18,6 @@
             (change)="changeId(selectField.value)"
             #selectField
           >
-            <option value="" disabled>Choose Student</option>
             <option
               *ngFor="let student of studentList"
               [value]="student.registrationNumber"

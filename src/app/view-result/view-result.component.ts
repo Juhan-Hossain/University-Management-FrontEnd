@@ -27,7 +27,7 @@ export class ViewResultComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.getStudents();
-    this.getStudents();
+    this.getDepartments();
   }
   // ngAfterViewInit() {
   //   // this.openPDF();
