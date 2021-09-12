@@ -8,8 +8,11 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { course } from '../Models/course';
 import { student } from '../Models/student';
 import { department } from '../Models/department';
-import { CourseAssignService } from '../services/course-assign.service';
+
 import Swal from 'sweetalert2';
+import { CourseAssignService } from '../services/course-assign.service';
+import { serviceResponse } from '../Models/serviceResponse';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Injectable({
   providedIn: 'root',
@@ -23,7 +26,8 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private courseAssign: CourseAssignService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private modalService: NgbModal
   ) {}
 
   studentList: student[] = [];
@@ -34,6 +38,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   selectedCourse: course[] = [];
   selectedTeacher: any;
   selectedCode: any;
+  closeModal: string | undefined;
 
   myForm = this.formBuilder.group({
     courseName: new FormControl(),
@@ -44,6 +49,11 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     remainingCredit: new FormControl(),
     code: new FormControl('', Validators.required),
     courseCredit: new FormControl(),
+  });
+  updatedForm = this.formBuilder.group({
+    departmentId: new FormControl('', Validators.required),
+    teacherId: new FormControl('', Validators.required),
+    code: new FormControl('', Validators.required),
   });
   ngOnInit(): void {
     this.getDepartments();
@@ -56,21 +66,19 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   getDepartments() {
     this.courseAssign.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
-      // this.selectedDepartment = this.myForm.controls
-      //   .department.value;
     });
   }
-
-  onSubmit() {
-    this.myForm.controls.courseName.setValue('');
-    this.myForm.controls.creditToBeTaken.setValue('');
-    this.myForm.controls.remainingCredit.setValue('');
-    this.myForm.controls.courseCredit.setValue('');
-
-    console.log(this.myForm.value);
-    this.courseAssign.addCourseAssign(this.myForm.value).subscribe(
+  addCourse() {
+    this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
         console.log(obj.data);
+        this.myForm.controls.code.setValue('');
+        this.myForm.controls.departmentId.setValue('');
+        this.myForm.controls.teacherId.setValue('');
+        this.myForm.controls.courseName.setValue('');
+        this.myForm.controls.creditToBeTaken.setValue('');
+        this.myForm.controls.remainingCredit.setValue('');
+        this.myForm.controls.courseCredit.setValue('');
 
         Swal.fire(obj.message);
       },
@@ -79,6 +87,23 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       }
     );
   }
+  onConfirm() {
+    this.updatedForm.value['code'] = this.myForm.value['code'];
+    this.updatedForm.value['departmentId'] = this.myForm.value['departmentId'];
+    this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
+
+    this.addCourse();
+  }
+  onSubmit() {
+    this.updatedForm.value['code'] = this.myForm.value['code'];
+    this.updatedForm.value['departmentId'] = this.myForm.value['departmentId'];
+    this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
+
+    this.addCourse();
+
+    console.log(this.updatedForm.value);
+  }
+
   changeDeptId(x: any) {
     this.courseAssign.getTeacher(x).subscribe(
       (obj1) => {
@@ -124,7 +149,6 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     let selectedRemainingCredit = this.teacherList.find(
       (px: any) => px.id == this.myForm.controls.teacherId.value
     )?.remainingCredit;
-    console.log(this.myForm.controls.teacherId.value);
 
     this.myForm.controls.creditToBeTaken.setValue(selectedCreditToTaken);
 
@@ -146,5 +170,37 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.myForm.controls.courseName.setValue(selectedcourseName);
 
     this.myForm.controls.courseCredit.setValue(selectedCourseCredit);
+  }
+
+  check(content: any) {
+    if (
+      this.myForm.value['remainingCredit'] < this.myForm.value['courseCredit']
+    ) {
+      this.triggerModal(content);
+    } else {
+      this.onSubmit();
+    }
+  }
+  triggerModal(content: any) {
+    this.modalService
+      .open(content, { ariaLabelledBy: 'modal-basic-title' })
+      .result.then(
+        (res) => {
+          this.closeModal = `Closed with: ${res}`;
+        },
+        (res) => {
+          this.closeModal = `Dismissed ${this.getDismissReason(res)}`;
+        }
+      );
+  }
+
+  private getDismissReason(reason: any): string {
+    if (reason === ModalDismissReasons.ESC) {
+      return 'by pressing ESC';
+    } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+      return 'by clicking on a backdrop';
+    } else {
+      return `with: ${reason}`;
+    }
   }
 }

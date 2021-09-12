@@ -4,31 +4,34 @@ import { Observable } from 'rxjs';
 import { serviceResponse } from '../Models/serviceResponse';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CourseAssignService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   departmentUrl: string = 'https://localhost:44322/api/Departments';
   courseurl: string =
     'https://localhost:44322/api/Courses/ViewCoursesByDepartment';
-    teacherurl: string =
-      'https://localhost:44322/api/Teachers/Department/';
-  courseAssign: string = 'https://localhost:44322/api/CourseAssignment/CreateCourseAssignment';
+  teacherurl: string = 'https://localhost:44322/api/Teachers/Department/';
+  allTeacherUrl: string = 'https://localhost:44322/api/Teachers/GetTeachers';
+  courseAssign: string =
+    'https://localhost:44322/api/CourseAssignment/CreateCourseAssignment';
 
-    getDepartment(): Observable<serviceResponse> {
-      return this.http.get<serviceResponse>(this.departmentUrl);
-    }
-    getTeacher(query:number) : Observable<serviceResponse> {
+  getDepartment(): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.departmentUrl);
+  }
+  getTeachers(): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.allTeacherUrl);
+  }
+  getTeacher(query: number): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.teacherurl + query);
+  }
 
-      return this.http.get<serviceResponse>(this.teacherurl+query);
-    }
-
-    getCourse(query:number) : Observable<serviceResponse> {
-
-      return this.http.get<serviceResponse>(this.courseurl+`?departmentId=${query}`);
-    }
-  addCourseAssign(data:any) {
-    return this.http.post(this.courseAssign,data);
+  getCourse(query: number): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(
+      this.courseurl + `?departmentId=${query}`
+    );
+  }
+  addCourseAssign(data: any) {
+    return this.http.post(this.courseAssign, data);
   }
 }
