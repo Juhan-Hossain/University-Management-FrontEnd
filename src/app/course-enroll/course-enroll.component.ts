@@ -38,7 +38,7 @@ export class CourseEnrollComponent implements OnInit {
   });
   updatedForm = this.formBuilder.group({
     studentRegNo: new FormControl('', Validators.required),
-    courseCode: new FormControl('', Validators.required)
+    courseCode: new FormControl('', Validators.required),
   });
   ngOnInit() {
     this.getStudents();
@@ -107,20 +107,20 @@ export class CourseEnrollComponent implements OnInit {
   }
 
   onSubmit() {
-    // this.myForm.controls.name.setValue('');
-    // this.myForm.controls.email.setValue('');
-    // this.myForm.controls.department.setValue('');
-    this.updatedForm.value["studentRegNo"] = this.myForm.value["studentRegNo"];
-    this.updatedForm.value["courseCode"] = this.myForm.value["courseCode"];
-    console.log("updatedForm",this.updatedForm.value);
+    this.updatedForm.value['studentRegNo'] = this.myForm.value['studentRegNo'];
+    this.updatedForm.value['courseCode'] = this.myForm.value['courseCode'];
+    console.log('updatedForm', this.updatedForm.value);
     this.courseEnroll.addCourseEnroll(this.updatedForm.value).subscribe(
       (obj: any) => {
-        console.log(obj.data);
-
+        this.myForm.controls['courseCode'].setValue('');
+        this.myForm.controls['studentRegNo'].setValue('');
+        this.myForm.controls['date'].setValue('');
+        this.myForm.controls['email'].setValue('');
+        this.myForm.controls['department'].setValue('');
+        this.myForm.controls['name'].setValue('');
+        console.log('success message', obj.data);
+        // this.ngOnInit();
         Swal.fire(obj.message);
-        // this.myForm.controls.studentRegNo.setValue('');
-        // this.myForm.controls.courseCode.setValue('');
-        // this.myForm.controls.date.setValue('');
       },
       (er: any) => {
         Swal.fire(er.error.message);
