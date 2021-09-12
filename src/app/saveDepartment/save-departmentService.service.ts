@@ -11,7 +11,7 @@ export class saveDepartmentService {
 
   constructor(private http: HttpClient) {}
 
-  saveDepartment(data: any) {
+  saveDepartment(data: number) {
     return this.http.post(`${this.url}/CreateDepartment`, data);
   }
 

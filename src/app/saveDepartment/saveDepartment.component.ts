@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { saveDepartmentService } from './save-departmentService.service';
 import Swal from 'sweetalert2';
+import { department } from '../Models/department';
 @Component({
   selector: 'app-saveDepartment',
   templateUrl: './saveDepartment.component.html',
@@ -16,7 +17,7 @@ import Swal from 'sweetalert2';
 })
 export class SaveDepartmentComponent implements OnInit {
   url = 'https://localhost:44322/api/Departments/';
-  departmentList: any;
+  departmentList: department[] = [];
   isValidFormSubmitted = null;
   errors: any;
   myForm = this.formBuilder.group({
@@ -46,12 +47,15 @@ export class SaveDepartmentComponent implements OnInit {
   addDepartment() {
     this.departmentService.saveDepartment(this.myForm.value).subscribe(
       (data: any) => {
+        this.myForm.controls.name.setValue('');
+        this.myForm.controls.code.setValue('');
+
         this.getDepartment();
         console.log(data.data);
         Swal.fire(data.message);
       },
       (error: any) => {
-        console.log(error);
+        console.log('error', error);
 
         Swal.fire(error.error.message);
       }
