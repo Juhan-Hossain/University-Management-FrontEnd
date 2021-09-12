@@ -70,7 +70,14 @@ export class SaveTeacherComponent implements OnInit {
   addTeacher() {
     this.teacherService.saveTeacher(this.myForm.value).subscribe(
       (data: any) => {
-        console.log(data.message);
+        this.myForm.controls['creditToBeTaken'].setValue('');
+        this.myForm.controls['designationId'].setValue('');
+        this.myForm.controls['departmentId'].setValue('');
+        this.myForm.controls['contact'].setValue('');
+        this.myForm.controls['email'].setValue('');
+        this.myForm.controls['address'].setValue('');
+        this.myForm.controls['name'].setValue('');
+        console.log('data message', data.message);
         this.getDepartment();
         this.getDesignation();
         Swal.fire(data.message);
