@@ -16,21 +16,25 @@ import { department } from '../Models/department';
   providedIn: 'root',
 })
 export class SaveDepartmentComponent implements OnInit {
-  url = 'https://localhost:44322/api/Departments/';
+  // url = 'https://localhost:44322/api/Departments/';
   departmentList: department[] = [];
   isValidFormSubmitted = null;
   errors: any;
-  myForm = this.formBuilder.group({
-    name: new FormControl('', [Validators.required]),
-    code: new FormControl('', [
-      Validators.required,
-      Validators.minLength(2),
-      Validators.maxLength(7),
-    ]),
-  });
+  myForm: FormGroup = new FormGroup({});
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      name: new FormControl('', [Validators.required]),
+      code: new FormControl('', [
+        Validators.required,
+        Validators.minLength(2),
+        Validators.maxLength(7),
+      ]),
+    });
+  }
 
   ngOnInit() {
     this.getDepartment();
+    this.myFormGroup();
   }
   constructor(
     private http: HttpClient,
@@ -47,8 +51,9 @@ export class SaveDepartmentComponent implements OnInit {
   addDepartment() {
     this.departmentService.saveDepartment(this.myForm.value).subscribe(
       (data: any) => {
-        this.myForm.controls.name.setValue('');
-        this.myForm.controls.code.setValue('');
+        // this.myForm.controls.name.setValue('');
+        // this.myForm.controls.code.setValue('');
+        this.myFormGroup();
 
         this.getDepartment();
         console.log(data.data);
