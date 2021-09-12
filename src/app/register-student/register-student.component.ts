@@ -60,8 +60,10 @@ export class RegisterStudentComponent implements OnInit {
       (obj: any) => {
         console.log('student Data', obj.data);
         Swal.fire(
-          `name: ${obj.data.name}`,
-          `RegistrationNumber: ${obj.data.registrationNumber}`
+          `RegistrationNumber: ${obj.data.registrationNumber}`,
+          `name: ${obj.data.name}
+          address: ${obj.data.address}
+          contact: ${obj.data.contactNumber}     `
         );
       },
       (error: any) => {
