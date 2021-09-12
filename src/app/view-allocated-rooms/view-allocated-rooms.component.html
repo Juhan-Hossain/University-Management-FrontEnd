@@ -1,6 +1,4 @@
-<div class="container" style="margin: 100px"
-style="max-width: 800px;"
->
+<div class="container" style="margin: 100px" style="max-width: 800px">
   <div class="header">
     <h4>View Class Schedule and Room Allocation Information</h4>
   </div>
@@ -34,18 +32,22 @@ style="max-width: 800px;"
   <table class="table table-bordered">
     <thead class="thead-dark">
       <tr>
-        <th scope="id"style="background-color: springgreen">Code</th>
-        <th scope="col"style="background-color: springgreen">Name</th>
-        <th scope="col"style="background-color: springgreen">Schedule Info</th>
+        <th scope="id" style="background-color: springgreen">Code</th>
+        <th scope="col" style="background-color: springgreen">Name</th>
+        <th scope="col" style="background-color: springgreen">Schedule Info</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let info of data">
-        <td style="width: 100px;">{{ info.code }}</td>
+        <td style="width: 100px">{{ info.code }}</td>
         <td>{{ info.name }}</td>
         <td>
-          <p *ngFor="let room of info.roomAllocations"> R. No : {{ fixRoom(room.roomId) }}, {{ fixDay(room.dayId) }}, {{ dateConversion(room.startTime) }} - {{ dateConversion(room.endTime) }} </p>
-          <p *ngIf="info.roomAllocations.length == 0"> Not Scheduled Yet </p>
+          <p *ngFor="let room of info.roomAllocations">
+            R. No : {{ fixRoom(room.roomId) }}, {{ fixDay(room.dayId) }},
+            {{ dateConversion(room.startTime) }} -
+            {{ dateConversion(room.endTime) }} ;
+          </p>
+          <p *ngIf="info.roomAllocations.length == 0">Not Scheduled Yet</p>
         </td>
       </tr>
     </tbody>
