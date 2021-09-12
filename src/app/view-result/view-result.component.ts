@@ -19,7 +19,7 @@ import { student } from '../Models/student';
   templateUrl: './view-result.component.html',
   styleUrls: ['./view-result.component.css'],
 })
-export class ViewResultComponent implements OnInit, AfterViewInit {
+export class ViewResultComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private viewResult: ViewResultService,
@@ -29,9 +29,9 @@ export class ViewResultComponent implements OnInit, AfterViewInit {
     this.getStudents();
     this.getStudents();
   }
-  ngAfterViewInit() {
-    // this.openPDF();
-  }
+  // ngAfterViewInit() {
+  //   // this.openPDF();
+  // }
 
   studentList: student[] = [];
   courseList: course[] = [];
