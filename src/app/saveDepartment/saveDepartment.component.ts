@@ -46,6 +46,9 @@ export class SaveDepartmentComponent implements OnInit {
   addDepartment() {
     this.departmentService.saveDepartment(this.myForm.value).subscribe(
       (data: any) => {
+        this.myForm.controls.name.setValue(''); // '';
+        this.myForm.controls.code.setValue('');
+
         this.getDepartment();
         console.log(data.data);
         Swal.fire(data.message);
