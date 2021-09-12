@@ -32,7 +32,7 @@ export class CourseEnrollComponent implements OnInit {
     name: new FormControl(''),
     department: new FormControl(''),
     email: new FormControl(''),
-    date: new FormControl(''),
+    date: new FormControl('', Validators.required),
     studentRegNo: new FormControl('', Validators.required),
     courseCode: new FormControl('', Validators.required),
   });
