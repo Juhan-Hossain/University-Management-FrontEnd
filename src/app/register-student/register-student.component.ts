@@ -6,6 +6,7 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RegisterStudentService } from '../services/register-student.service';
 import Swal from 'sweetalert2';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-register-student',
@@ -19,11 +20,13 @@ export class RegisterStudentComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private registerStudent: RegisterStudentService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private modalService: NgbModal
   ) {}
 
   departmentList: any;
   semesterList: any;
+  closeModal: string | undefined;
 
   myForm = this.formBuilder.group({
     name: new FormControl('', Validators.required),
@@ -55,9 +58,13 @@ export class RegisterStudentComponent implements OnInit {
   addStudent() {
     this.registerStudent.saveStudent(this.myForm.value).subscribe(
       (obj: any) => {
-        console.log(obj.data);
-        console.log(this.myForm.value);
-        Swal.fire(obj.message);
+        console.log('student Data', obj.data);
+        Swal.fire(
+          `RegistrationNumber: ${obj.data.registrationNumber}`,
+          `name: ${obj.data.name}
+          address: ${obj.data.address}
+          contact: ${obj.data.contactNumber}     `
+        );
       },
       (error: any) => {
         console.log(error);
@@ -65,6 +72,24 @@ export class RegisterStudentComponent implements OnInit {
       }
     );
   }
+
+  // triggerModal(content:any) {
+  //   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((res) => {
+  //     this.closeModal = `Closed with: ${res}`;
+  //   }, (res) => {
+  //     this.closeModal = `Dismissed ${this.getDismissReason(res)}`;
+  //   });
+  // }
+
+  // private getDismissReason(reason: any): string {
+  //   if (reason === ModalDismissReasons.ESC) {
+  //     return 'by pressing ESC';
+  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
+  //     return 'by clicking on a backdrop';
+  //   } else {
+  //     return  `with: ${reason}`;
+  //   }
+  // }
 
   getDepartment() {
     this.registerStudent.getDepartment().subscribe((data: any) => {
