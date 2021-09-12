@@ -39,12 +39,7 @@ export class ViewResultComponent implements OnInit {
   enrolledCourseList: any;
   resultView: viewResult[] = [];
 
-  myForm = this.formBuilder.group({
-    name: new FormControl(''),
-    department: new FormControl(''),
-    email: new FormControl(''),
-    studentRegNo: new FormControl('', Validators.required),
-  });
+  public myForm: FormGroup = new FormGroup({});
 
   myFormGroup() {
     this.myForm = this.formBuilder.group({
