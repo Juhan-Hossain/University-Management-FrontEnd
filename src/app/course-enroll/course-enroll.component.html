@@ -1,11 +1,7 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Enroll In a Course</h4>
   <br />
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
-  style="max-width: 400px;"
-  >
-
-
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
     <br />
     <div>
       <div class="row">
@@ -23,6 +19,7 @@
             (change)="changeId(selectField.value)"
             #selectField
           >
+            <option value="" disabled>Choose Student</option>
             <option
               *ngFor="let student of studentList"
               [value]="student.registrationNumber"
@@ -104,8 +101,8 @@
             id="courseCode"
             placeholder="courseCode."
             formControlName="courseCode"
-
           >
+            <option value="" disabled>Choose Course</option>
             <option *ngFor="let course of courseList" [value]="course.code">
               {{ course.name }}
             </option>
