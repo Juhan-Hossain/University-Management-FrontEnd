@@ -70,7 +70,14 @@ export class SaveCourseComponent implements OnInit {
   addCourse() {
     this.courseService.saveCourse(this.myForm.value).subscribe(
       (data: any) => {
-        console.log(data.message);
+        this.myForm.controls['semesterId'].setValue('');
+        this.myForm.controls['departmentId'].setValue('');
+        this.myForm.controls['description'].setValue('');
+        this.myForm.controls['credit'].setValue('');
+        this.myForm.controls['code'].setValue('');
+        this.myForm.controls['name'].setValue('');
+
+        console.log('data message', data.message);
         Swal.fire(data.message);
       },
       (error: any) => {
