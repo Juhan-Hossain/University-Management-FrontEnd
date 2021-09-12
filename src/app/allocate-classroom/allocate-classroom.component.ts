@@ -85,12 +85,12 @@ export class AllocateClassroomComponent implements OnInit {
     let end = this.myForm.controls.endTime.value;
     console.log(start);
     console.log(end);
-    if (start >= 12 && start!='') {
+    if (start >= 12 && start != '') {
       this.myForm.controls.FromMeridiem.setValue('PM');
     } else {
       this.myForm.controls.FromMeridiem.setValue('AM');
     }
-    if (end >= 12 && end!='') {
+    if (end >= 12 && end != '') {
       this.myForm.controls.ToMeridiem.setValue('PM');
     } else {
       this.myForm.controls.ToMeridiem.setValue('AM');
@@ -106,6 +106,14 @@ export class AllocateClassroomComponent implements OnInit {
   onSubmit() {
     this.allocateClassroom.allocateClass(this.myForm.value).subscribe(
       (obj: any) => {
+        this.myForm.controls['courseCode'].setValue('');
+        this.myForm.controls['departmentId'].setValue('');
+        this.myForm.controls['roomId'].setValue('');
+        this.myForm.controls['dayId'].setValue('');
+        this.myForm.controls['startTime'].setValue('');
+        this.myForm.controls['endTime'].setValue('');
+        this.myForm.controls['FromMeridiem'].setValue('');
+        this.myForm.controls['ToMeridiem'].setValue('');
         Swal.fire(obj.message);
       },
       (er: any) => {
