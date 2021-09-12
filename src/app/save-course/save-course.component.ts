@@ -25,22 +25,26 @@ export class SaveCourseComponent implements OnInit {
   semesterList: any;
   isValidFormSubmitted = null;
   errors: any;
-  myForm = this.formBuilder.group({
-    name: new FormControl('', Validators.required),
-    code: new FormControl('', [Validators.required, Validators.minLength(5)]),
-    credit: new FormControl('', [
-      Validators.required,
-      Validators.max(5),
-      Validators.min(0.5),
-    ]),
-    description: new FormControl('', Validators.required),
-    departmentId: new FormControl('', Validators.required),
-    semesterId: new FormControl('', Validators.required),
-  });
+  myForm: FormGroup = new FormGroup({});
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      name: new FormControl('', Validators.required),
+      code: new FormControl('', [Validators.required, Validators.minLength(5)]),
+      credit: new FormControl('', [
+        Validators.required,
+        Validators.max(5),
+        Validators.min(0.5),
+      ]),
+      description: new FormControl('', Validators.required),
+      departmentId: new FormControl('', Validators.required),
+      semesterId: new FormControl('', Validators.required),
+    });
+  }
 
   ngOnInit() {
     this.getDepartment();
     this.getSemester();
+    this.myFormGroup();
   }
 
   //get helper method manipulation
@@ -70,13 +74,7 @@ export class SaveCourseComponent implements OnInit {
   addCourse() {
     this.courseService.saveCourse(this.myForm.value).subscribe(
       (data: any) => {
-        this.myForm.controls['semesterId'].setValue('');
-        this.myForm.controls['departmentId'].setValue('');
-        this.myForm.controls['description'].setValue('');
-        this.myForm.controls['credit'].setValue('');
-        this.myForm.controls['code'].setValue('');
-        this.myForm.controls['name'].setValue('');
-
+        this.myFormGroup();
         console.log('data message', data.message);
         Swal.fire(data.message);
       },

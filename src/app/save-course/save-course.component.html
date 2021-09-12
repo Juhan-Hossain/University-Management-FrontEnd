@@ -1,9 +1,7 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Save Course</h4>
   <br />
-  <form [formGroup]="myForm" (ngSubmit)="addCourse()"
-  style="max-width: 400px;"
-  >
+  <form [formGroup]="myForm" (ngSubmit)="addCourse()" style="max-width: 400px">
     <div class="form-group">
       <div class="row">
         <div class="col-3">
@@ -98,11 +96,10 @@
           registerFormControl.credit.value != 0
         "
       >
-        Course credit must be between 0.5 to 5 credit.
+        Course credit must be between 0.5 to 5.
       </span>
     </div>
     <br />
-
     <div class="form-group">
       <div class="row">
         <div class="col-3">

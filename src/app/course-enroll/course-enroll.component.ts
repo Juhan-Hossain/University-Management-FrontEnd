@@ -88,7 +88,6 @@ export class CourseEnrollComponent implements OnInit {
       }
     );
   }
-
   changeFormControl(x: any) {
     this.myForm.controls.courseId.setValue(x);
   }
