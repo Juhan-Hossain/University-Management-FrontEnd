@@ -2,91 +2,92 @@
   <div class="pdfContainer" id="pdf">
     <h4 class="header">View Result</h4>
     <br />
-    <div>
-      <div class="row form-group" style="width: 460px">
-        <div class="col-3">
-          <label for="studentRegNo">Student Reg. No.</label>
-        </div>
-        <div class="col-5">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="studentRegNo"
-            placeholder="Student reg. no."
-            formControlName="studentRegNo"
-            (change)="changeId(selectField.value)"
-            #selectField
-          >
-            <option
-              *ngFor="let student of studentList"
-              [value]="student.registrationNumber"
+    <form [formGroup]="myForm" style="max-width: 400px">
+      <div>
+        <div class="row form-group" style="width: 460px">
+          <div class="col-3">
+            <label for="studentRegNo">Student Reg. No.</label>
+          </div>
+          <div class="col-5">
+            <select
+              type="text"
+              class="form-select form-select-sm"
+              aria-label=".form-select-sm example"
+              id="studentRegNo"
+              placeholder="Student reg. no."
+              formControlName="studentRegNo"
+              (change)="changeId(selectField.value)"
+              #selectField
             >
-              {{ student.registrationNumber }}
-            </option>
-          </select>
+              <option
+                *ngFor="let student of studentList"
+                [value]="student.registrationNumber"
+              >
+                {{ student.registrationNumber }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
-    <br />
-    <div class="form-group">
-      <div class="row">
-        <div class="col-3">
-          <label id="name" for="Name">Name</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            [formControl]="name"
-            class="form-control"
-            id="Name"
-            aria-describedby="NameHelp"
-            placeholder="Enter name of student"
-            readonly
-          />
-        </div>
-      </div>
-    </div>
-    <br />
-    <div class="form-group">
-      <div class="row">
-        <div class="col-3">
-          <label id="email" for="email">Email</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            [formControl]="email"
-            class="form-control"
-            id="Email"
-            aria-describedby="NameHelp"
-            placeholder="email of student"
-            readonly
-          />
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label id="name" for="Name">Name</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              formControlName="name"
+              class="form-control"
+              id="Name"
+              aria-describedby="NameHelp"
+              placeholder="Enter name of student"
+              readonly
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <br />
-    <div class="form-group">
-      <div class="row">
-        <div class="col-3">
-          <label id="department" for="Department">Department</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            [formControl]="department"
-            class="form-control"
-            id="department"
-            aria-describedby="departmentHelp"
-            placeholder="department of student"
-            readonly
-          />
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label id="email" for="email">Email</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              formControlName="email"
+              class="form-control"
+              id="Email"
+              aria-describedby="NameHelp"
+              placeholder="email of student"
+              readonly
+            />
+          </div>
         </div>
       </div>
-    </div>
-
-    <br />
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label id="department" for="Department">Department</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              formControlName="department"
+              class="form-control"
+              id="department"
+              aria-describedby="departmentHelp"
+              placeholder="department of student"
+              readonly
+            />
+          </div>
+        </div>
+      </div>
+      <br />
+    </form>
     <table class="table table-bordered">
       <thead class="thead-dark">
         <tr>
