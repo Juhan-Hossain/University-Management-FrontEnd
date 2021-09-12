@@ -1,4 +1,4 @@
-<div class="Container" style="margin: 100px" >
+<div class="Container" style="margin: 100px">
   <div class="pdfContainer" id="pdf">
     <h4 class="header">View Result</h4>
     <br />
@@ -18,6 +18,7 @@
             (change)="changeId(selectField.value)"
             #selectField
           >
+            <option value="" disabled>Choose Student</option>
             <option
               *ngFor="let student of studentList"
               [value]="student.registrationNumber"
@@ -117,7 +118,4 @@
       Download as PDF
     </button>
   </div>
-
-
 </div>
-
