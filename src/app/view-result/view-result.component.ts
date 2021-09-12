@@ -27,11 +27,9 @@ export class ViewResultComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.getStudents();
-    this.getStudents();
+    this.getDepartments();
+    this.myFormGroup();
   }
-  // ngAfterViewInit() {
-  //   // this.openPDF();
-  // }
 
   studentList: student[] = [];
   courseList: course[] = [];
@@ -41,10 +39,21 @@ export class ViewResultComponent implements OnInit {
   enrolledCourseList: any;
   resultView: viewResult[] = [];
 
-  name = new FormControl('');
-  department = new FormControl('');
-  email = new FormControl('');
-  studentRegNo = new FormControl('', Validators.required);
+  myForm = this.formBuilder.group({
+    name: new FormControl(''),
+    department: new FormControl(''),
+    email: new FormControl(''),
+    studentRegNo: new FormControl('', Validators.required),
+  });
+
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      name: new FormControl(''),
+      department: new FormControl(''),
+      email: new FormControl(''),
+      studentRegNo: new FormControl('', Validators.required),
+    });
+  }
 
   //add course through value object
   getStudents() {
@@ -60,7 +69,7 @@ export class ViewResultComponent implements OnInit {
 
   changeId(x: any) {
     this.selectedStudent = x;
-    this.studentRegNo.setValue(x);
+    this.myForm.controls['studentRegNo'].setValue(x);
     // console.log(x);
 
     this.viewResult.getEnrolledCourse(x).subscribe(
@@ -81,12 +90,9 @@ export class ViewResultComponent implements OnInit {
         let departmentName = this.depatmentList.find(
           (x: any) => x.id == selectedStdDeptId
         )?.name;
-
-        this.department.setValue(departmentName);
-
-        this.name.setValue(selectedStdName);
-        this.email.setValue(selectedStdEmail);
-
+        this.myForm.controls['name'].setValue(selectedStdName);
+        this.myForm.controls['department'].setValue(departmentName);
+        this.myForm.controls['email'].setValue(selectedStdEmail);
         this.courseList = obj1.data;
         if (this.courseList.length === 0) {
           Swal.fire("This student doesn't enrolled any course yet! ");
