@@ -30,21 +30,25 @@ export class AllocateClassroomComponent implements OnInit {
   roomList: room[] = [];
   dayList: day[] = [];
   selectedItem: any;
-  myForm = this.formBuilder.group({
-    courseCode: new FormControl('', Validators.required),
-    departmentId: new FormControl('', Validators.required),
-    roomId: new FormControl('', Validators.required),
-    dayId: new FormControl('', Validators.required),
-    startTime: new FormControl('', Validators.required),
-    endTime: new FormControl('', Validators.required),
-    FromMeridiem: new FormControl(''),
-    ToMeridiem: new FormControl(''),
-  });
+  myForm: FormGroup = new FormGroup({});
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      courseCode: new FormControl('', Validators.required),
+      departmentId: new FormControl('', Validators.required),
+      roomId: new FormControl('', Validators.required),
+      dayId: new FormControl('', Validators.required),
+      startTime: new FormControl('', Validators.required),
+      endTime: new FormControl('', Validators.required),
+      FromMeridiem: new FormControl(''),
+      ToMeridiem: new FormControl(''),
+    });
+  }
 
   ngOnInit(): void {
     this.getDepartment();
     this.getRoom();
     this.getDay();
+    this.myFormGroup();
   }
 
   //fetching department
@@ -106,14 +110,7 @@ export class AllocateClassroomComponent implements OnInit {
   onSubmit() {
     this.allocateClassroom.allocateClass(this.myForm.value).subscribe(
       (obj: any) => {
-        this.myForm.controls['courseCode'].setValue('');
-        this.myForm.controls['departmentId'].setValue('');
-        this.myForm.controls['roomId'].setValue('');
-        this.myForm.controls['dayId'].setValue('');
-        this.myForm.controls['startTime'].setValue('');
-        this.myForm.controls['endTime'].setValue('');
-        this.myForm.controls['FromMeridiem'].setValue('');
-        this.myForm.controls['ToMeridiem'].setValue('');
+        this.myFormGroup();
         Swal.fire(obj.message);
       },
       (er: any) => {
