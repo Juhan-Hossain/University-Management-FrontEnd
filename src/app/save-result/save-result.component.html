@@ -107,9 +107,14 @@
               {{ course.name }}
             </option>
           </select>
-          <span *ngIf="this.courseList.length === 0" class="text-danger error">
-            don't have enrolled courses!
-          </span>
+          <span
+            *ngIf="
+              myFormControl.courseName.touched &&
+              myFormControl.courseName.value == ''
+            "
+            class="text-danger error"
+            >don't have any enrolled course!</span
+          >
         </div>
       </div>
     </div>
