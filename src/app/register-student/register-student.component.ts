@@ -27,17 +27,21 @@ export class RegisterStudentComponent implements OnInit {
   departmentList: any;
   semesterList: any;
   closeModal: string | undefined;
+  myForm: FormGroup = new FormGroup({});
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      name: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
+      contactNumber: new FormControl('', Validators.required),
+      date: new FormControl('', Validators.required),
+      departmentId: new FormControl('', Validators.required),
+      address: new FormControl('', Validators.required),
+    });
+  }
 
-  myForm = this.formBuilder.group({
-    name: new FormControl('', Validators.required),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    contactNumber: new FormControl('', Validators.required),
-    date: new FormControl('', Validators.required),
-    departmentId: new FormControl('', Validators.required),
-    address: new FormControl('', Validators.required),
-  });
   ngOnInit() {
     this.getDepartment();
+    this.myFormGroup();
   }
 
   //get helper method manipulation
@@ -58,12 +62,7 @@ export class RegisterStudentComponent implements OnInit {
   addStudent() {
     this.registerStudent.saveStudent(this.myForm.value).subscribe(
       (obj: any) => {
-        this.myForm.controls['address'].setValue('');
-        this.myForm.controls['departmentId'].setValue('');
-        this.myForm.controls['date'].setValue('');
-        this.myForm.controls['contactNumber'].setValue('');
-        this.myForm.controls['email'].setValue('');
-        this.myForm.controls['name'].setValue('');
+        this.myFormGroup();
         console.log('student Data', obj.data);
         Swal.fire(
           `RegistrationNumber: ${obj.data.registrationNumber}`,
