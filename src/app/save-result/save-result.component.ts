@@ -10,10 +10,6 @@ import { student } from '../Models/student';
 import { department } from '../Models/department';
 import { studentGrades } from '../Models/studentGrades';
 import Swal from 'sweetalert2';
-
-
-
-
 @Component({
   selector: 'app-save-result',
   templateUrl: './save-result.component.html',
@@ -25,26 +21,29 @@ export class SaveResultComponent implements OnInit {
     private saveResult: SaveResultService,
     private formBuilder: FormBuilder
   ) {}
-
   studentList: student[] = [];
   courseList: course[] = [];
   depatmentList: department[] = [];
   selectedStudent: student[] = [];
   selectedCourse: course[] = [];
   gradeList: studentGrades[] = [];
+  myForm: FormGroup = new FormGroup({});
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      name: new FormControl(''),
+      department: new FormControl(''),
+      email: new FormControl(''),
+      studentRegNo: new FormControl('', Validators.required),
+      courseName: new FormControl('', Validators.required),
+      gradeLetter: new FormControl('', Validators.required),
+    });
+  }
 
-  myForm = this.formBuilder.group({
-    name: new FormControl(''),
-    department: new FormControl(''),
-    email: new FormControl(''),
-    studentRegNo: new FormControl('', Validators.required),
-    courseName: new FormControl('', Validators.required),
-    gradeLetter: new FormControl('', Validators.required),
-  });
   ngOnInit() {
     this.getStudents();
     this.getDepartments();
     this.getGrades();
+    this.myFormGroup();
   }
 
   get myFormControl() {
@@ -66,7 +65,9 @@ export class SaveResultComponent implements OnInit {
   getGrades() {
     this.saveResult.getGrade().subscribe((data: any) => {
       this.gradeList = data.data;
-      this.gradeList = this.gradeList.sort((a, b) => a.value>b.value?1:-1);
+      this.gradeList = this.gradeList.sort((a, b) =>
+        a.value > b.value ? 1 : -1
+      );
       console.log(data.data);
     });
   }
@@ -116,7 +117,6 @@ export class SaveResultComponent implements OnInit {
       }
     );
   }
-
   onSubmit() {
     // this.myForm.controls.name.setValue('');
     // this.myForm.controls.email.setValue('');
@@ -124,16 +124,9 @@ export class SaveResultComponent implements OnInit {
     console.log(this.myForm.value);
     this.saveResult.addStudentResult(this.myForm.value).subscribe(
       (obj: any) => {
+        this.myFormGroup();
         console.log(obj.data);
-
         Swal.fire(obj.message);
-
-
-
-        // this.myForm.controls.studentRegNo.setValue('');
-        // this.myForm.controls.courseName.setValue('');
-        // this.myForm.controls.gradeLetter.setValue('');
-
       },
       (er: any) => {
         Swal.fire(er.error.message);
