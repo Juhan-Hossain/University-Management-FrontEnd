@@ -10,9 +10,10 @@ import { student } from '../Models/student';
 import { department } from '../Models/department';
 
 import Swal from 'sweetalert2';
-import { CourseAssignService } from '../services/course-assign.service';
+
 import { serviceResponse } from '../Models/serviceResponse';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CourseAssignService } from '../services/course-assign.service';
 
 @Injectable({
   providedIn: 'root',
@@ -39,17 +40,20 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   selectedTeacher: any;
   selectedCode: any;
   closeModal: string | undefined;
+  myForm: FormGroup = new FormGroup({});
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      courseName: new FormControl(),
 
-  myForm = this.formBuilder.group({
-    courseName: new FormControl(),
+      departmentId: new FormControl('', Validators.required),
+      teacherId: new FormControl('', Validators.required),
+      creditToBeTaken: new FormControl(),
+      remainingCredit: new FormControl(),
+      code: new FormControl('', Validators.required),
+      courseCredit: new FormControl(),
+    });
+  }
 
-    departmentId: new FormControl('', Validators.required),
-    teacherId: new FormControl('', Validators.required),
-    creditToBeTaken: new FormControl(),
-    remainingCredit: new FormControl(),
-    code: new FormControl('', Validators.required),
-    courseCredit: new FormControl(),
-  });
   updatedForm = this.formBuilder.group({
     departmentId: new FormControl('', Validators.required),
     teacherId: new FormControl('', Validators.required),
@@ -57,6 +61,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   });
   ngOnInit(): void {
     this.getDepartments();
+    this.myFormGroup();
   }
 
   get myFormControl() {
@@ -72,13 +77,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
         console.log(obj.data);
-        this.myForm.controls.code.setValue('');
-        this.myForm.controls.departmentId.setValue('');
-        this.myForm.controls.teacherId.setValue('');
-        this.myForm.controls.courseName.setValue('');
-        this.myForm.controls.creditToBeTaken.setValue('');
-        this.myForm.controls.remainingCredit.setValue('');
-        this.myForm.controls.courseCredit.setValue('');
+        this.myFormGroup();
 
         Swal.fire(obj.message);
       },
