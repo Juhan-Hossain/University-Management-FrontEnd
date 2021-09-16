@@ -1,5 +1,15 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Course Assign To Teacher</h4>
+  <div class="form-outline">
+    <label class="form-label" for="form1">Search Department</label>
+    <input
+      type="text"
+      id="form1"
+      class="form-control"
+      placeholder="Search Department..."
+      (input)="filterDropdown($event)"
+    />
+  </div>
   <br />
   <form [formGroup]="myForm" style="max-width: 400px">
     <br />
@@ -19,8 +29,9 @@
             (change)="changeDeptId(selectField.value)"
             #selectField
           >
+            <option value="" disabled selected>Choose Department</option>
             <option
-              *ngFor="let department of depatmentList"
+              *ngFor="let department of filteredList"
               [value]="department.id"
             >
               {{ department.name }}
@@ -45,7 +56,7 @@
             formControlName="teacherId"
             (change)="changeTeacher()"
           >
-            <option value="" disabled>Choose Teacher</option>
+            <option value="" disabled selected>Choose Teacher</option>
             <option *ngFor="let teacher of teacherList" [value]="teacher.id">
               {{ teacher.name }}
             </option>
@@ -110,7 +121,7 @@
             (change)="changeCourseControl(selectField.value)"
             #selectField
           >
-            <option value="" disabled>Choose Course</option>
+            <option value="" disabled selected>Choose Course</option>
             <option *ngFor="let course of courseList" [(value)]="course.code">
               {{ course.name }}
             </option>

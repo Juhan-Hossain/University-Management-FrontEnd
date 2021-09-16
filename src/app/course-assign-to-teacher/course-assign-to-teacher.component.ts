@@ -34,6 +34,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   studentList: student[] = [];
   courseList: course[] = [];
   depatmentList: department[] = [];
+  filteredList: department[] = [];
   teacherList: any;
   selectedDepartment: any;
   selectedCourse: course[] = [];
@@ -71,8 +72,27 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   getDepartments() {
     this.courseAssign.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
+      this.filteredList = data.data;
     });
   }
+
+  filterDropdown(e: any) {
+    console.log('e in filterDropdown -------> ', e.target.value);
+    window.scrollTo(window.scrollX, window.scrollY + 1);
+
+    let searchString = e.target.value.toLowerCase();
+    if (!searchString) {
+      this.filteredList = this.depatmentList.slice();
+      return;
+    } else {
+      this.filteredList = this.depatmentList.filter(
+        (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
+      );
+    }
+    window.scrollTo(window.scrollX, window.scrollY - 1);
+    console.log('this.filteredList indropdown -------> ', this.filteredList);
+  }
+
   addCourse() {
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
