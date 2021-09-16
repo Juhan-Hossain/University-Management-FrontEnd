@@ -1,5 +1,15 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Enroll In a Course</h4>
+  <div class="form-outline">
+    <label class="form-label" for="form1">Search Student</label>
+    <input
+      type="text"
+      id="form1"
+      class="form-control"
+      placeholder="Search Student..."
+      (input)="filterDropdown($event)"
+    />
+  </div>
   <br />
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
     <br />
@@ -21,7 +31,7 @@
           >
             <option value="" disabled>Choose Student</option>
             <option
-              *ngFor="let student of studentList"
+              *ngFor="let student of filteredList"
               [value]="student.registrationNumber"
             >
               {{ student.registrationNumber }}

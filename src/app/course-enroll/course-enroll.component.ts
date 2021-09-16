@@ -7,6 +7,7 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { CourseEnrollService } from '../services/course-enroll.service';
 import { course } from '../Models/course';
 import Swal from 'sweetalert2';
+import { student } from '../Models/student';
 
 @Injectable({
   providedIn: 'root',
@@ -23,6 +24,7 @@ export class CourseEnrollComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
   studentList: any;
+  filteredList: student[] = [];
   courseList: course[] = [];
   depatmentList: any;
   selectedStudent: any;
@@ -101,6 +103,7 @@ export class CourseEnrollComponent implements OnInit {
   getStudents() {
     this.courseEnroll.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
+      this.filteredList = data.data;
     });
     console.log(new Date().toLocaleTimeString());
   }
@@ -109,7 +112,24 @@ export class CourseEnrollComponent implements OnInit {
       this.depatmentList = data.data;
     });
   }
-
+  filterDropdown(e: any) {
+    console.log('e value', e.target.value);
+    console.log('e in filterDropdown -------> ', e.target.value);
+    window.scrollTo(window.scrollX, window.scrollY + 1);
+    let searchString = '';
+    searchString = e.target.value.toLowerCase();
+    if (searchString === '') {
+      this.filteredList = this.studentList.slice();
+      return;
+    } else {
+      this.filteredList = this.studentList.filter(
+        (student: { registrationNumber: string }) =>
+          student.registrationNumber.toLowerCase().indexOf(searchString) > -1
+      );
+    }
+    window.scrollTo(window.scrollX, window.scrollY - 1);
+    console.log('this.filteredList indropdown -------> ', this.filteredList);
+  }
   onSubmit() {
     this.updatedForm.value['studentRegNo'] = this.myForm.value['studentRegNo'];
     this.updatedForm.value['courseCode'] = this.myForm.value['courseCode'];
@@ -117,6 +137,7 @@ export class CourseEnrollComponent implements OnInit {
     this.courseEnroll.addCourseEnroll(this.updatedForm.value).subscribe(
       (obj: any) => {
         this.myFormGroup();
+        this.courseList = [];
         console.log('success message', obj.data);
         // this.ngOnInit();
         Swal.fire(obj.message);
