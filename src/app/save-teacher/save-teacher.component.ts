@@ -75,9 +75,12 @@ export class SaveTeacherComponent implements OnInit {
     this.teacherService.saveTeacher(this.myForm.value).subscribe(
       (data: any) => {
         this.myFormGroup();
+
         console.log('data message', data.message);
-        this.getDepartment();
-        this.getDesignation();
+        // this.getDepartment();
+        // this.getDesignation();
+        this.departmentList = [];
+        this.designationList = [];
         Swal.fire(data.message);
       },
       (error: any) => {

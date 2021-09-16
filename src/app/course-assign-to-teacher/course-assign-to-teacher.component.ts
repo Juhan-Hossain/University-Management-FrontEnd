@@ -76,6 +76,10 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   addCourse() {
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
+        this.studentList = [];
+        this.teacherList = [];
+        this.courseList = [];
+        this.depatmentList = [];
         console.log(obj.data);
         this.myFormGroup();
 
