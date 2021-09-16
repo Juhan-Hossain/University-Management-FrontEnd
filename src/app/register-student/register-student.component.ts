@@ -65,7 +65,7 @@ export class RegisterStudentComponent implements OnInit {
         this.myFormGroup();
         console.log('student Data', obj.data);
         Swal.fire(
-          `RegistrationNumber: ${obj.data.registrationNumber}`,
+          `RegNo: ${obj.data.registrationNumber}`,
           `name: ${obj.data.name},
           address: ${obj.data.address},
           contact: ${obj.data.contactNumber}`

@@ -29,6 +29,7 @@ export class AllocateClassroomComponent implements OnInit {
   courseList: course[] = [];
   roomList: room[] = [];
   dayList: day[] = [];
+  filteredList: department[] = [];
   selectedItem: any;
   myForm: FormGroup = new FormGroup({});
   myFormGroup() {
@@ -46,8 +47,6 @@ export class AllocateClassroomComponent implements OnInit {
 
   ngOnInit(): void {
     this.getDepartment();
-    this.getRoom();
-    this.getDay();
     this.myFormGroup();
   }
 
@@ -55,32 +54,33 @@ export class AllocateClassroomComponent implements OnInit {
   getDepartment() {
     this.allocateClassroom.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
-      // console.log(data.data);
+      this.filteredList = data.data;
     });
   }
   getRoom() {
     this.allocateClassroom.getRoom().subscribe((data: any) => {
       this.roomList = data.data;
-      // console.log(data.data);
     });
   }
   getDay() {
     this.allocateClassroom.getDay().subscribe((data: any) => {
       this.dayList = data.data;
-      console.log(this.dayList);
     });
   }
-  changeDeptId(x: any) {
-    this.selectedItem = x;
-    // this.myForm.controls.departmentId.setValue(x);
+  changeDeptId() {
+    this.getDay();
+    this.getRoom();
+    this.myForm.controls['courseCode'].setValue('');
+    this.selectedItem = this.myForm.controls.departmentId.value;
     console.log(this.myForm.controls.departmentId.value);
-    this.allocateClassroom.getCourse(x).subscribe(
+    this.allocateClassroom.getCourse(this.selectedItem).subscribe(
       (obj: any) => {
         this.courseList = obj.data;
         console.log(this.courseList);
       },
       (er: any) => {
         console.log(er.error.message);
+        Swal.fire(er.error.message);
       }
     );
   }
@@ -101,16 +101,30 @@ export class AllocateClassroomComponent implements OnInit {
     }
     console.log(this.myForm.controls);
   }
+  filterDropdown(e: any) {
+    console.log('e in filterDropdown -------> ', e.target.value);
+    window.scrollTo(window.scrollX, window.scrollY + 1);
 
-  print() {
-    console.log(this.myForm.controls.courseCode.value);
-    console.log(this.myForm.controls.roomId.value);
-    console.log(this.myForm.controls.dayId.value);
+    let searchString = e.target.value.toLowerCase();
+    if (!searchString) {
+      this.filteredList = this.departmentList.slice();
+      return;
+    } else {
+      this.filteredList = this.departmentList.filter(
+        (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
+      );
+    }
+    window.scrollTo(window.scrollX, window.scrollY - 1);
+    console.log('this.filteredList indropdown -------> ', this.filteredList);
   }
+  print() {}
   onSubmit() {
     this.allocateClassroom.allocateClass(this.myForm.value).subscribe(
       (obj: any) => {
         this.myFormGroup();
+        this.courseList = [];
+        this.roomList = [];
+        this.dayList = [];
         Swal.fire(obj.message);
       },
       (er: any) => {

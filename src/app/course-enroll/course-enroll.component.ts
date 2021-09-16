@@ -28,14 +28,18 @@ export class CourseEnrollComponent implements OnInit {
   selectedStudent: any;
   selectedCourse: course[] = [];
   // selectedStdDeptId: any;
-  myForm = this.formBuilder.group({
-    name: new FormControl(''),
-    department: new FormControl(''),
-    email: new FormControl(''),
-    date: new FormControl(''),
-    studentRegNo: new FormControl('', Validators.required),
-    courseCode: new FormControl('', Validators.required),
-  });
+  myForm: FormGroup = new FormGroup({});
+  myFormGroup() {
+    this.myForm = this.formBuilder.group({
+      name: new FormControl(''),
+      department: new FormControl(''),
+      email: new FormControl(''),
+      date: new FormControl('', Validators.required),
+      studentRegNo: new FormControl('', Validators.required),
+      courseCode: new FormControl('', Validators.required),
+    });
+  }
+
   updatedForm = this.formBuilder.group({
     studentRegNo: new FormControl('', Validators.required),
     courseCode: new FormControl('', Validators.required),
@@ -43,6 +47,7 @@ export class CourseEnrollComponent implements OnInit {
   ngOnInit() {
     this.getStudents();
     this.getDepartments();
+    this.myFormGroup();
   }
 
   //get helper method manipulation
@@ -111,12 +116,7 @@ export class CourseEnrollComponent implements OnInit {
     console.log('updatedForm', this.updatedForm.value);
     this.courseEnroll.addCourseEnroll(this.updatedForm.value).subscribe(
       (obj: any) => {
-        this.myForm.controls['courseCode'].setValue('');
-        this.myForm.controls['studentRegNo'].setValue('');
-        this.myForm.controls['date'].setValue('');
-        this.myForm.controls['email'].setValue('');
-        this.myForm.controls['department'].setValue('');
-        this.myForm.controls['name'].setValue('');
+        this.myFormGroup();
         console.log('success message', obj.data);
         // this.ngOnInit();
         Swal.fire(obj.message);

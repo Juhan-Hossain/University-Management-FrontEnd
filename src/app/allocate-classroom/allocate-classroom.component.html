@@ -1,16 +1,25 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Allocate Classrooms</h4>
+  <div class="form-outline">
+    <label class="form-label" for="form1">Search Department</label>
+    <input
+      type="text"
+      id="form1"
+      class="form-control"
+      placeholder="Search Department..."
+      (input)="filterDropdown($event)"
+    />
+  </div>
+
   <br />
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()"
-  style="max-width: 400px;"
-  >
+  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
     <br />
     <div>
       <div class="row">
         <div class="col-3">
           <label for="Department">Department</label>
         </div>
-        <div class="col-5">
+        <div class="col-9">
           <select
             type="text"
             class="form-select form-select-sm"
@@ -18,11 +27,12 @@
             id="department"
             placeholder="department"
             formControlName="departmentId"
-            (change)="changeDeptId(selectField.value)"
-            #selectField
+            (change)="changeDeptId()"
           >
+            <option value="" disabled selected>Choose Department</option>
+
             <option
-              *ngFor="let department of departmentList"
+              *ngFor="let department of filteredList"
               [value]="department.id"
             >
               {{ department.name }}
@@ -37,7 +47,7 @@
         <div class="col-3">
           <label for="Course">Course</label>
         </div>
-        <div class="col-5">
+        <div class="col-9">
           <select
             type="text"
             class="form-select form-select-sm"
@@ -47,6 +57,7 @@
             formControlName="courseCode"
             (change)="print()"
           >
+            <option value="" disabled>Choose Course</option>
             <option *ngFor="let course of courseList" [value]="course.code">
               {{ course.name }}
             </option>
@@ -60,7 +71,7 @@
         <div class="col-3">
           <label for="Room No.">Room No.</label>
         </div>
-        <div class="col-5">
+        <div class="col-9">
           <select
             type="text"
             class="form-select form-select-sm"
@@ -70,6 +81,7 @@
             formControlName="roomId"
             (change)="print()"
           >
+            <option value="" disabled>Choose Room</option>
             <option *ngFor="let room of roomList" [value]="room.id">
               {{ room.name }}
             </option>
@@ -83,7 +95,7 @@
         <div class="col-3">
           <label for="Day">Day</label>
         </div>
-        <div class="col-5">
+        <div class="col-9">
           <select
             type="text"
             class="form-select form-select-sm"
@@ -93,6 +105,7 @@
             formControlName="dayId"
             (change)="print()"
           >
+            <option value="" disabled>Choose Day</option>
             <option *ngFor="let day of dayList" [value]="day.id">
               {{ day.dayName }}
             </option>
@@ -106,7 +119,7 @@
         <div class="col-3">
           <label for="input_starttime">From</label>
         </div>
-        <div class="col-5" style="width: auto; height: auto">
+        <div class="col-9" style="width: auto; height: auto">
           <div class="md-form">
             <input
               placeholder="Selected time"
@@ -126,7 +139,7 @@
         <div class="col-3">
           <label for="input_starttime">To</label>
         </div>
-        <div class="col-5" style="width: auto; height: auto">
+        <div class="col-9" style="width: auto; height: auto">
           <div class="md-form">
             <input
               placeholder="Selected time"
