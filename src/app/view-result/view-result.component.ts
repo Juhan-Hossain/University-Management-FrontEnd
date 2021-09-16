@@ -32,6 +32,7 @@ export class ViewResultComponent implements OnInit {
   }
 
   studentList: student[] = [];
+  filteredList: student[] = [];
   courseList: course[] = [];
   depatmentList: department[] = [];
   selectedStudent: student[] = [];
@@ -54,6 +55,7 @@ export class ViewResultComponent implements OnInit {
   getStudents() {
     this.viewResult.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
+      this.filteredList = data.data;
     });
   }
   getDepartments() {
@@ -62,6 +64,24 @@ export class ViewResultComponent implements OnInit {
     });
   }
 
+  filterDropdown(e: any) {
+    console.log('e value', e.target.value);
+    console.log('e in filterDropdown -------> ', e.target.value);
+    window.scrollTo(window.scrollX, window.scrollY + 1);
+    let searchString = '';
+    searchString = e.target.value.toLowerCase();
+    if (searchString === '') {
+      this.filteredList = this.studentList.slice();
+      return;
+    } else {
+      this.filteredList = this.studentList.filter(
+        (student) =>
+          student.registrationNumber.toLowerCase().indexOf(searchString) > -1
+      );
+    }
+    window.scrollTo(window.scrollX, window.scrollY - 1);
+    console.log('this.filteredList indropdown -------> ', this.filteredList);
+  }
   changeId(x: any) {
     this.selectedStudent = x;
     this.myForm.controls['studentRegNo'].setValue(x);

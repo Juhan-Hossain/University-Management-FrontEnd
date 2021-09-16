@@ -1,4 +1,14 @@
 <div class="Container" style="margin: 100px">
+  <div class="form-outline">
+    <label class="form-label" for="form1">Search Student</label>
+    <input
+      type="text"
+      id="form1"
+      class="form-control"
+      placeholder="Search Student..."
+      (input)="filterDropdown($event)"
+    />
+  </div>
   <div class="pdfContainer" id="pdf">
     <h4 class="header">View Result</h4>
     <br />
@@ -19,8 +29,9 @@
               (change)="changeId(selectField.value)"
               #selectField
             >
+              <option value="" disabled selected>Choose Student</option>
               <option
-                *ngFor="let student of studentList"
+                *ngFor="let student of filteredList"
                 [value]="student.registrationNumber"
               >
                 {{ student.registrationNumber }}
