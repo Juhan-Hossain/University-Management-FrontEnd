@@ -44,14 +44,14 @@ interface VM2 {
 export class ViewAllocatedRoomsComponent implements OnInit {
   constructor(
     private http: HttpClient,
-    private viewAllocatedRooms: ViewAllocatedroomsService,
-    private formBuilder: FormBuilder
+    private viewAllocatedRooms: ViewAllocatedroomsService
   ) {}
 
   selectedItem: any;
   departmentList: department[] = [];
+  filteredList: department[] = [];
   courseList: any[] = [];
-  departmentId = new FormControl();
+  departmentId = new FormControl('');
   roomList: Room[] = [];
   dayList: day[] = [];
   roomAllocationList: any[] = []; //any=<any>{};
@@ -66,6 +66,7 @@ export class ViewAllocatedRoomsComponent implements OnInit {
   getDepartment() {
     this.viewAllocatedRooms.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
+      this.filteredList = data.data;
     });
   }
   getRoom() {
@@ -87,13 +88,13 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     this.courseList = [];
     this.scheduleInfof = [];
     // this.roomAllocationList = [];
+    // this.departmentId.setValue('');
     this.viewAllocatedRooms.getCourse(this.departmentId.value).subscribe(
       (x) => {
         this.courseList = x.data;
         console.log('courseList', this.courseList);
         this.data = x.data.map((course: any) => {
           return {
-            // id: this.roomList.id,
             code: course.code,
             name: course.name,
             roomAllocations: course.roomAllocationLists,
@@ -103,15 +104,33 @@ export class ViewAllocatedRoomsComponent implements OnInit {
         console.log('mapped data', this.data);
       },
       (er) => {
+        this.data = [];
+        this.departmentId.setValue('');
         Swal.fire('no dept data found');
       }
     );
   }
+  filterDropdown(e: any) {
+    this.departmentId.setValue('');
+    this.data = [];
+    console.log('e in filterDropdown -------> ', e.target.value);
+    window.scrollTo(window.scrollX, window.scrollY + 1);
 
+    let searchString = e.target.value.toLowerCase();
+    if (!searchString) {
+      this.filteredList = this.departmentList.slice();
+      return;
+    } else {
+      this.filteredList = this.departmentList.filter(
+        (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
+      );
+    }
+    window.scrollTo(window.scrollX, window.scrollY - 1);
+    console.log('this.filteredList indropdown -------> ', this.filteredList);
+  }
   getRoomAllocation(courseCode: string) {
     this.viewAllocatedRooms.getRoomsByCode(courseCode).subscribe(
       (obj) => {
-        // console.log(obj.data);
         if (obj.data.length >= 0) {
           for (let i = 0; i < obj.data.length; i++) {
             this.roomAllocationList.push(obj.data[i]);
@@ -120,19 +139,16 @@ export class ViewAllocatedRoomsComponent implements OnInit {
       },
       (er) => {}
     );
-    // console.log(this.roomAllocationList);
   }
 
-
-  public fixDay(data: number): string | undefined{
+  public fixDay(data: number): string | undefined {
     let day = this.dayList.find((x: any) => x.id == data)?.dayName;
 
     return day;
   }
-  public fixRoom(data: string):string|undefined{
+  public fixRoom(data: string): string | undefined {
     let roomno = this.roomList.find((x: any) => x.id == data)?.name;
     return roomno;
-
   }
 
   public dateConversion(date: any): string {
@@ -143,5 +159,3 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     return hr - 12 + ':' + min + ' PM';
   }
 }
-
-

@@ -1,11 +1,21 @@
 <div class="container" style="margin: 100px" style="max-width: 800px">
   <div class="header">
     <h4>View Class Schedule and Room Allocation Information</h4>
+    <div class="form-outline">
+      <label class="form-label" for="form1">Search Department</label>
+      <input
+        type="text"
+        id="form1"
+        class="form-control"
+        placeholder="Search Department..."
+        (input)="filterDropdown($event)"
+      />
+    </div>
   </div>
   <br />
   <div>
     <div class="row">
-      <div class="col-3">
+      <div class="col-3" style="padding-left: 110px">
         <label for="DepartmentId">Department</label>
       </div>
       <div class="col-5">
@@ -18,8 +28,9 @@
           [formControl]="departmentId"
           (change)="print()"
         >
+          <option value="" disabled selected>Choose Department</option>
           <option
-            *ngFor="let department of departmentList"
+            *ngFor="let department of filteredList"
             [value]="department.id"
           >
             {{ department.name }}
