@@ -1,5 +1,15 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Save Student Result</h4>
+  <div class="form-outline">
+    <label class="form-label" for="form1">Search Student</label>
+    <input
+      type="text"
+      id="form1"
+      class="form-control"
+      placeholder="Search Student..."
+      (input)="filterDropdown($event)"
+    />
+  </div>
   <br />
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
     <br />
@@ -8,7 +18,7 @@
         <div class="col-3">
           <label for="studentRegNo">Student Reg. No.</label>
         </div>
-        <div class="col-5">
+        <div class="col-9">
           <select
             type="text"
             class="form-select form-select-sm"
@@ -21,7 +31,7 @@
           >
             <option value="" disabled>Choose Student</option>
             <option
-              *ngFor="let student of studentList"
+              *ngFor="let student of filteredList"
               [value]="student.registrationNumber"
             >
               {{ student.registrationNumber }}
@@ -107,14 +117,14 @@
               {{ course.name }}
             </option>
           </select>
-          <span
+          <!-- <span
             *ngIf="
               myFormControl.courseName.touched &&
               myFormControl.courseName.value == ''
             "
             class="text-danger error"
             >enrolled course required!</span
-          >
+          > -->
         </div>
       </div>
     </div>

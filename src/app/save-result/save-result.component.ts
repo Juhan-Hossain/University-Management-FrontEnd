@@ -22,6 +22,7 @@ export class SaveResultComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
   studentList: student[] = [];
+  filteredList: student[] = [];
   courseList: course[] = [];
   depatmentList: department[] = [];
   selectedStudent: student[] = [];
@@ -54,8 +55,9 @@ export class SaveResultComponent implements OnInit {
   getStudents() {
     this.saveResult.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
+      this.filteredList = data.data;
     });
-    console.log(new Date().toLocaleTimeString());
+    // console.log(new Date().toLocaleTimeString());
   }
   getDepartments() {
     this.saveResult.getDepartment().subscribe((data: any) => {
@@ -68,18 +70,31 @@ export class SaveResultComponent implements OnInit {
       this.gradeList = this.gradeList.sort((a, b) =>
         a.value > b.value ? 1 : -1
       );
-      console.log(data.data);
     });
   }
 
   changeFormControl(x: any) {
     this.myForm.controls.courseName.setValue(x);
   }
-
-  changeGradeControl() {
-    // this.myForm.controls.grade.setValue(x);
-    console.log(this.myForm.value);
+  filterDropdown(e: any) {
+    console.log('e value', e.target.value);
+    console.log('e in filterDropdown -------> ', e.target.value);
+    window.scrollTo(window.scrollX, window.scrollY + 1);
+    let searchString = '';
+    searchString = e.target.value.toLowerCase();
+    if (searchString === '') {
+      this.filteredList = this.studentList.slice();
+      return;
+    } else {
+      this.filteredList = this.studentList.filter(
+        (student) =>
+          student.registrationNumber.toLowerCase().indexOf(searchString) > -1
+      );
+    }
+    window.scrollTo(window.scrollX, window.scrollY - 1);
+    console.log('this.filteredList indropdown -------> ', this.filteredList);
   }
+  changeGradeControl() {}
 
   changeId(x: any) {
     this.selectedStudent = x;
@@ -109,23 +124,17 @@ export class SaveResultComponent implements OnInit {
 
         this.myForm.controls.name.setValue(selectedStdName);
         this.myForm.controls.email.setValue(selectedStdEmail);
-        console.log(this.myForm.value);
       },
       (er1: any) => {
-        console.log(er1);
         alert(er1.error.message);
       }
     );
   }
   onSubmit() {
-    // this.myForm.controls.name.setValue('');
-    // this.myForm.controls.email.setValue('');
-    // this.myForm.controls.department.setValue('');
-    console.log(this.myForm.value);
     this.saveResult.addStudentResult(this.myForm.value).subscribe(
       (obj: any) => {
         this.myFormGroup();
-        console.log(obj.data);
+        this.courseList = [];
         Swal.fire(obj.message);
       },
       (er: any) => {
