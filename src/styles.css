@@ -1,8 +1,14 @@
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-form{
-  max-width: 300px ;
-
+@import "~@ng-select/ng-select/themes/default.theme.css";
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+form {
+  max-width: 300px;
 }
 
 /* .Container {

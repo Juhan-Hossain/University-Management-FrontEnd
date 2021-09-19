@@ -77,6 +77,8 @@ export class SaveResultComponent implements OnInit {
     this.myForm.controls.courseName.setValue(x);
   }
   filterDropdown(e: any) {
+    this.myFormGroup();
+    this.courseList = [];
     console.log('e value', e.target.value);
     console.log('e in filterDropdown -------> ', e.target.value);
     window.scrollTo(window.scrollX, window.scrollY + 1);
@@ -98,13 +100,18 @@ export class SaveResultComponent implements OnInit {
 
   changeId(x: any) {
     this.selectedStudent = x;
-    this.myForm.controls.studentRegNo.setValue(x);
+    this.myForm.controls['studentRegNo'].setValue(x);
+    this.myForm.controls['courseName'].setValue('');
+    this.courseList = [];
 
     this.saveResult.getCourse(x).subscribe(
       (obj1) => {
-        this.getDepartments();
+        // this.getDepartments();
         this.courseList = obj1.data;
-
+        if (this.courseList.length == 0) {
+          Swal.fire("this student don't have any enrolled course!!!");
+          return;
+        }
         let selectedStdDeptId = this.studentList.find(
           (x: any) => x.registrationNumber === this.selectedStudent
         )?.departmentId;

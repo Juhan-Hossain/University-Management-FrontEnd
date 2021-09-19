@@ -79,8 +79,8 @@ export class SaveTeacherComponent implements OnInit {
         console.log('data message', data.message);
         // this.getDepartment();
         // this.getDesignation();
-        this.departmentList = [];
-        this.designationList = [];
+        // this.departmentList = [];
+        // this.designationList = [];
         Swal.fire(data.message);
       },
       (error: any) => {

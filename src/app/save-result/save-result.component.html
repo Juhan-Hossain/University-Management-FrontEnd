@@ -1,160 +1,165 @@
-<div class="Container" style="margin: 100px">
-  <h4 class="header">Save Student Result</h4>
-  <div class="form-outline">
-    <label class="form-label" for="form1">Search Student</label>
-    <input
-      type="text"
-      id="form1"
-      class="form-control"
-      placeholder="Search Student..."
-      (input)="filterDropdown($event)"
-    />
-  </div>
-  <br />
-  <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
+<html>
+  <script>
+    tail.select("#courseName", {
+      search: true,
+    });
+  </script>
+  <div class="Container" style="margin: 100px">
+    <h4 class="header">Save Student Result</h4>
+    <div class="form-outline" style="max-width: 400px">
+      <label class="form-label" for="form1">Search Student</label>
+      <input
+        type="text"
+        id="form1"
+        class="form-control"
+        placeholder="Search Student..."
+        (input)="filterDropdown($event)"
+      />
+    </div>
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="studentRegNo">Student Reg. No.</label>
-        </div>
-        <div class="col-9">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="studentRegNo"
-            placeholder="Student reg. no."
-            formControlName="studentRegNo"
-            (change)="changeId(selectField.value)"
-            #selectField
-          >
-            <option value="" disabled>Choose Student</option>
-            <option
-              *ngFor="let student of filteredList"
-              [value]="student.registrationNumber"
+    <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
+      <br />
+      <div>
+        <div class="row">
+          <div class="col-3">
+            <label for="studentRegNo">Student Reg. No.</label>
+          </div>
+          <div class="col-9">
+            <select
+              type="text"
+              class="form-select form-select-sm"
+              aria-label=".form-select-sm example"
+              id="studentRegNo"
+              placeholder="Student reg. no."
+              formControlName="studentRegNo"
+              (change)="changeId(selectField.value)"
+              #selectField
             >
-              {{ student.registrationNumber }}
-            </option>
-          </select>
+              <option value="" disabled>Choose Student</option>
+              <option
+                *ngFor="let student of filteredList"
+                [value]="student.registrationNumber"
+              >
+                {{ student.registrationNumber }}
+              </option>
+            </select>
+          </div>
         </div>
       </div>
-    </div>
-    <br />
-    <div class="form-group">
-      <div class="row">
-        <div class="col-3">
-          <label id="name" for="Name">Name</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            formControlName="name"
-            class="form-control"
-            id="Name"
-            aria-describedby="NameHelp"
-            placeholder="Enter name of student"
-            readonly
-          />
-        </div>
-      </div>
-    </div>
-    <br />
-    <div class="form-group">
-      <div class="row">
-        <div class="col-3">
-          <label id="email" for="email">Email</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            formControlName="email"
-            class="form-control"
-            id="Email"
-            aria-describedby="NameHelp"
-            placeholder="email of student"
-            readonly
-          />
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label id="name" for="Name">Name</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              formControlName="name"
+              class="form-control"
+              id="Name"
+              aria-describedby="NameHelp"
+              placeholder="Enter name of student"
+              readonly
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <br />
-    <div class="form-group">
-      <div class="row">
-        <div class="col-3">
-          <label id="department" for="Department">Department</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            formControlName="department"
-            class="form-control"
-            id="department"
-            aria-describedby="departmentHelp"
-            placeholder="department of student"
-            readonly
-          />
-        </div>
-      </div>
-    </div>
-    <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="courseName">Select Course</label>
-        </div>
-        <div class="col-9">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="courseName"
-            placeholder="courseName"
-            formControlName="courseName"
-          >
-            <option value="" disabled>Choose Course</option>
-            <option *ngFor="let course of courseList" [value]="course.name">
-              {{ course.name }}
-            </option>
-          </select>
-          <!-- <span
-            *ngIf="
-              myFormControl.courseName.touched &&
-              myFormControl.courseName.value == ''
-            "
-            class="text-danger error"
-            >enrolled course required!</span
-          > -->
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label id="email" for="email">Email</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              formControlName="email"
+              class="form-control"
+              id="Email"
+              aria-describedby="NameHelp"
+              placeholder="email of student"
+              readonly
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="grade">Select Grade</label>
-        </div>
-        <div class="col-5">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="grade"
-            placeholder="grade"
-            formControlName="gradeLetter"
-            (change)="changeGradeControl()"
-          >
-            <option value="" disabled>Choose Grade</option>
-            <option *ngFor="let grade of gradeList" [value]="grade.grade">
-              {{ grade.grade }}
-            </option>
-          </select>
+      <br />
+      <div class="form-group">
+        <div class="row">
+          <div class="col-3">
+            <label id="department" for="Department">Department</label>
+          </div>
+          <div class="col-9">
+            <input
+              type="text"
+              formControlName="department"
+              class="form-control"
+              id="department"
+              aria-describedby="departmentHelp"
+              placeholder="department of student"
+              readonly
+            />
+          </div>
         </div>
       </div>
-    </div>
-    <br />
-    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">
-      Save
-    </button>
-  </form>
-</div>
+      <br />
+      <div>
+        <div class="row">
+          <div class="col-3">
+            <label for="courseName">Select Course</label>
+          </div>
+          <div class="col-9">
+            <ng-select
+              type="text"
+              class="form-select form-select-sm"
+              aria-label=".form-select-sm example"
+              formControlName="courseName"
+            >
+              <ng-option value="" disabled>Choose Course</ng-option>
+              <ng-option
+                *ngFor="let course of courseList"
+                [value]="course.name"
+              >
+                {{ course.name }}
+              </ng-option>
+            </ng-select>
+          </div>
+        </div>
+      </div>
+      <br />
+      <div>
+        <div class="row">
+          <div class="col-3">
+            <label for="grade">Select Grade</label>
+          </div>
+          <div class="col-9">
+            <select
+              type="text"
+              class="form-select form-select-sm"
+              aria-label=".form-select-sm example"
+              id="grade"
+              placeholder="grade"
+              formControlName="gradeLetter"
+              (change)="changeGradeControl()"
+            >
+              <option value="" disabled>Choose Grade</option>
+              <option *ngFor="let grade of gradeList" [value]="grade.grade">
+                {{ grade.grade }}
+              </option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <br />
+      <button
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="!myForm.valid"
+        style="margin-left: 350px"
+      >
+        Save
+      </button>
+    </form>
+  </div>
+</html>

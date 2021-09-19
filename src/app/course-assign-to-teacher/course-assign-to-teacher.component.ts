@@ -77,9 +77,9 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   }
 
   filterDropdown(e: any) {
+    this.myFormGroup();
     console.log('e in filterDropdown -------> ', e.target.value);
     window.scrollTo(window.scrollX, window.scrollY + 1);
-
     let searchString = e.target.value.toLowerCase();
     if (!searchString) {
       this.filteredList = this.depatmentList.slice();
@@ -92,7 +92,6 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     window.scrollTo(window.scrollX, window.scrollY - 1);
     console.log('this.filteredList indropdown -------> ', this.filteredList);
   }
-
   addCourse() {
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
@@ -102,7 +101,6 @@ export class CourseAssignTOTeacherComponent implements OnInit {
         this.depatmentList = [];
         console.log(obj.data);
         this.myFormGroup();
-
         Swal.fire(obj.message);
       },
       (er: any) => {
@@ -114,19 +112,15 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.updatedForm.value['code'] = this.myForm.value['code'];
     this.updatedForm.value['departmentId'] = this.myForm.value['departmentId'];
     this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
-
     this.addCourse();
   }
   onSubmit() {
     this.updatedForm.value['code'] = this.myForm.value['code'];
     this.updatedForm.value['departmentId'] = this.myForm.value['departmentId'];
     this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
-
     this.addCourse();
-
     console.log(this.updatedForm.value);
   }
-
   changeDeptId(x: any) {
     this.courseAssign.getTeacher(x).subscribe(
       (obj1) => {
@@ -138,7 +132,6 @@ export class CourseAssignTOTeacherComponent implements OnInit {
         Swal.fire(er1.error.message);
       }
     );
-
     //---------------------------------
     this.courseAssign.getCourse(x).subscribe(
       (obj1) => {
@@ -161,7 +154,6 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       }
     );
   }
-
   changeTeacher() {
     let y = this.myForm.controls.teacherId.value;
 
@@ -172,7 +164,6 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     let selectedRemainingCredit = this.teacherList.find(
       (px: any) => px.id == this.myForm.controls.teacherId.value
     )?.remainingCredit;
-
     this.myForm.controls.creditToBeTaken.setValue(selectedCreditToTaken);
 
     this.myForm.controls.remainingCredit.setValue(selectedRemainingCredit);

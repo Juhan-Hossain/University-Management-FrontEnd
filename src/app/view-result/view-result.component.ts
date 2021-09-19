@@ -65,6 +65,8 @@ export class ViewResultComponent implements OnInit {
   }
 
   filterDropdown(e: any) {
+    this.myFormGroup();
+    this.resultView = [];
     console.log('e value', e.target.value);
     console.log('e in filterDropdown -------> ', e.target.value);
     window.scrollTo(window.scrollX, window.scrollY + 1);

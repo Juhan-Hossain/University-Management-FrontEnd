@@ -102,6 +102,7 @@ export class AllocateClassroomComponent implements OnInit {
     console.log(this.myForm.controls);
   }
   filterDropdown(e: any) {
+    this.myFormGroup();
     console.log('e in filterDropdown -------> ', e.target.value);
     window.scrollTo(window.scrollX, window.scrollY + 1);
 

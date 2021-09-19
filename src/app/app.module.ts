@@ -8,9 +8,8 @@ import { SaveDepartmentComponent } from './saveDepartment/saveDepartment.compone
 import { ViewDepartmentComponent } from './view-department/view-department.component';
 import { SaveCourseComponent } from './save-course/save-course.component';
 import { SaveTeacherComponent } from './save-teacher/save-teacher.component';
-// import { CourseAssignTOTeacherComponent } from './course-assign-to-teacher/course-assign-to-teacher.component';
-// import { ViewCourseStatComponent } from './view-course-stat/view-course-stat.component';
-// import { RegisterStudentComponent } from './register-student/register-student.component';
+import { NgSelectModule } from '@ng-select/ng-select';
+
 import * as ngxBootstrap from 'ngx-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -32,7 +31,6 @@ import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-
 import { ViewAllocatedRoomsComponent } from './view-allocated-rooms/view-allocated-rooms.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
-
 
 @NgModule({
   declarations: [
@@ -66,8 +64,7 @@ import { RegisterComponent } from './register/register.component';
     MatSidenavModule,
     MatMenuModule,
     NgbModule,
-    
-
+    NgSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

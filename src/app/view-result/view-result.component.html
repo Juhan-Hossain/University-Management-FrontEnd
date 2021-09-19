@@ -1,5 +1,5 @@
 <div class="Container" style="margin: 100px">
-  <div class="form-outline">
+  <div class="form-outline" style="padding-left: 38px">
     <label class="form-label" for="form1">Search Student</label>
     <input
       type="text"
@@ -7,6 +7,7 @@
       class="form-control"
       placeholder="Search Student..."
       (input)="filterDropdown($event)"
+      style="max-width: 350px"
     />
   </div>
   <div class="pdfContainer" id="pdf">
@@ -18,7 +19,7 @@
           <div class="col-3">
             <label for="studentRegNo">Student Reg. No.</label>
           </div>
-          <div class="col-5">
+          <div class="col-7">
             <select
               type="text"
               class="form-select form-select-sm"

@@ -75,8 +75,8 @@ export class SaveCourseComponent implements OnInit {
     this.courseService.saveCourse(this.myForm.value).subscribe(
       (data: any) => {
         this.myFormGroup();
-        this.departmentList = [];
-        this.semesterList = [];
+        // this.departmentList = [];
+        // this.semesterList = [];
         console.log('data message', data.message);
         Swal.fire(data.message);
       },
