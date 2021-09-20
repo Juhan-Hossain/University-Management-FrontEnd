@@ -31,6 +31,8 @@ import { UnallocateClassroomComponent } from './unallocate-classroom/unallocate-
 import { ViewAllocatedRoomsComponent } from './view-allocated-rooms/view-allocated-rooms.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
@@ -65,6 +67,8 @@ import { RegisterComponent } from './register/register.component';
     MatMenuModule,
     NgbModule,
     NgSelectModule,
+    MatAutocompleteModule,
+    MatSelectModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -8,7 +8,8 @@ import { CourseEnrollService } from '../services/course-enroll.service';
 import { course } from '../Models/course';
 import Swal from 'sweetalert2';
 import { student } from '../Models/student';
-
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { MatSelectModule } from '@angular/material/select';
 @Injectable({
   providedIn: 'root',
 })
@@ -58,11 +59,11 @@ export class CourseEnrollComponent implements OnInit {
   }
 
   // cahnge departmentId by selection
-  changeId(x: any) {
-    this.selectedStudent = x;
-    this.myForm.controls.studentRegNo.setValue(x);
+  changeId() {
+    this.selectedStudent = this.myForm.controls['studentRegNo'].value;
+    this.myForm.controls.studentRegNo.setValue(this.selectedStudent);
     this.myForm.controls['courseCode'].setValue('');
-    this.courseEnroll.getCourse(x).subscribe(
+    this.courseEnroll.getCourse(this.selectedStudent).subscribe(
       (obj1) => {
         this.getDepartments();
         this.courseList = obj1.data;
