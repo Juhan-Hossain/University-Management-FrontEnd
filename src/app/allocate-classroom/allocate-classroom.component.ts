@@ -99,7 +99,7 @@ export class AllocateClassroomComponent implements OnInit {
     } else {
       this.myForm.controls.ToMeridiem.setValue('AM');
     }
-    console.log(this.myForm.controls);
+    console.log(this.myForm.value);
   }
   filterDropdown(e: any) {
     this.myFormGroup();
@@ -129,7 +129,6 @@ export class AllocateClassroomComponent implements OnInit {
         Swal.fire(obj.message);
       },
       (er: any) => {
-        console.log(er.error.message);
         Swal.fire(er.error.message);
       }
     );
