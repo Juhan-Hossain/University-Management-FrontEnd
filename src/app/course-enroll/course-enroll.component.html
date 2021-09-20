@@ -1,6 +1,6 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Enroll In a Course</h4>
-  <div class="form-outline">
+  <!-- <div class="form-outline">
     <label class="form-label" for="form1">Search Student</label>
     <input
       type="text"
@@ -10,7 +10,7 @@
       (input)="filterDropdown($event)"
       style="max-width: 400px"
     />
-  </div>
+  </div> -->
   <br />
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
     <br />
@@ -20,7 +20,27 @@
           <label for="studentRegNo">Student Reg. No.</label>
         </div>
         <div class="col-9">
-          <select
+          <input
+            type="text"
+            placeholder="search Student.."
+            matInput
+            formControlName="studentRegNo"
+            [matAutocomplete]="auto"
+            (input)="filterDropdown($event)"
+            style="min-width: 290px"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="changeId()"
+          >
+            <mat-option
+              *ngFor="let student of filteredList"
+              [value]="student.registrationNumber"
+            >
+              {{ student.registrationNumber }}
+            </mat-option>
+          </mat-autocomplete>
+          <!-- <select
             type="text"
             class="form-select form-select-sm"
             aria-label=".form-select-sm example"
@@ -37,7 +57,7 @@
             >
               {{ student.registrationNumber }}
             </option>
-          </select>
+          </select> -->
         </div>
       </div>
     </div>
