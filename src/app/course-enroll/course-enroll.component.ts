@@ -61,6 +61,7 @@ export class CourseEnrollComponent implements OnInit {
   changeId(x: any) {
     this.selectedStudent = x;
     this.myForm.controls.studentRegNo.setValue(x);
+    this.myForm.controls['courseCode'].setValue('');
     this.courseEnroll.getCourse(x).subscribe(
       (obj1) => {
         this.getDepartments();
@@ -113,7 +114,9 @@ export class CourseEnrollComponent implements OnInit {
     });
   }
   filterDropdown(e: any) {
-    console.log('e value', e.target.value);
+    this.myFormGroup();
+    this.myForm.controls.studentRegNo.setValue('');
+    this.myForm.controls['courseCode'].setValue('');
     console.log('e in filterDropdown -------> ', e.target.value);
     window.scrollTo(window.scrollX, window.scrollY + 1);
     let searchString = '';
