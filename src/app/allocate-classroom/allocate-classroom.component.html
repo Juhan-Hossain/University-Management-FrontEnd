@@ -1,6 +1,6 @@
 <div class="Container" style="margin: 100px">
   <h4 class="header">Allocate Classrooms</h4>
-  <div class="form-outline">
+  <!-- <div class="form-outline">
     <label class="form-label" for="form1">Search Department</label>
     <input
       type="text"
@@ -10,7 +10,7 @@
       (input)="filterDropdown($event)"
       style="max-width: 400px"
     />
-  </div>
+  </div> -->
 
   <br />
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
@@ -21,24 +21,24 @@
           <label for="Department">Department</label>
         </div>
         <div class="col-9">
-          <select
+          <input
             type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="department"
-            placeholder="department"
+            placeholder="search Department.."
+            matInput
             formControlName="departmentId"
-            (change)="changeDeptId()"
+            [(ngModel)]="selectedItem"
+            [matAutocomplete]="auto"
+            (input)="filterDropdown($event)"
+            style="min-width: 290px"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="changeDeptId()"
           >
-            <option value="" disabled selected>Choose Department</option>
-
-            <option
-              *ngFor="let department of filteredList"
-              [value]="department.id"
-            >
-              {{ department.name }}
-            </option>
-          </select>
+            <mat-option *ngFor="let option of filteredList" [value]="option">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
     </div>
