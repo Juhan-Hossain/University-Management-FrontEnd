@@ -54,7 +54,7 @@ export class ViewAllocatedRoomsComponent implements OnInit {
   departmentId = new FormControl('');
   roomList: Room[] = [];
   dayList: day[] = [];
-  roomAllocationList: any[] = []; //any=<any>{};
+  roomAllocationList: any[] = [];
   scheduleInfof: [] = [];
 
   ngOnInit() {
@@ -81,14 +81,10 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     });
   }
   count: number = 0;
-  // code: string = '';
-  // name: string = '';
   data: VM[] = [];
   print() {
     this.courseList = [];
     this.scheduleInfof = [];
-    // this.roomAllocationList = [];
-    // this.departmentId.setValue('');
     this.viewAllocatedRooms.getCourse(this.departmentId.value).subscribe(
       (x) => {
         this.courseList = x.data;
@@ -153,7 +149,7 @@ export class ViewAllocatedRoomsComponent implements OnInit {
 
   public dateConversion(date: any): string {
     var temp = new Date(date);
-    var hr = temp.getHours() + 6;
+    var hr = temp.getHours();
     var min = temp.getMinutes();
     if (hr <= 12) return hr + ':' + min + ' AM';
     return hr - 12 + ':' + min + ' PM';
