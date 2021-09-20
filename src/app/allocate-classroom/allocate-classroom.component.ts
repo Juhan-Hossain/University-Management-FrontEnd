@@ -67,19 +67,25 @@ export class AllocateClassroomComponent implements OnInit {
       this.dayList = data.data;
     });
   }
+  public x: number = 0;
   changeDeptId() {
+    console.log(
+      'selected Item -------->',
+      this.selectedItem.id,
+      this.selectedItem.name,
+      this.selectedItem
+    );
     this.getDay();
     this.getRoom();
+    this.x = this.selectedItem.id;
     this.myForm.controls['courseCode'].setValue('');
-    this.selectedItem = this.myForm.controls.departmentId.value;
-    console.log(this.myForm.controls.departmentId.value);
-    this.allocateClassroom.getCourse(this.selectedItem).subscribe(
+    this.myForm.controls.departmentId.setValue(this.selectedItem.name);
+    this.allocateClassroom.getCourse(this.x).subscribe(
       (obj: any) => {
         this.courseList = obj.data;
         console.log(this.courseList);
       },
       (er: any) => {
-        console.log(er.error.message);
         Swal.fire(er.error.message);
       }
     );
@@ -87,8 +93,8 @@ export class AllocateClassroomComponent implements OnInit {
   changeTime() {
     let start = this.myForm.controls.startTime.value;
     let end = this.myForm.controls.endTime.value;
-    console.log(start);
-    console.log(end);
+    // console.log(start);
+    // console.log(end);
     if (start >= 12 && start != '') {
       this.myForm.controls.FromMeridiem.setValue('PM');
     } else {
@@ -99,6 +105,7 @@ export class AllocateClassroomComponent implements OnInit {
     } else {
       this.myForm.controls.ToMeridiem.setValue('AM');
     }
+
     console.log(this.myForm.value);
   }
   filterDropdown(e: any) {
@@ -120,6 +127,8 @@ export class AllocateClassroomComponent implements OnInit {
   }
   print() {}
   onSubmit() {
+    console.log(this.x);
+    this.myForm.controls['departmentId'].setValue(this.x);
     this.allocateClassroom.allocateClass(this.myForm.value).subscribe(
       (obj: any) => {
         this.myFormGroup();
