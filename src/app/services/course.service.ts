@@ -10,6 +10,7 @@ export class CourseService {
   courseurl: string = 'https://localhost:44322/api/Courses';
   depturl: string = 'https://localhost:44322/api/Departments';
   semesterurl: string = 'https://localhost:44322/api/Semesters';
+  deptDDL: string = 'https://localhost:44322/api/Departments/LoadDeptDDL';
 
   constructor(private http: HttpClient) {}
 
@@ -19,6 +20,9 @@ export class CourseService {
 
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.depturl);
+  }
+  getDeptDDL(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.deptDDL + `?str=${query}`);
   }
   getSemester(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.semesterurl);
