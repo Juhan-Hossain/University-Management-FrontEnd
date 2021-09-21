@@ -2,7 +2,7 @@
   <div class="header">
     <h4>View Class Schedule and Room Allocation Information</h4>
   </div>
-  <div class="form-outline" style="padding-left: 200px">
+  <!-- <div class="form-outline" style="padding-left: 200px">
     <label class="form-label" for="form1">Search Department</label>
     <input
       type="text"
@@ -12,31 +12,32 @@
       (input)="filterDropdown($event)"
       style="max-width: 310px"
     />
-  </div>
+  </div> -->
   <br />
   <div>
     <div class="row">
       <div class="col-3" style="padding-left: 110px">
         <label for="DepartmentId">Department</label>
       </div>
-      <div class="col-5">
-        <select
+      <div class="col-9">
+        <input
           type="text"
-          class="form-select form-select-sm"
-          aria-label=".form-select-sm example"
-          id="departmentId"
-          placeholder="Course department"
-          [formControl]="departmentId"
-          (change)="print()"
+          placeholder="search Department.."
+          matInput
+          [matAutocomplete]="auto"
+          style="min-width: 290px"
+          [formControl]="myControl"
+          (input)="debounceTime($event)"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="print()"
+          [displayWith]="displayFn.bind(this)"
         >
-          <option value="" disabled selected>Choose Department</option>
-          <option
-            *ngFor="let department of filteredList"
-            [value]="department.id"
-          >
-            {{ department.name }}
-          </option>
-        </select>
+          <mat-option *ngFor="let option of filteredList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
       </div>
     </div>
   </div>
