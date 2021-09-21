@@ -6,16 +6,6 @@
   </script>
   <div class="Container" style="margin: 100px">
     <h4 class="header">Save Student Result</h4>
-    <div class="form-outline" style="max-width: 400px">
-      <label class="form-label" for="form1">Search Student</label>
-      <input
-        type="text"
-        id="form1"
-        class="form-control"
-        placeholder="Search Student..."
-        (input)="filterDropdown($event)"
-      />
-    </div>
     <br />
     <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
       <br />
@@ -25,24 +15,27 @@
             <label for="studentRegNo">Student Reg. No.</label>
           </div>
           <div class="col-9">
-            <select
+            <input
               type="text"
-              class="form-select form-select-sm"
-              aria-label=".form-select-sm example"
-              id="studentRegNo"
-              placeholder="Student reg. no."
-              formControlName="studentRegNo"
-              (change)="changeId(selectField.value)"
-              #selectField
+              placeholder="search Student.."
+              matInput
+              [formControl]="myControl"
+              [matAutocomplete]="auto"
+              (input)="debounceTime($event)"
+              style="min-width: 290px"
+            />
+            <mat-autocomplete
+              #auto="matAutocomplete"
+              (optionSelected)="changeId()"
+              [displayWith]="displayFn.bind(this)"
             >
-              <option value="" disabled>Choose Student</option>
-              <option
+              <mat-option
                 *ngFor="let student of filteredList"
-                [value]="student.registrationNumber"
+                [value]="student"
               >
-                {{ student.registrationNumber }}
-              </option>
-            </select>
+                {{ student }}
+              </mat-option>
+            </mat-autocomplete>
           </div>
         </div>
       </div>
@@ -110,20 +103,17 @@
             <label for="courseName">Select Course</label>
           </div>
           <div class="col-9">
-            <ng-select
+            <select
               type="text"
               class="form-select form-select-sm"
               aria-label=".form-select-sm example"
               formControlName="courseName"
             >
-              <ng-option value="" disabled>Choose Course</ng-option>
-              <ng-option
-                *ngFor="let course of courseList"
-                [value]="course.name"
-              >
+              <option value="" disabled>Choose Course</option>
+              <option *ngFor="let course of courseList" [value]="course.name">
                 {{ course.name }}
-              </ng-option>
-            </ng-select>
+              </option>
+            </select>
           </div>
         </div>
       </div>
