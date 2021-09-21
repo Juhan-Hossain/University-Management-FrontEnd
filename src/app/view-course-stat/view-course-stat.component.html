@@ -23,6 +23,14 @@
           (optionSelected)="print()"
           [displayWith]="displayFn.bind(this)"
         >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose department
+          </mat-option>
           <mat-option *ngFor="let option of filteredList" [value]="option">
             {{ option.name }}
           </mat-option>

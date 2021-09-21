@@ -35,6 +35,14 @@
               [displayWith]="displayFn.bind(this)"
             >
               <mat-option
+                disabled
+                selected
+                value=""
+                style="background-color: greenyellow"
+              >
+                choose student
+              </mat-option>
+              <mat-option
                 *ngFor="let student of filteredList"
                 [value]="student"
               >
