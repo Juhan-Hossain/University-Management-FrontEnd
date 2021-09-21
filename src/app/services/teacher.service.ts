@@ -7,12 +7,12 @@ import { serviceResponse } from '../Models/serviceResponse';
   providedIn: 'root',
 })
 export class TeacherService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   teacherurl: string = 'https://localhost:44322/api/Teachers';
   depturl: string = 'https://localhost:44322/api/Departments';
-  designationurl: string = 'https://localhost:44322/api/Designations/GetDesignations';
-
+  designationurl: string =
+    'https://localhost:44322/api/Designations/GetDesignations';
+  deptDDL: string = 'https://localhost:44322/api/Departments/LoadDeptDDL';
   saveTeacher(data: any) {
     return this.http.post(`${this.teacherurl}/CreateTeacher`, data);
   }
@@ -20,9 +20,10 @@ export class TeacherService {
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.depturl);
   }
+  getDeptDDL(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.deptDDL + `?str=${query}`);
+  }
   getDesignation(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.designationurl);
   }
-
-
 }
