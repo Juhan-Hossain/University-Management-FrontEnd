@@ -124,9 +124,6 @@ export class AllocateClassroomComponent implements OnInit {
   public filterDropdown(e: string) {
     this.myFormGroup();
     console.log('e in filterDropdown -------> ', e);
-
-    let searchString = e;
-
     this.allocateClassroom.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
@@ -136,24 +133,11 @@ export class AllocateClassroomComponent implements OnInit {
         this.filteredList = [];
       }
     );
-
-    //   if (!searchString) {
-    //     this.filteredList = this.departmentList.slice();
-    //     return;
-    //   } else {
-    //     this.filteredList = this.departmentList.filter(
-    //       (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
-    //     );
-    //   }
-    //   console.log('this.filteredList indropdown -------> ', this.filteredList);
   }
 
   print() {}
 
   debounceTime(e: any) {
-    let str = 0;
-    let p: string = '';
-    // p = e.target.value;
     setTimeout(() => {
       console.log(e.target.value);
       this.filterDropdown(e.target.value);
