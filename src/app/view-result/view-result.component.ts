@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { student } from '../Models/student';
+import { serviceResponse } from '../Models/serviceResponse';
 
 @Component({
   selector: 'app-view-result',
@@ -31,18 +32,19 @@ export class ViewResultComponent implements OnInit {
     this.myFormGroup();
   }
 
-  studentList: student[] = [];
-  filteredList: student[] = [];
-  courseList: course[] = [];
-  depatmentList: department[] = [];
-  selectedStudent: student[] = [];
-  selectedCourse: course[] = [];
-  enrolledCourseList: any;
-  resultView: viewResult[] = [];
+  public studentList: student[] = [];
+  public filteredList: string[] = [];
+  public courseList: course[] = [];
+  public depatmentList: department[] = [];
+  public selectedStudent: string = '';
+  public selectedCourse: course[] = [];
+  public enrolledCourseList: any;
+  public resultView: viewResult[] = [];
 
   public myForm: FormGroup = new FormGroup({});
+  public myControl = new FormControl('');
 
-  myFormGroup() {
+  public myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl(''),
       department: new FormControl(''),
@@ -52,44 +54,48 @@ export class ViewResultComponent implements OnInit {
   }
 
   //add course through value object
-  getStudents() {
+  public getStudents() {
     this.viewResult.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
-      this.filteredList = data.data;
+      // this.filteredList = data.data;
     });
   }
-  getDepartments() {
+  public getDepartments() {
     this.viewResult.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
     });
   }
 
-  filterDropdown(e: any) {
+  public filterDropdown(e: string) {
     this.myFormGroup();
     this.resultView = [];
-    console.log('e value', e.target.value);
-    console.log('e in filterDropdown -------> ', e.target.value);
-    window.scrollTo(window.scrollX, window.scrollY + 1);
+    console.log('e in filterDropdown -------> ', e);
     let searchString = '';
-    searchString = e.target.value.toLowerCase();
-    if (searchString === '') {
-      this.filteredList = this.studentList.slice();
-      return;
-    } else {
-      this.filteredList = this.studentList.filter(
-        (student) =>
-          student.registrationNumber.toLowerCase().indexOf(searchString) > -1
-      );
-    }
-    window.scrollTo(window.scrollX, window.scrollY - 1);
-    console.log('this.filteredList indropdown -------> ', this.filteredList);
+    searchString = e.toLowerCase();
+    this.viewResult.getStdDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
   }
-  changeId(x: any) {
-    this.selectedStudent = x;
-    this.myForm.controls['studentRegNo'].setValue(x);
-    // console.log(x);
+  public debounceTime(e: any) {
+    setTimeout(() => {
+      console.log(e.target.value);
+      this.filterDropdown(e.target.value);
+    }, 1000);
+  }
 
-    this.viewResult.getEnrolledCourse(x).subscribe(
+  public displayFn(option: string): string {
+    console.log('displayFn value------->', option);
+    return option;
+  }
+  public changeId() {
+    this.selectedStudent = this.myControl.value;
+    this.myForm.controls['studentRegNo'].setValue(this.selectedStudent);
+    this.viewResult.getEnrolledCourse(this.selectedStudent).subscribe(
       (obj1: any) => {
         this.getDepartments();
 
