@@ -134,30 +134,40 @@
           <label for="DepartmentId">Department</label>
         </div>
         <div class="col-9">
-          <select
+          <input
             type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="departmentId"
-            placeholder="Course department"
-            formControlName="departmentId"
+            placeholder="search Department.."
+            matInput
+            [matAutocomplete]="auto"
+            style="min-width: 290px"
+            [formControl]="myControl"
+            (input)="debounceTime($event)"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="changeDeptId()"
+            [displayWith]="displayFn.bind(this)"
           >
-            <option value="" disabled>Choose department</option>
-            <option
-              *ngFor="let department of departmentList"
-              [ngValue]="department.id"
-              (change)="changeDeptId($event)"
+            <mat-option
+              disabled
+              selected
+              value=""
+              style="background-color: greenyellow"
             >
-              {{ department.name }}
-            </option>
-          </select>
+              choose department
+            </mat-option>
+            <mat-option
+              *ngFor="let option of filteredList"
+              [value]="option"
+              style="background-color: springgreen"
+            >
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
       <span
-        *ngIf="
-          registerFormControl.departmentId.touched &&
-          registerFormControl.departmentId.value == ''
-        "
+        *ngIf="myControl.touched && myControl.value == ''"
         class="text-danger error"
         >Course department required</span
       >
