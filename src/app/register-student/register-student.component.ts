@@ -7,6 +7,8 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RegisterStudentService } from '../services/register-student.service';
 import Swal from 'sweetalert2';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { department } from '../Models/department';
+import { serviceResponse } from '../Models/serviceResponse';
 
 @Component({
   selector: 'app-register-student',
@@ -24,11 +26,13 @@ export class RegisterStudentComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
-  departmentList: any;
-  semesterList: any;
-  closeModal: string | undefined;
-  myForm: FormGroup = new FormGroup({});
-  myFormGroup() {
+  public departmentList: department[] = [];
+  public filteredList: department[] = [];
+  public semesterList: any;
+  public closeModal: string | undefined;
+  public myForm: FormGroup = new FormGroup({});
+  public myControl = new FormControl('');
+  public myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
@@ -45,24 +49,21 @@ export class RegisterStudentComponent implements OnInit {
   }
 
   //get helper method manipulation
-  get registerFormControl() {
+  public get registerFormControl() {
     return this.myForm.controls;
   }
 
   // cahnge departmentId by selection
-  changeDeptId(e: any) {
-    console.log(e);
-    console.log(this.myForm.value);
-    this.myForm.controls['departmentId'].setValue(e, {
-      onlySelf: true,
-    });
+  public changeDeptId() {
+    this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
   }
 
   //add course through value object
-  addStudent() {
+  public addStudent() {
     this.registerStudent.saveStudent(this.myForm.value).subscribe(
       (obj: any) => {
         this.myFormGroup();
+        this.myControl.setValue('');
         console.log('student Data', obj.data);
         Swal.fire(
           `RegNo: ${obj.data.registrationNumber}`,
@@ -77,28 +78,37 @@ export class RegisterStudentComponent implements OnInit {
       }
     );
   }
-
-  // triggerModal(content:any) {
-  //   this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((res) => {
-  //     this.closeModal = `Closed with: ${res}`;
-  //   }, (res) => {
-  //     this.closeModal = `Dismissed ${this.getDismissReason(res)}`;
-  //   });
-  // }
-
-  // private getDismissReason(reason: any): string {
-  //   if (reason === ModalDismissReasons.ESC) {
-  //     return 'by pressing ESC';
-  //   } else if (reason === ModalDismissReasons.BACKDROP_CLICK) {
-  //     return 'by clicking on a backdrop';
-  //   } else {
-  //     return  `with: ${reason}`;
-  //   }
-  // }
-
-  getDepartment() {
+  public getDepartment() {
     this.registerStudent.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
     });
+  }
+
+  public displayFn(option: department): string {
+    console.log('displayFn value------->', option.name);
+    return option.name;
+  }
+
+  public filterDropdown(e: string) {
+    this.filteredList = [];
+    console.log('e in filterDropdown -------> ', e);
+    this.registerStudent.getDeptDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+        console.log('####filteredList####', this.filteredList);
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
+  }
+  public lastKeyPress: number = 0;
+  public debounceTime(e: any) {
+    if (e.timeStamp - this.lastKeyPress > 1500) {
+      this.filterDropdown(e.target.value);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
 }
