@@ -14,6 +14,7 @@ import { viewAllocatedRooms } from '../Models/viewAllocatedRooms';
 import { room } from '../Models/Room';
 import { day } from '../Models/day';
 import { scheduled } from 'rxjs';
+import { serviceResponse } from '../Models/serviceResponse';
 
 interface VM {
   code: string;
@@ -47,45 +48,47 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     private viewAllocatedRooms: ViewAllocatedroomsService
   ) {}
 
-  selectedItem: any;
-  departmentList: department[] = [];
-  filteredList: department[] = [];
-  courseList: any[] = [];
-  departmentId = new FormControl('');
-  roomList: Room[] = [];
-  dayList: day[] = [];
-  roomAllocationList: any[] = [];
-  scheduleInfof: [] = [];
+  public selectedItem: any;
+  public departmentList: department[] = [];
+  public filteredList: department[] = [];
+  public courseList: any[] = [];
+  public departmentId = new FormControl('');
+  public roomList: Room[] = [];
+  public dayList: day[] = [];
+  public roomAllocationList: any[] = [];
+  public scheduleInfof: [] = [];
+  public myControl = new FormControl('');
+  public count: number = 0;
+  public data: VM[] = [];
 
-  ngOnInit() {
+  public ngOnInit() {
     this.getDepartment();
     this.getRoom();
     this.getDay();
   }
 
-  getDepartment() {
+  public getDepartment() {
     this.viewAllocatedRooms.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
-      this.filteredList = data.data;
+      // this.filteredList = data.data;
     });
   }
-  getRoom() {
+  public getRoom() {
     this.viewAllocatedRooms.getRoom().subscribe((data: any) => {
       this.roomList = data.data;
       console.log('roomlist', this.roomList);
     });
   }
-  getDay() {
+  public getDay() {
     this.viewAllocatedRooms.getDay().subscribe((data: any) => {
       this.dayList = data.data;
     });
   }
-  count: number = 0;
-  data: VM[] = [];
-  print() {
+
+  public print() {
     this.courseList = [];
     this.scheduleInfof = [];
-    this.viewAllocatedRooms.getCourse(this.departmentId.value).subscribe(
+    this.viewAllocatedRooms.getCourse(this.myControl.value.id).subscribe(
       (x) => {
         this.courseList = x.data;
         console.log('courseList', this.courseList);
@@ -106,25 +109,32 @@ export class ViewAllocatedRoomsComponent implements OnInit {
       }
     );
   }
-  filterDropdown(e: any) {
-    this.departmentId.setValue('');
-    this.data = [];
-    console.log('e in filterDropdown -------> ', e.target.value);
-    window.scrollTo(window.scrollX, window.scrollY + 1);
-
-    let searchString = e.target.value.toLowerCase();
-    if (!searchString) {
-      this.filteredList = this.departmentList.slice();
-      return;
-    } else {
-      this.filteredList = this.departmentList.filter(
-        (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
-      );
-    }
-    window.scrollTo(window.scrollX, window.scrollY - 1);
-    console.log('this.filteredList indropdown -------> ', this.filteredList);
+  public displayFn(option: department): string {
+    console.log('displayFn value------->', option.name);
+    return option.name;
   }
-  getRoomAllocation(courseCode: string) {
+
+  public filterDropdown(e: string) {
+    this.data = [];
+    console.log('e in filterDropdown -------> ', e);
+    this.viewAllocatedRooms.getDeptDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+        console.log('####filteredList####', this.filteredList);
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
+  }
+  public debounceTime(e: any) {
+    setTimeout(() => {
+      console.log(e.target.value);
+      this.filterDropdown(e.target.value);
+    }, 1000);
+  }
+
+  public getRoomAllocation(courseCode: string) {
     this.viewAllocatedRooms.getRoomsByCode(courseCode).subscribe(
       (obj) => {
         if (obj.data.length >= 0) {

@@ -101,7 +101,6 @@ export class SaveResultComponent implements OnInit {
 
     this.saveResult.getCourse(this.selectedStudent).subscribe(
       (obj1) => {
-        // this.getDepartments();
         this.courseList = obj1.data;
         if (this.courseList.length == 0) {
           Swal.fire("this student don't have any enrolled course!!!");
