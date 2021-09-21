@@ -13,7 +13,9 @@ export class AllocateClassroomService {
     'https://localhost:44322/api/Courses/ViewCoursesByDepartment';
   roomUrl: string = 'https://localhost:44322/api/Room/GetRooms';
   dayUrl: string = 'https://localhost:44322/api/Day/GetDays';
-  allocateUrl: string = 'https://localhost:44322/api/RoomAllocation/AllocateRooms';
+  allocateUrl: string =
+    'https://localhost:44322/api/RoomAllocation/AllocateRooms';
+  deptDDL: string = 'https://localhost:44322/api/Departments/LoadDeptDDL';
 
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.departmentUrl);
@@ -30,8 +32,10 @@ export class AllocateClassroomService {
       this.courseUrl + `?departmentId=${query}`
     );
   }
+  getDeptDDL(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.deptDDL + `?str=${query}`);
+  }
   allocateClass(data: any) {
     return this.http.post(this.allocateUrl, data);
-   }
-
   }
+}

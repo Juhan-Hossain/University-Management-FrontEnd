@@ -10,6 +10,10 @@ import { course } from '../Models/course';
 import { room } from '../Models/Room';
 import { day } from '../Models/day';
 import Swal from 'sweetalert2';
+import { OverlayPositionBuilder } from '@angular/cdk/overlay';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { serviceResponse } from '../Models/serviceResponse';
+
 @Injectable({
   providedIn: 'root',
 })
@@ -25,14 +29,15 @@ export class AllocateClassroomComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  departmentList: department[] = [];
-  courseList: course[] = [];
-  roomList: room[] = [];
-  dayList: day[] = [];
-  filteredList: department[] = [];
-  selectedItem: any;
-  myForm: FormGroup = new FormGroup({});
-  myFormGroup() {
+  public departmentList: department[] = [];
+  public courseList: course[] = [];
+  public roomList: room[] = [];
+  public dayList: day[] = [];
+  public filteredList: department[] = [];
+  public myForm: FormGroup = new FormGroup({});
+  public myControl = new FormControl('');
+
+  public myFormGroup() {
     this.myForm = this.formBuilder.group({
       courseCode: new FormControl('', Validators.required),
       departmentId: new FormControl('', Validators.required),
@@ -46,91 +51,120 @@ export class AllocateClassroomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getDepartment();
+    // this.getDepartment();
     this.myFormGroup();
   }
 
   //fetching department
-  getDepartment() {
+  public getDepartment() {
     this.allocateClassroom.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
       this.filteredList = data.data;
     });
   }
-  getRoom() {
+
+  // public getDeptDDL(str:string) {
+
+  // }
+
+  public getRoom() {
     this.allocateClassroom.getRoom().subscribe((data: any) => {
       this.roomList = data.data;
     });
   }
-  getDay() {
+
+  public getDay() {
     this.allocateClassroom.getDay().subscribe((data: any) => {
       this.dayList = data.data;
     });
   }
+
   public x: number = 0;
-  changeDeptId() {
-    console.log(
-      'selected Item -------->',
-      this.selectedItem.id,
-      this.selectedItem.name,
-      this.selectedItem
-    );
+
+  public changeDeptId() {
     this.getDay();
     this.getRoom();
-    this.x = this.selectedItem.id;
+
+    console.log('->', this.myControl.value);
+    this.x = this.myControl.value.id;
     this.myForm.controls['courseCode'].setValue('');
-    this.myForm.controls.departmentId.setValue(this.selectedItem.name);
+    this.myForm.controls.departmentId.setValue(this.myControl.value.name);
     this.allocateClassroom.getCourse(this.x).subscribe(
       (obj: any) => {
         this.courseList = obj.data;
-        console.log(this.courseList);
+        console.log('courselist value------->', this.courseList);
       },
       (er: any) => {
         Swal.fire(er.error.message);
       }
     );
   }
-  changeTime() {
+
+  public changeTime() {
     let start = this.myForm.controls.startTime.value;
     let end = this.myForm.controls.endTime.value;
-    // console.log(start);
-    // console.log(end);
-    if (start >= 12 && start != '') {
+    if (start <= 12 && start != '') {
       this.myForm.controls.FromMeridiem.setValue('PM');
     } else {
       this.myForm.controls.FromMeridiem.setValue('AM');
     }
-    if (end >= 12 && end != '') {
+    if (end <= 12 && end != '') {
       this.myForm.controls.ToMeridiem.setValue('PM');
     } else {
       this.myForm.controls.ToMeridiem.setValue('AM');
     }
-
-    console.log(this.myForm.value);
+    console.log('myFromGroup value------->', this.myForm.value);
   }
-  filterDropdown(e: any) {
+
+  displayFn(option: department): string {
+    console.log('displayFn value------->', option.name);
+    return option.name;
+  }
+
+  public filterDropdown(e: string) {
     this.myFormGroup();
-    console.log('e in filterDropdown -------> ', e.target.value);
-    window.scrollTo(window.scrollX, window.scrollY + 1);
+    console.log('e in filterDropdown -------> ', e);
 
-    let searchString = e.target.value.toLowerCase();
-    if (!searchString) {
-      this.filteredList = this.departmentList.slice();
-      return;
-    } else {
-      this.filteredList = this.departmentList.filter(
-        (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
-      );
-    }
-    window.scrollTo(window.scrollX, window.scrollY - 1);
-    console.log('this.filteredList indropdown -------> ', this.filteredList);
+    let searchString = e;
+
+    this.allocateClassroom.getDeptDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+        console.log('####filteredList####', this.filteredList);
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
+
+    //   if (!searchString) {
+    //     this.filteredList = this.departmentList.slice();
+    //     return;
+    //   } else {
+    //     this.filteredList = this.departmentList.filter(
+    //       (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
+    //     );
+    //   }
+    //   console.log('this.filteredList indropdown -------> ', this.filteredList);
   }
+
   print() {}
-  onSubmit() {
-    console.log(this.x);
+
+  debounceTime(e: any) {
+    let str = 0;
+    let p: string = '';
+    // p = e.target.value;
+    setTimeout(() => {
+      console.log(e.target.value);
+      this.filterDropdown(e.target.value);
+    }, 1000);
+  }
+
+  public onSubmit() {
     this.myForm.controls['departmentId'].setValue(this.x);
     this.allocateClassroom.allocateClass(this.myForm.value).subscribe(
       (obj: any) => {
+        //clearing form & dropdown when success
         this.myFormGroup();
         this.courseList = [];
         this.roomList = [];
