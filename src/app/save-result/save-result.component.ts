@@ -45,7 +45,7 @@ export class SaveResultComponent implements OnInit {
   ngOnInit() {
     this.getStudents();
     this.getDepartments();
-    this.getGrades();
+    // this.getGrades();
     this.myFormGroup();
   }
 
@@ -79,6 +79,7 @@ export class SaveResultComponent implements OnInit {
   public filterDropdown(e: string) {
     this.myFormGroup();
     this.courseList = [];
+    this.gradeList = [];
     console.log('e in filterDropdown -------> ', e);
     let searchString = '';
     searchString = e.toLowerCase();
@@ -130,12 +131,16 @@ export class SaveResultComponent implements OnInit {
         alert(er1.error.message);
       }
     );
+    this.getGrades();
   }
+  public lastKeyPress: number = 0;
   public debounceTime(e: any) {
-    setTimeout(() => {
-      console.log(e.target.value);
+    if (e.timeStamp - this.lastKeyPress > 3000) {
       this.filterDropdown(e.target.value);
-    }, 1000);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
 
   public displayFn(option: string): string {
@@ -147,6 +152,9 @@ export class SaveResultComponent implements OnInit {
       (obj: any) => {
         this.myFormGroup();
         this.courseList = [];
+        this.myControl.setValue('');
+        this.filteredList = [];
+        this.gradeList = [];
         Swal.fire(obj.message);
       },
       (er: any) => {

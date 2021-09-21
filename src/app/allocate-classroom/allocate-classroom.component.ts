@@ -123,6 +123,10 @@ export class AllocateClassroomComponent implements OnInit {
 
   public filterDropdown(e: string) {
     this.myFormGroup();
+    this.courseList = [];
+    this.roomList = [];
+    this.dayList = [];
+    this.filteredList = [];
     console.log('e in filterDropdown -------> ', e);
     this.allocateClassroom.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
@@ -137,11 +141,14 @@ export class AllocateClassroomComponent implements OnInit {
 
   print() {}
 
-  debounceTime(e: any) {
-    setTimeout(() => {
-      console.log(e.target.value);
+  public lastKeyPress: number = 0;
+  public debounceTime(e: any) {
+    if (e.timeStamp - this.lastKeyPress > 3000) {
       this.filterDropdown(e.target.value);
-    }, 1000);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
 
   public onSubmit() {
@@ -153,6 +160,8 @@ export class AllocateClassroomComponent implements OnInit {
         this.courseList = [];
         this.roomList = [];
         this.dayList = [];
+        this.filteredList = [];
+        this.myControl.setValue('');
         Swal.fire(obj.message);
       },
       (er: any) => {

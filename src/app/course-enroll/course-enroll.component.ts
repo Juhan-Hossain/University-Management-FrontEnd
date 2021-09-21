@@ -34,7 +34,8 @@ export class CourseEnrollComponent implements OnInit {
   public selectedCourse: course[] = [];
   public myForm: FormGroup = new FormGroup({});
   public myControl = new FormControl('');
-  myFormGroup() {
+  public p = 0;
+  public myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl(''),
       department: new FormControl(''),
@@ -56,12 +57,12 @@ export class CourseEnrollComponent implements OnInit {
   }
 
   //get helper method manipulation
-  get myFormControl() {
+  public get myFormControl() {
     return this.myForm.controls;
   }
 
   // cahnge departmentId by selection
-  changeId() {
+  public changeId() {
     this.selectedStudent = this.myControl.value;
     this.myForm.controls.studentRegNo.setValue(this.selectedStudent);
     this.myForm.controls['courseCode'].setValue('');
@@ -99,30 +100,29 @@ export class CourseEnrollComponent implements OnInit {
       }
     );
   }
-  changeFormControl(x: any) {
+  public changeFormControl(x: any) {
     this.myForm.controls.courseId.setValue(x);
   }
 
   //add course through value object
-  getStudents() {
+  public getStudents() {
     this.courseEnroll.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
       // this.filteredList = data.data;
     });
     console.log(new Date().toLocaleTimeString());
   }
-  getDepartments() {
+  public getDepartments() {
     this.courseEnroll.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
     });
   }
-  filterDropdown(e: string) {
+
+  public filterDropdown(e: string) {
     this.myFormGroup();
     this.myForm.controls.studentRegNo.setValue('');
     this.myForm.controls['courseCode'].setValue('');
     console.log('e in filterDropdown -------> ', e);
-    let searchString = '';
-    searchString = e.toLowerCase();
     this.courseEnroll.getStdDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
@@ -133,26 +133,31 @@ export class CourseEnrollComponent implements OnInit {
     );
   }
 
-  debounceTime(e: any) {
-    setTimeout(() => {
-      console.log(e.target.value);
+  public lastKeyPress: number = 0;
+  public debounceTime(e: any) {
+    if (e.timeStamp - this.lastKeyPress > 3000) {
       this.filterDropdown(e.target.value);
-    }, 1000);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
 
-  displayFn(option: string): string {
+  public displayFn(option: string): string {
     console.log('displayFn value------->', option);
     return option;
   }
 
-  onSubmit() {
+  public onSubmit() {
     this.updatedForm.value['studentRegNo'] = this.myForm.value['studentRegNo'];
     this.updatedForm.value['courseCode'] = this.myForm.value['courseCode'];
     console.log('updatedForm', this.updatedForm.value);
     this.courseEnroll.addCourseEnroll(this.updatedForm.value).subscribe(
       (obj: any) => {
         this.myFormGroup();
+        this.myControl.setValue('');
         this.courseList = [];
+        this.filteredList = [];
         console.log('success message', obj.data);
         Swal.fire(obj.message);
       },

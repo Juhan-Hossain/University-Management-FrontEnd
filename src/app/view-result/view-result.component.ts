@@ -81,11 +81,14 @@ export class ViewResultComponent implements OnInit {
       }
     );
   }
+  public lastKeyPress: number = 0;
   public debounceTime(e: any) {
-    setTimeout(() => {
-      console.log(e.target.value);
+    if (e.timeStamp - this.lastKeyPress > 3000) {
       this.filterDropdown(e.target.value);
-    }, 1000);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
 
   public displayFn(option: string): string {

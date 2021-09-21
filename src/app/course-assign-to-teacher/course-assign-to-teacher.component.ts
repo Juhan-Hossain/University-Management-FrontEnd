@@ -41,6 +41,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   public selectedTeacher: any;
   public selectedCode: any;
   public closeModal: string | undefined;
+  public lastKeyPress: number = 0;
   public myForm: FormGroup = new FormGroup({});
   public myControl = new FormControl('');
   public myFormGroup() {
@@ -85,6 +86,8 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   public filterDropdown(e: string) {
     this.filteredList = [];
     this.courseList = [];
+    this.teacherList = [];
+    this.myFormGroup();
     console.log('e in filterDropdown -------> ', e);
     this.courseAssign.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
@@ -96,12 +99,14 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       }
     );
   }
+
   public debounceTime(e: any) {
-    let str: string = '';
-    setTimeout(() => {
-      console.log(e.target.value);
+    if (e.timeStamp - this.lastKeyPress > 3000) {
       this.filterDropdown(e.target.value);
-    }, 1000);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
   public addCourse() {
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
@@ -136,6 +141,11 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     // console.log(this.updatedForm.value);
   }
   public changeDeptId() {
+    this.teacherList = [];
+    this.courseList = [];
+    this.depatmentList = [];
+    this.myFormGroup();
+    this.filteredList = [];
     console.log('Teacher Id------>', this.myControl.value.id);
     this.courseAssign.getTeacher(this.myControl.value.id).subscribe(
       (obj1) => {
