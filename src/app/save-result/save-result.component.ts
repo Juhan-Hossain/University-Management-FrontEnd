@@ -135,7 +135,7 @@ export class SaveResultComponent implements OnInit {
   }
   public lastKeyPress: number = 0;
   public debounceTime(e: any) {
-    if (e.timeStamp - this.lastKeyPress > 3000) {
+    if (e.timeStamp - this.lastKeyPress > 1500) {
       this.filterDropdown(e.target.value);
       this.lastKeyPress = e.timeStamp;
       console.log('$$$Success$$$CALL');

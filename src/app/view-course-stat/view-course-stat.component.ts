@@ -61,12 +61,14 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy {
       }
     );
   }
+  public lastKeyPress: number = 0;
   public debounceTime(e: any) {
-    let str: string = '';
-    setTimeout(() => {
-      console.log(e.target.value);
+    if (e.timeStamp - this.lastKeyPress > 1500) {
       this.filterDropdown(e.target.value);
-    }, 1000);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
   public print() {
     this.courseList = [];
