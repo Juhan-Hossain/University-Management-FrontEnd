@@ -6,6 +6,8 @@ import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { TeacherService } from '../services/teacher.service';
 import Swal from 'sweetalert2';
+import { department } from '../Models/department';
+import { serviceResponse } from '../Models/serviceResponse';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,12 +23,14 @@ export class SaveTeacherComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  departmentList: any;
-  designationList: any;
-  isValidFormSubmitted = null;
-  errors: any;
-  myForm: FormGroup = new FormGroup({});
-  myFormGroup() {
+  public departmentList: department[] = [];
+  public filteredList: department[] = [];
+  public designationList: any;
+  public isValidFormSubmitted = null;
+  public errors: any;
+  public myForm: FormGroup = new FormGroup({});
+  public myControl = new FormControl('');
+  public myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
@@ -48,21 +52,22 @@ export class SaveTeacherComponent implements OnInit {
   }
 
   //get helper method manipulation
-  get registerFormControl() {
+  public get registerFormControl() {
     return this.myForm.controls;
   }
 
+  //get helper method manipulation
+  public get myFormControl() {
+    return this.myControl.get;
+  }
+
   // cahnge departmentId by selection
-  changeDeptId(e: any) {
-    console.log(e);
-    console.log(this.myForm.value);
-    this.myForm.controls['departmentId'].setValue(e, {
-      onlySelf: true,
-    });
+  public changeDeptId() {
+    this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
   }
 
   // cahnge semesterId by selection
-  changeDesignationId(e: any) {
+  public changeDesignationId(e: any) {
     console.log(e);
     console.log(this.myForm.value);
     this.myForm.controls['designationId'].setValue(e, {
@@ -71,16 +76,11 @@ export class SaveTeacherComponent implements OnInit {
   }
 
   //add course through value object
-  addTeacher() {
+  public addTeacher() {
     this.teacherService.saveTeacher(this.myForm.value).subscribe(
       (data: any) => {
         this.myFormGroup();
-
         console.log('data message', data.message);
-        // this.getDepartment();
-        // this.getDesignation();
-        // this.departmentList = [];
-        // this.designationList = [];
         Swal.fire(data.message);
       },
       (error: any) => {
@@ -90,18 +90,42 @@ export class SaveTeacherComponent implements OnInit {
     );
   }
 
-  getDepartment() {
+  public getDepartment() {
     this.teacherService.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
-      console.log(data.data);
     });
   }
 
-  getDesignation() {
+  public getDesignation() {
     this.teacherService.getDesignation().subscribe((data: any) => {
       this.designationList = data.data;
-      console.log(data.message);
-      console.log(data.data);
     });
+  }
+  public displayFn(option: department): string {
+    console.log('displayFn value------->', option.name);
+    return option.name;
+  }
+
+  public filterDropdown(e: string) {
+    this.filteredList = [];
+    console.log('e in filterDropdown -------> ', e);
+    this.teacherService.getDeptDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+        console.log('####filteredList####', this.filteredList);
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
+  }
+  public lastKeyPress: number = 0;
+  public debounceTime(e: any) {
+    if (e.timeStamp - this.lastKeyPress > 1500) {
+      this.filterDropdown(e.target.value);
+      this.lastKeyPress = e.timeStamp;
+      console.log('$$$Success$$$CALL');
+    }
+    console.log('###Failed###');
   }
 }
