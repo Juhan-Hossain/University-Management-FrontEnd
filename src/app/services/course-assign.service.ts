@@ -15,9 +15,13 @@ export class CourseAssignService {
   allTeacherUrl: string = 'https://localhost:44322/api/Teachers/GetTeachers';
   courseAssign: string =
     'https://localhost:44322/api/CourseAssignment/CreateCourseAssignment';
+  deptDDL: string = 'https://localhost:44322/api/Departments/LoadDeptDDL';
 
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.departmentUrl);
+  }
+  getDeptDDL(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.deptDDL + `?str=${query}`);
   }
   getTeachers(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.allTeacherUrl);

@@ -31,18 +31,19 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
-  studentList: student[] = [];
-  courseList: course[] = [];
-  depatmentList: department[] = [];
-  filteredList: department[] = [];
-  teacherList: any;
-  selectedDepartment: any;
-  selectedCourse: course[] = [];
-  selectedTeacher: any;
-  selectedCode: any;
-  closeModal: string | undefined;
-  myForm: FormGroup = new FormGroup({});
-  myFormGroup() {
+  public studentList: student[] = [];
+  public courseList: course[] = [];
+  public depatmentList: department[] = [];
+  public filteredList: department[] = [];
+  public teacherList: any;
+  public selectedDepartment: any;
+  public selectedCourse: course[] = [];
+  public selectedTeacher: any;
+  public selectedCode: any;
+  public closeModal: string | undefined;
+  public myForm: FormGroup = new FormGroup({});
+  public myControl = new FormControl('');
+  public myFormGroup() {
     this.myForm = this.formBuilder.group({
       courseName: new FormControl(),
 
@@ -55,44 +56,54 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     });
   }
 
-  updatedForm = this.formBuilder.group({
+  public updatedForm = this.formBuilder.group({
     departmentId: new FormControl('', Validators.required),
     teacherId: new FormControl('', Validators.required),
     code: new FormControl('', Validators.required),
   });
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.getDepartments();
     this.myFormGroup();
   }
 
-  get myFormControl() {
+  public get myFormControl() {
     return this.myForm.controls;
   }
 
-  getDepartments() {
+  public getDepartments() {
     this.courseAssign.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
-      this.filteredList = data.data;
+      // this.filteredList = data.data;
     });
   }
 
-  filterDropdown(e: any) {
-    this.myFormGroup();
-    console.log('e in filterDropdown -------> ', e.target.value);
-    window.scrollTo(window.scrollX, window.scrollY + 1);
-    let searchString = e.target.value.toLowerCase();
-    if (!searchString) {
-      this.filteredList = this.depatmentList.slice();
-      return;
-    } else {
-      this.filteredList = this.depatmentList.filter(
-        (dept) => dept.name.toLowerCase().indexOf(searchString) > -1
-      );
-    }
-    window.scrollTo(window.scrollX, window.scrollY - 1);
-    console.log('this.filteredList indropdown -------> ', this.filteredList);
+  public displayFn(option: department): string {
+    console.log('displayFn value------->', option.name);
+    return option.name;
   }
-  addCourse() {
+
+  public filterDropdown(e: string) {
+    this.filteredList = [];
+    this.courseList = [];
+    console.log('e in filterDropdown -------> ', e);
+    this.courseAssign.getDeptDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+        console.log('####filteredList####', this.filteredList);
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
+  }
+  public debounceTime(e: any) {
+    let str: string = '';
+    setTimeout(() => {
+      console.log(e.target.value);
+      this.filterDropdown(e.target.value);
+    }, 1000);
+  }
+  public addCourse() {
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
         this.studentList = [];
@@ -101,30 +112,38 @@ export class CourseAssignTOTeacherComponent implements OnInit {
         this.depatmentList = [];
         console.log(obj.data);
         this.myFormGroup();
+        this.filteredList = [];
+        this.myControl.setValue('');
         Swal.fire(obj.message);
       },
       (er: any) => {
+        console.log(er.error.message);
         Swal.fire(er.error.message);
       }
     );
   }
-  onConfirm() {
+  public onConfirm() {
     this.updatedForm.value['code'] = this.myForm.value['code'];
-    this.updatedForm.value['departmentId'] = this.myForm.value['departmentId'];
+    this.updatedForm.value['departmentId'] = this.myControl.value.id;
     this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
     this.addCourse();
   }
-  onSubmit() {
+  public onSubmit() {
     this.updatedForm.value['code'] = this.myForm.value['code'];
-    this.updatedForm.value['departmentId'] = this.myForm.value['departmentId'];
+    this.updatedForm.value['departmentId'] = this.myControl.value.id;
     this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
     this.addCourse();
-    console.log(this.updatedForm.value);
+    // console.log(this.updatedForm.value);
   }
-  changeDeptId(x: any) {
-    this.courseAssign.getTeacher(x).subscribe(
+  public changeDeptId() {
+    console.log('Teacher Id------>', this.myControl.value.id);
+    this.courseAssign.getTeacher(this.myControl.value.id).subscribe(
       (obj1) => {
         this.teacherList = obj1.data;
+        if (this.teacherList.length == 0) {
+          Swal.fire("This Dept. Doesn't have any teacher yet!!!");
+          return;
+        }
         this.selectedTeacher = this.myForm.controls.teacherId.value;
       },
       (er1: any) => {
@@ -133,7 +152,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       }
     );
     //---------------------------------
-    this.courseAssign.getCourse(x).subscribe(
+    this.courseAssign.getCourse(this.myControl.value.id).subscribe(
       (obj1) => {
         this.courseList = obj1.data;
         this.selectedCode = this.myForm.controls.code.value;
@@ -154,7 +173,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       }
     );
   }
-  changeTeacher() {
+  public changeTeacher() {
     let y = this.myForm.controls.teacherId.value;
 
     this.selectedTeacher = this.myForm.controls.teacherId.value;
@@ -170,7 +189,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
 
     console.log(this.myForm.value);
   }
-  changeCourseControl(x: string) {
+  public changeCourseControl(x: string) {
     // this.getDepartments();
     this.selectedCode = this.myForm.controls.code.value;
 
@@ -186,7 +205,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.myForm.controls.courseCredit.setValue(selectedCourseCredit);
   }
 
-  check(content: any) {
+  public check(content: any) {
     if (
       this.myForm.value['remainingCredit'] < this.myForm.value['courseCredit']
     ) {
@@ -195,7 +214,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
       this.onSubmit();
     }
   }
-  triggerModal(content: any) {
+  public triggerModal(content: any) {
     this.modalService
       .open(content, { ariaLabelledBy: 'modal-basic-title' })
       .result.then(
