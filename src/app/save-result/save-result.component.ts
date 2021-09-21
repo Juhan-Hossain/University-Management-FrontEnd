@@ -10,6 +10,7 @@ import { student } from '../Models/student';
 import { department } from '../Models/department';
 import { studentGrades } from '../Models/studentGrades';
 import Swal from 'sweetalert2';
+import { serviceResponse } from '../Models/serviceResponse';
 @Component({
   selector: 'app-save-result',
   templateUrl: './save-result.component.html',
@@ -21,15 +22,16 @@ export class SaveResultComponent implements OnInit {
     private saveResult: SaveResultService,
     private formBuilder: FormBuilder
   ) {}
-  studentList: student[] = [];
-  filteredList: student[] = [];
-  courseList: course[] = [];
-  depatmentList: department[] = [];
-  selectedStudent: student[] = [];
-  selectedCourse: course[] = [];
-  gradeList: studentGrades[] = [];
-  myForm: FormGroup = new FormGroup({});
-  myFormGroup() {
+  public studentList: student[] = [];
+  public filteredList: string[] = [];
+  public courseList: course[] = [];
+  public depatmentList: department[] = [];
+  public selectedStudent: string = '';
+  public selectedCourse: course[] = [];
+  public gradeList: studentGrades[] = [];
+  public myForm: FormGroup = new FormGroup({});
+  public myControl = new FormControl('');
+  public myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl(''),
       department: new FormControl(''),
@@ -47,24 +49,22 @@ export class SaveResultComponent implements OnInit {
     this.myFormGroup();
   }
 
-  get myFormControl() {
+  public get myFormControl() {
     return this.myForm.controls;
   }
 
   //add course through value object
-  getStudents() {
+  public getStudents() {
     this.saveResult.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
-      this.filteredList = data.data;
     });
-    // console.log(new Date().toLocaleTimeString());
   }
-  getDepartments() {
+  public getDepartments() {
     this.saveResult.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
     });
   }
-  getGrades() {
+  public getGrades() {
     this.saveResult.getGrade().subscribe((data: any) => {
       this.gradeList = data.data;
       this.gradeList = this.gradeList.sort((a, b) =>
@@ -73,38 +73,33 @@ export class SaveResultComponent implements OnInit {
     });
   }
 
-  changeFormControl(x: any) {
+  public changeFormControl(x: any) {
     this.myForm.controls.courseName.setValue(x);
   }
-  filterDropdown(e: any) {
+  public filterDropdown(e: string) {
     this.myFormGroup();
     this.courseList = [];
-    console.log('e value', e.target.value);
-    console.log('e in filterDropdown -------> ', e.target.value);
-    window.scrollTo(window.scrollX, window.scrollY + 1);
+    console.log('e in filterDropdown -------> ', e);
     let searchString = '';
-    searchString = e.target.value.toLowerCase();
-    if (searchString === '') {
-      this.filteredList = this.studentList.slice();
-      return;
-    } else {
-      this.filteredList = this.studentList.filter(
-        (student) =>
-          student.registrationNumber.toLowerCase().indexOf(searchString) > -1
-      );
-    }
-    window.scrollTo(window.scrollX, window.scrollY - 1);
-    console.log('this.filteredList indropdown -------> ', this.filteredList);
+    searchString = e.toLowerCase();
+    this.saveResult.getStdDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
   }
-  changeGradeControl() {}
+  public changeGradeControl() {}
 
-  changeId(x: any) {
-    this.selectedStudent = x;
-    this.myForm.controls['studentRegNo'].setValue(x);
+  public changeId() {
+    this.selectedStudent = this.myControl.value;
+    this.myForm.controls['studentRegNo'].setValue(this.selectedStudent);
     this.myForm.controls['courseName'].setValue('');
     this.courseList = [];
 
-    this.saveResult.getCourse(x).subscribe(
+    this.saveResult.getCourse(this.selectedStudent).subscribe(
       (obj1) => {
         // this.getDepartments();
         this.courseList = obj1.data;
@@ -136,6 +131,17 @@ export class SaveResultComponent implements OnInit {
         alert(er1.error.message);
       }
     );
+  }
+  public debounceTime(e: any) {
+    setTimeout(() => {
+      console.log(e.target.value);
+      this.filterDropdown(e.target.value);
+    }, 1000);
+  }
+
+  public displayFn(option: string): string {
+    console.log('displayFn value------->', option);
+    return option;
   }
   onSubmit() {
     this.saveResult.addStudentResult(this.myForm.value).subscribe(

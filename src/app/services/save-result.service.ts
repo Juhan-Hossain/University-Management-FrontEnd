@@ -12,24 +12,25 @@ export class SaveResultService {
   departmentUrl: string = 'https://localhost:44322/api/Departments';
   courseEnrollUrl: string =
     'https://localhost:44322/api/CourseEnroll/CreateCourseEnroll';
-  studentCourseUrl: string = 'https://localhost:44322/api/Courses/EnrolledCoursesByStudentRegNo';
+  studentCourseUrl: string =
+    'https://localhost:44322/api/Courses/EnrolledCoursesByStudentRegNo';
 
-  saveResultUrl: string = 'https://localhost:44322/api/StudentResult/CreateStudentResult';
+  saveResultUrl: string =
+    'https://localhost:44322/api/StudentResult/CreateStudentResult';
   gradeUrl: string = 'https://localhost:44322/api/Grades/GetGrades';
-
+  StdDDL: string = 'https://localhost:44322/api/Students/LoadStdDDL';
 
   getStudent(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.studentUrl);
   }
-
-  getCourse(query:string) : Observable<serviceResponse> {
-
-    return this.http.get<serviceResponse>(this.studentCourseUrl + `?stdRegNo=${query}`);
-
+  getStdDDL(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.StdDDL + `?str=${query}`);
   }
-
-
-
+  getCourse(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(
+      this.studentCourseUrl + `?stdRegNo=${query}`
+    );
+  }
 
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.departmentUrl);
@@ -38,9 +39,7 @@ export class SaveResultService {
     return this.http.get<serviceResponse>(this.gradeUrl);
   }
 
-  addStudentResult(data:any)
-  {
-    return this.http.post(this.saveResultUrl,data);
+  addStudentResult(data: any) {
+    return this.http.post(this.saveResultUrl, data);
   }
-
 }
