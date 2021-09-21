@@ -24,40 +24,20 @@
             type="text"
             placeholder="search Student.."
             matInput
-            formControlName="studentRegNo"
+            [formControl]="myControl"
             [matAutocomplete]="auto"
-            (input)="filterDropdown($event)"
+            (input)="debounceTime($event)"
             style="min-width: 290px"
           />
           <mat-autocomplete
             #auto="matAutocomplete"
             (optionSelected)="changeId()"
+            [displayWith]="displayFn.bind(this)"
           >
-            <mat-option
-              *ngFor="let student of filteredList"
-              [value]="student.registrationNumber"
-            >
-              {{ student.registrationNumber }}
+            <mat-option *ngFor="let student of filteredList" [value]="student">
+              {{ student }}
             </mat-option>
           </mat-autocomplete>
-          <!-- <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="studentRegNo"
-            placeholder="Student reg. no."
-            formControlName="studentRegNo"
-            (change)="changeId(selectField.value)"
-            #selectField
-          >
-            <option value="" disabled>Choose Student</option>
-            <option
-              *ngFor="let student of filteredList"
-              [value]="student.registrationNumber"
-            >
-              {{ student.registrationNumber }}
-            </option>
-          </select> -->
         </div>
       </div>
     </div>

@@ -4,31 +4,33 @@ import { Observable } from 'rxjs';
 import { serviceResponse } from '../Models/serviceResponse';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class CourseEnrollService {
-
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {}
   studentUrl: string = 'https://localhost:44322/api/Students/GetStudents';
-  studentCourseUrl: string = "https://localhost:44322/api/Courses/CoursesByStudentRegNo"
+  studentCourseUrl: string =
+    'https://localhost:44322/api/Courses/CoursesByStudentRegNo';
   departmentUrl: string = 'https://localhost:44322/api/Departments';
-  courseEnrollUrl: string = 'https://localhost:44322/api/CourseEnroll/CreateCourseEnroll';
-
+  courseEnrollUrl: string =
+    'https://localhost:44322/api/CourseEnroll/CreateCourseEnroll';
+  StdDDL: string = 'https://localhost:44322/api/Students/LoadStdDDL';
   getStudent(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.studentUrl);
   }
 
-  getCourse(query:string) : Observable<serviceResponse> {
-
-    return this.http.get<serviceResponse>(this.studentCourseUrl + `?stdRegNo=${query}`);
-
+  getStdDDL(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.StdDDL + `?str=${query}`);
+  }
+  getCourse(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(
+      this.studentCourseUrl + `?stdRegNo=${query}`
+    );
   }
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.departmentUrl);
   }
-  addCourseEnroll(data:any)
-  {
-    return this.http.post(this.courseEnrollUrl,data);
+  addCourseEnroll(data: any) {
+    return this.http.post(this.courseEnrollUrl, data);
   }
-
 }

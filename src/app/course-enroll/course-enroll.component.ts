@@ -10,6 +10,8 @@ import Swal from 'sweetalert2';
 import { student } from '../Models/student';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
+import { serviceResponse } from '../Models/serviceResponse';
+import { department } from '../Models/department';
 @Injectable({
   providedIn: 'root',
 })
@@ -24,14 +26,14 @@ export class CourseEnrollComponent implements OnInit {
     private courseEnroll: CourseEnrollService,
     private formBuilder: FormBuilder
   ) {}
-  studentList: any;
-  filteredList: student[] = [];
-  courseList: course[] = [];
-  depatmentList: any;
-  selectedStudent: any;
-  selectedCourse: course[] = [];
-  // selectedStdDeptId: any;
-  myForm: FormGroup = new FormGroup({});
+  public studentList: any;
+  public filteredList: any;
+  public courseList: course[] = [];
+  public depatmentList: any;
+  public selectedStudent: any;
+  public selectedCourse: course[] = [];
+  public myForm: FormGroup = new FormGroup({});
+  public myControl = new FormControl('');
   myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl(''),
@@ -60,7 +62,7 @@ export class CourseEnrollComponent implements OnInit {
 
   // cahnge departmentId by selection
   changeId() {
-    this.selectedStudent = this.myForm.controls['studentRegNo'].value;
+    this.selectedStudent = this.myControl.value;
     this.myForm.controls.studentRegNo.setValue(this.selectedStudent);
     this.myForm.controls['courseCode'].setValue('');
     this.courseEnroll.getCourse(this.selectedStudent).subscribe(
@@ -69,21 +71,21 @@ export class CourseEnrollComponent implements OnInit {
         this.courseList = obj1.data;
 
         let selectedStdDeptId = this.studentList.find(
-          (x: { registrationNumber: any }) =>
+          (x: { registrationNumber: string }) =>
             x.registrationNumber === this.selectedStudent
         ).departmentId;
 
         let selectedStdName = this.studentList.find(
-          (x: { registrationNumber: any }) =>
+          (x: { registrationNumber: string }) =>
             x.registrationNumber === this.selectedStudent
         ).name;
         let selectedStdEmail = this.studentList.find(
-          (x: { registrationNumber: any }) =>
+          (x: { registrationNumber: string }) =>
             x.registrationNumber === this.selectedStudent
         ).email;
 
         let departmentName = this.depatmentList.find(
-          (x: { id: any }) => x.id === selectedStdDeptId
+          (x: { id: number }) => x.id === selectedStdDeptId
         ).name;
 
         this.myForm.controls.department.setValue(departmentName);
@@ -105,7 +107,7 @@ export class CourseEnrollComponent implements OnInit {
   getStudents() {
     this.courseEnroll.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
-      this.filteredList = data.data;
+      // this.filteredList = data.data;
     });
     console.log(new Date().toLocaleTimeString());
   }
@@ -114,26 +116,35 @@ export class CourseEnrollComponent implements OnInit {
       this.depatmentList = data.data;
     });
   }
-  filterDropdown(e: any) {
+  filterDropdown(e: string) {
     this.myFormGroup();
     this.myForm.controls.studentRegNo.setValue('');
     this.myForm.controls['courseCode'].setValue('');
-    console.log('e in filterDropdown -------> ', e.target.value);
-    window.scrollTo(window.scrollX, window.scrollY + 1);
+    console.log('e in filterDropdown -------> ', e);
     let searchString = '';
-    searchString = e.target.value.toLowerCase();
-    if (searchString === '') {
-      this.filteredList = this.studentList.slice();
-      return;
-    } else {
-      this.filteredList = this.studentList.filter(
-        (student: { registrationNumber: string }) =>
-          student.registrationNumber.toLowerCase().indexOf(searchString) > -1
-      );
-    }
-    window.scrollTo(window.scrollX, window.scrollY - 1);
-    console.log('this.filteredList indropdown -------> ', this.filteredList);
+    searchString = e.toLowerCase();
+    this.courseEnroll.getStdDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
   }
+
+  debounceTime(e: any) {
+    setTimeout(() => {
+      console.log(e.target.value);
+      this.filterDropdown(e.target.value);
+    }, 1000);
+  }
+
+  displayFn(option: string): string {
+    console.log('displayFn value------->', option);
+    return option;
+  }
+
   onSubmit() {
     this.updatedForm.value['studentRegNo'] = this.myForm.value['studentRegNo'];
     this.updatedForm.value['courseCode'] = this.myForm.value['courseCode'];
@@ -143,7 +154,6 @@ export class CourseEnrollComponent implements OnInit {
         this.myFormGroup();
         this.courseList = [];
         console.log('success message', obj.data);
-        // this.ngOnInit();
         Swal.fire(obj.message);
       },
       (er: any) => {
