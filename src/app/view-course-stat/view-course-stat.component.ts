@@ -19,9 +19,11 @@ import { course } from '../Models/course';
   styleUrls: ['./view-course-stat.component.css'],
 })
 export class ViewCourseStatComponent implements OnInit, OnDestroy {
-  departmentList: department[]=[];
-  courseList: course[]=[];
-  departmentId = new FormControl();
+  public departmentList: department[] = [];
+  public filteredList: department[] = [];
+  public courseList: course[] = [];
+  public departmentId = new FormControl();
+  public myControl = new FormControl('');
 
   constructor(
     private http: HttpClient,
@@ -30,22 +32,45 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-
     this.getDepartment();
   }
 
-
-  getDepartment() {
-    this.viewCourseService.getDepartment().subscribe((data: serviceResponse) => {
-      this.departmentList = data.data;
-
-    });
+  public getDepartment() {
+    this.viewCourseService
+      .getDepartment()
+      .subscribe((data: serviceResponse) => {
+        this.departmentList = data.data;
+      });
+  }
+  public displayFn(option: department): string {
+    console.log('displayFn value------->', option.name);
+    return option.name;
   }
 
-
-  print() {
+  public filterDropdown(e: string) {
+    this.filteredList = [];
     this.courseList = [];
-    this.viewCourseService.getCourse(this.departmentId.value).subscribe(
+    console.log('e in filterDropdown -------> ', e);
+    this.viewCourseService.getDeptDDL(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredList = data.data;
+        console.log('####filteredList####', this.filteredList);
+      },
+      (er: serviceResponse) => {
+        this.filteredList = [];
+      }
+    );
+  }
+  public debounceTime(e: any) {
+    let str: string = '';
+    setTimeout(() => {
+      console.log(e.target.value);
+      this.filterDropdown(e.target.value);
+    }, 1000);
+  }
+  public print() {
+    this.courseList = [];
+    this.viewCourseService.getCourse(this.myControl.value.id).subscribe(
       (x) => {
         this.courseList = x.data;
       },
@@ -54,5 +79,5 @@ export class ViewCourseStatComponent implements OnInit, OnDestroy {
       }
     );
   }
-  ngOnDestroy() {}
+  public ngOnDestroy() {}
 }

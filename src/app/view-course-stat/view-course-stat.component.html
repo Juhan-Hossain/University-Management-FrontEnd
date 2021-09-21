@@ -1,6 +1,4 @@
-<div class="container" style="margin: 100px"
-style="max-width: 800px;"
->
+<div class="container" style="margin: 100px" style="max-width: 800px">
   <div class="header">
     <h4>View Course Statistics</h4>
   </div>
@@ -11,22 +9,24 @@ style="max-width: 800px;"
         <label for="DepartmentId">Department</label>
       </div>
       <div class="col-5">
-        <select
+        <input
           type="text"
-          class="form-select form-select-sm"
-          aria-label=".form-select-sm example"
-          id="departmentId"
-          placeholder="Course department"
-          [formControl]="departmentId"
-          (change)="print()"
+          placeholder="search Department.."
+          matInput
+          [matAutocomplete]="auto"
+          style="min-width: 290px"
+          [formControl]="myControl"
+          (input)="debounceTime($event)"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="print()"
+          [displayWith]="displayFn.bind(this)"
         >
-          <option
-            *ngFor="let department of departmentList"
-            [value]="department.id"
-          >
-            {{ department.name }}
-          </option>
-        </select>
+          <mat-option *ngFor="let option of filteredList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
       </div>
     </div>
   </div>
@@ -34,10 +34,10 @@ style="max-width: 800px;"
   <table class="table table-bordered">
     <thead class="thead-dark">
       <tr>
-        <th scope="id"style="background-color: springgreen">Code</th>
-        <th scope="col"style="background-color: springgreen">Name</th>
-        <th scope="col"style="background-color: springgreen">Semester</th>
-        <th scope="col"style="background-color: springgreen">Assign To</th>
+        <th scope="id" style="background-color: springgreen">Code</th>
+        <th scope="col" style="background-color: springgreen">Name</th>
+        <th scope="col" style="background-color: springgreen">Semester</th>
+        <th scope="col" style="background-color: springgreen">Assign To</th>
       </tr>
     </thead>
     <tbody>
