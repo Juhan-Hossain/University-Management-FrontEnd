@@ -3,112 +3,158 @@
   <br />
   <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="Department">Department</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            placeholder="search Department.."
-            matInput
-            [matAutocomplete]="auto"
-            style="min-width: 290px"
-            [formControl]="myControl"
-            (input)="debounceTime($event)"
-          />
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            (optionSelected)="changeDeptId()"
-            [displayWith]="displayFn.bind(this)"
-          >
-            <mat-option
-              disabled
-              selected
-              value=""
-              style="background-color: greenyellow"
-            >
-              choose department
-            </mat-option>
-            <mat-option *ngFor="let option of filteredList" [value]="option">
-              {{ option.name }}
-            </mat-option>
-          </mat-autocomplete>
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="Department">Department</label>
       </div>
+      <div class="col-9">
+        <input
+          type="text"
+          placeholder="search Department.."
+          matInput
+          [matAutocomplete]="auto"
+          style="min-width: 290px"
+          [formControl]="myControl"
+          (input)="debounceTime($event)"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="changeDeptId()"
+          [displayWith]="displayFn.bind(this)"
+        >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose department
+          </mat-option>
+          <mat-option *ngFor="let option of filteredList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <span
+        *ngIf="myControl.touched && myControl.value == ''"
+        class="text-danger error"
+        >Course department required</span
+      >
     </div>
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="Course">Course</label>
-        </div>
-        <div class="col-9">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="course"
-            placeholder="course"
-            formControlName="courseCode"
-            (change)="print()"
-          >
-            <option value="" disabled>Choose Course</option>
-            <option *ngFor="let course of courseList" [value]="course.code">
-              {{ course.name }}
-            </option>
-          </select>
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="Course">Course</label>
       </div>
+      <div class="col-9">
+        <input
+          type="text"
+          placeholder="search course.."
+          matInput
+          [matAutocomplete]="course"
+          style="min-width: 290px"
+          [formControl]="myCode"
+          (input)="courseDDL($event)"
+        />
+        <mat-autocomplete
+          #course="matAutocomplete"
+          (optionSelected)="changeCourseCode()"
+          [displayWith]="displayCourse.bind(this)"
+        >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose course
+          </mat-option>
+          <mat-option *ngFor="let option of courseList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <span
+        *ngIf="myCode.touched && myCode.value == ''"
+        class="text-danger error"
+        >Course required</span
+      >
     </div>
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="Room No.">Room No.</label>
-        </div>
-        <div class="col-9">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="room"
-            placeholder="room"
-            formControlName="roomId"
-            (change)="print()"
-          >
-            <option value="" disabled>Choose Room</option>
-            <option *ngFor="let room of roomList" [value]="room.id">
-              {{ room.name }}
-            </option>
-          </select>
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="Room No.">Room No.</label>
       </div>
+      <div class="col-9">
+        <input
+          type="text"
+          placeholder="search room.."
+          matInput
+          [matAutocomplete]="room"
+          style="min-width: 290px"
+          [formControl]="myRoom"
+          (input)="roomDDL($event)"
+        />
+        <mat-autocomplete
+          #room="matAutocomplete"
+          (optionSelected)="changeRoomId()"
+          [displayWith]="displayRoom.bind(this)"
+        >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose room
+          </mat-option>
+          <mat-option *ngFor="let option of roomList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <span
+        *ngIf="myRoom.touched && myRoom.value == ''"
+        class="text-danger error"
+        >Room required</span
+      >
     </div>
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="Day">Day</label>
-        </div>
-        <div class="col-9">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="day"
-            placeholder="day"
-            formControlName="dayId"
-            (change)="print()"
-          >
-            <option value="" disabled>Choose Day</option>
-            <option *ngFor="let day of dayList" [value]="day.id">
-              {{ day.dayName }}
-            </option>
-          </select>
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="Day">Day</label>
       </div>
+      <div class="col-9">
+        <input
+          type="text"
+          placeholder="search day.."
+          matInput
+          [matAutocomplete]="day"
+          style="min-width: 290px"
+          [formControl]="myDay"
+          (input)="dayDDL($event)"
+        />
+        <mat-autocomplete
+          #day="matAutocomplete"
+          (optionSelected)="changeDayId()"
+          [displayWith]="displayDay.bind(this)"
+        >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose day
+          </mat-option>
+          <mat-option *ngFor="let option of dayList" [value]="option">
+            {{ option.dayName }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <span *ngIf="myDay.touched && myDay.value == ''" class="text-danger error"
+        >Day required</span
+      >
     </div>
     <br />
     <div>
@@ -152,7 +198,12 @@
     </div>
 
     <br />
-    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      [disabled]="!myForm.valid"
+      style="float: right"
+    >
       Allocate
     </button>
   </form>

@@ -28,7 +28,7 @@ export class AllocateClassroomComponent implements OnInit {
     private allocateClassroom: AllocateClassroomService,
     private formBuilder: FormBuilder
   ) {}
-
+  public x: number = 0;
   public departmentList: department[] = [];
   public courseList: course[] = [];
   public roomList: room[] = [];
@@ -36,6 +36,9 @@ export class AllocateClassroomComponent implements OnInit {
   public filteredList: department[] = [];
   public myForm: FormGroup = new FormGroup({});
   public myControl = new FormControl('');
+  public myDay = new FormControl('');
+  public myRoom = new FormControl('');
+  public myCode = new FormControl('');
 
   public myFormGroup() {
     this.myForm = this.formBuilder.group({
@@ -56,68 +59,114 @@ export class AllocateClassroomComponent implements OnInit {
   }
 
   //fetching department
-  public getDepartment() {
-    this.allocateClassroom.getDepartment().subscribe((data: any) => {
-      this.departmentList = data.data;
-      this.filteredList = data.data;
-    });
-  }
-
-  // public getDeptDDL(str:string) {
-
+  // public getDepartment() {
+  //   this.allocateClassroom.getDepartment().subscribe((data: any) => {
+  //     this.departmentList = data.data;
+  //     this.filteredList = data.data;
+  //   });
   // }
 
-  public getRoom() {
-    this.allocateClassroom.getRoom().subscribe((data: any) => {
-      this.roomList = data.data;
-    });
+  public changeDayId() {
+    this.myForm.controls['dayId'].setValue(this.myDay.value.id);
+  }
+  displayDay(option: day): string {
+    return option.dayName;
   }
 
-  public getDay() {
-    this.allocateClassroom.getDay().subscribe((data: any) => {
-      this.dayList = data.data;
-    });
-  }
-
-  public x: number = 0;
-
-  public changeDeptId() {
-    this.getDay();
-    this.getRoom();
-
-    console.log('->', this.myControl.value);
-    this.x = this.myControl.value.id;
-    this.myForm.controls['courseCode'].setValue('');
-    this.myForm.controls.departmentId.setValue(this.myControl.value.name);
-    this.allocateClassroom.getCourse(this.x).subscribe(
-      (obj: any) => {
-        this.courseList = obj.data;
-        console.log('courselist value------->', this.courseList);
+  public filterDay(e: string) {
+    // this.myFormGroup();
+    // this.courseList = [];
+    // this.roomList = [];
+    // this.dayList = [];
+    // this.filteredList = [];
+    this.allocateClassroom.getDay(e).subscribe(
+      (data: serviceResponse) => {
+        this.dayList = data.data;
       },
-      (er: any) => {
-        Swal.fire(er.error.message);
+      (er: serviceResponse) => {
+        this.dayList = [];
       }
     );
   }
-
-  public changeTime() {
-    let start = this.myForm.controls.startTime.value;
-    let end = this.myForm.controls.endTime.value;
-    if (start <= 12 && start != '') {
-      this.myForm.controls.FromMeridiem.setValue('PM');
-    } else {
-      this.myForm.controls.FromMeridiem.setValue('AM');
+  public dayKey: number = 0;
+  public dayDDL(e: any) {
+    if (e.timeStamp - this.dayKey > 1500) {
+      this.filterDay(e.target.value);
+      this.dayKey = e.timeStamp;
     }
-    if (end <= 12 && end != '') {
-      this.myForm.controls.ToMeridiem.setValue('PM');
-    } else {
-      this.myForm.controls.ToMeridiem.setValue('AM');
-    }
-    console.log('myFromGroup value------->', this.myForm.value);
   }
 
+  public changeRoomId() {
+    this.myForm.controls['roomId'].setValue(this.myRoom.value.id);
+  }
+  displayRoom(option: room): string {
+    return option.name;
+  }
+
+  public filterRoom(e: string) {
+    // this.myFormGroup();
+    // this.courseList = [];
+    // this.roomList = [];
+    // this.dayList = [];
+    // this.filteredList = [];
+    this.allocateClassroom.getRoom(e).subscribe(
+      (data: serviceResponse) => {
+        this.roomList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.roomList = [];
+      }
+    );
+  }
+  public roomKey: number = 0;
+  public roomDDL(e: any) {
+    if (e.timeStamp - this.roomKey > 1500) {
+      this.filterRoom(e.target.value);
+      this.roomKey = e.timeStamp;
+    }
+  }
+  public changeCourseCode() {
+    this.myForm.controls['courseCode'].setValue(this.myCode.value.code);
+  }
+  public displayCourse(option: course): string {
+    return option.name;
+  }
+
+  public filterCourse(e: string) {
+    // this.myFormGroup();
+    // this.courseList = [];
+    // this.roomList = [];
+    // this.dayList = [];
+    // this.filteredList = [];
+    this.allocateClassroom.getCourse(this.myControl.value.id, e).subscribe(
+      (data: serviceResponse) => {
+        this.courseList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.courseList = [];
+      }
+    );
+  }
+  public courseKey: number = 0;
+  public courseDDL(e: any) {
+    if (e.timeStamp - this.courseKey > 1500) {
+      this.filterCourse(e.target.value);
+      this.courseKey = e.timeStamp;
+    }
+  }
+  public changeDeptId() {
+    this.myFormGroup();
+    this.courseList = [];
+    this.roomList = [];
+    this.dayList = [];
+    this.myDay = new FormControl('');
+    this.myRoom = new FormControl('');
+    this.myCode = new FormControl('');
+    this.x = this.myControl.value.id;
+    this.myForm.controls['courseCode'].setValue('');
+    this.myForm.controls['departmentId'].setValue(this.myControl.value.name);
+  }
   displayFn(option: department): string {
-    console.log('displayFn value------->', option.name);
     return option.name;
   }
 
@@ -150,8 +199,24 @@ export class AllocateClassroomComponent implements OnInit {
     }
     console.log('###Failed###');
   }
+  public changeTime() {
+    let start = this.myForm.controls.startTime.value;
+    let end = this.myForm.controls.endTime.value;
+    if (start <= 12 && start != '') {
+      this.myForm.controls.FromMeridiem.setValue('PM');
+    } else {
+      this.myForm.controls.FromMeridiem.setValue('AM');
+    }
+    if (end <= 12 && end != '') {
+      this.myForm.controls.ToMeridiem.setValue('PM');
+    } else {
+      this.myForm.controls.ToMeridiem.setValue('AM');
+    }
+    console.log('myFromGroup value------->', this.myForm.value);
+  }
 
   public onSubmit() {
+    console.log('----------><------', this.myForm.value);
     this.myForm.controls['departmentId'].setValue(this.x);
     this.allocateClassroom.allocateClass(this.myForm.value).subscribe(
       (obj: any) => {
@@ -161,7 +226,10 @@ export class AllocateClassroomComponent implements OnInit {
         this.roomList = [];
         this.dayList = [];
         this.filteredList = [];
-        this.myControl.setValue('');
+        this.myControl = new FormControl('');
+        this.myDay = new FormControl('');
+        this.myRoom = new FormControl('');
+        this.myCode = new FormControl('');
         Swal.fire(obj.message);
       },
       (er: any) => {
