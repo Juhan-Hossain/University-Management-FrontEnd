@@ -1,8 +1,11 @@
-.btn{
+.btn {
   float: right;
 }
 .Container {
   padding: 50px;
   border: 1px solid aliceblue;
   align-content: center;
+}
+.error {
+  margin-left: 107px;
 }

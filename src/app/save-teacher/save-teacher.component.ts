@@ -36,7 +36,7 @@ export class SaveTeacherComponent implements OnInit {
       name: new FormControl('', Validators.required),
       address: new FormControl('', Validators.required),
       email: new FormControl('', [Validators.required, Validators.email]),
-      contact: new FormControl('', Validators.required),
+      contact: new FormControl('', [Validators.required]),
       departmentId: new FormControl('', Validators.required),
       designationId: new FormControl('', Validators.required),
       creditToBeTaken: new FormControl('', [

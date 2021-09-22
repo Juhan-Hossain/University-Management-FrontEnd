@@ -10,9 +10,9 @@ export class AllocateClassroomService {
   constructor(private http: HttpClient) {}
   departmentUrl: string = 'https://localhost:44322/api/Departments';
   courseUrl: string =
-    'https://localhost:44322/api/Courses/ViewCoursesByDepartment';
-  roomUrl: string = 'https://localhost:44322/api/Room/GetRooms';
-  dayUrl: string = 'https://localhost:44322/api/Day/GetDays';
+    'https://localhost:44322/api/Courses/CoursesByDepartmentAndStrDDL';
+  roomUrl: string = 'https://localhost:44322/api/Room/LoadRoomDDL';
+  dayUrl: string = 'https://localhost:44322/api/Day/LoadDayDDL';
   allocateUrl: string =
     'https://localhost:44322/api/RoomAllocation/AllocateRooms';
   deptDDL: string = 'https://localhost:44322/api/Departments/LoadDeptDDL';
@@ -20,16 +20,16 @@ export class AllocateClassroomService {
   getDepartment(): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.departmentUrl);
   }
-  getRoom(): Observable<serviceResponse> {
-    return this.http.get<serviceResponse>(this.roomUrl);
+  getRoom(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.roomUrl + `?str=${query}`);
   }
-  getDay(): Observable<serviceResponse> {
-    return this.http.get<serviceResponse>(this.dayUrl);
+  getDay(query: string): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(this.dayUrl + `?str=${query}`);
   }
 
-  getCourse(query: number): Observable<serviceResponse> {
+  getCourse(query: number, search: string): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(
-      this.courseUrl + `?departmentId=${query}`
+      this.courseUrl + `?departmentId=${query}&str=${search}`
     );
   }
   getDeptDDL(query: string): Observable<serviceResponse> {
