@@ -14,64 +14,82 @@
   <br />
   <form [formGroup]="myForm" style="max-width: 400px">
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="department">Department</label>
-        </div>
-        <div class="col-9">
-          <input
-            type="text"
-            placeholder="search Department.."
-            matInput
-            [matAutocomplete]="auto"
-            style="min-width: 290px"
-            [formControl]="myControl"
-            (input)="debounceTime($event)"
-          />
-          <mat-autocomplete
-            #auto="matAutocomplete"
-            (optionSelected)="changeDeptId()"
-            [displayWith]="displayFn.bind(this)"
-          >
-            <mat-option
-              disabled
-              selected
-              value=""
-              style="background-color: greenyellow"
-            >
-              choose department
-            </mat-option>
-            <mat-option *ngFor="let option of filteredList" [value]="option">
-              {{ option.name }}
-            </mat-option>
-          </mat-autocomplete>
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="department">Department</label>
       </div>
+      <div class="col-9">
+        <input
+          type="text"
+          placeholder="search Department.."
+          matInput
+          [matAutocomplete]="auto"
+          style="min-width: 290px"
+          [formControl]="myControl"
+          (input)="debounceTime($event)"
+        />
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="changeDeptId()"
+          [displayWith]="displayFn.bind(this)"
+        >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose department
+          </mat-option>
+          <mat-option *ngFor="let option of filteredList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <span
+        *ngIf="myControl.touched && myControl.value == ''"
+        class="text-danger error"
+        >Department required</span
+      >
     </div>
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="Teacher">Teacher</label>
-        </div>
-        <div class="col-9">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="Teacher"
-            placeholder="Teacher"
-            formControlName="teacherId"
-            (change)="changeTeacher()"
-          >
-            <option value="" disabled selected>Choose Teacher</option>
-            <option *ngFor="let teacher of teacherList" [value]="teacher.id">
-              {{ teacher.name }}
-            </option>
-          </select>
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="Teacher">Teacher</label>
       </div>
+      <div class="col-9">
+        <input
+          type="text"
+          placeholder="search teacher.."
+          matInput
+          [matAutocomplete]="teacher"
+          style="min-width: 290px"
+          [formControl]="myTeacher"
+          (input)="teacherDDL($event)"
+        />
+        <mat-autocomplete
+          #teacher="matAutocomplete"
+          (optionSelected)="changeTeacherId(); changeTeacher()"
+          [displayWith]="displayTeacher.bind(this)"
+        >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose teacher
+          </mat-option>
+          <mat-option *ngFor="let option of teacherList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <span
+        *ngIf="myTeacher.touched && myTeacher.value == ''"
+        class="text-danger error"
+        >Teacher required</span
+      >
     </div>
     <br />
     <div class="form-group">
@@ -114,29 +132,43 @@
       </div>
     </div>
     <br />
-    <div>
-      <div class="row">
-        <div class="col-3">
-          <label for="courseCode">Course Code</label>
-        </div>
-        <div class="col-9">
-          <select
-            type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="courseCode"
-            placeholder="courseCode"
-            formControlName="code"
-            (change)="changeCourseControl(selectField.value)"
-            #selectField
-          >
-            <option value="" disabled selected>Choose Course</option>
-            <option *ngFor="let course of courseList" [(value)]="course.code">
-              {{ course.name }}
-            </option>
-          </select>
-        </div>
+    <div class="row">
+      <div class="col-3">
+        <label for="courseCode">Course Code</label>
       </div>
+      <div class="col-9">
+        <input
+          type="text"
+          placeholder="search course.."
+          matInput
+          [matAutocomplete]="course"
+          style="min-width: 290px"
+          [formControl]="myCode"
+          (input)="courseDDL($event)"
+        />
+        <mat-autocomplete
+          #course="matAutocomplete"
+          (optionSelected)="changeCourseCode(); changeCourseControl()"
+          [displayWith]="displayCourse.bind(this)"
+        >
+          <mat-option
+            disabled
+            selected
+            value=""
+            style="background-color: greenyellow"
+          >
+            choose course
+          </mat-option>
+          <mat-option *ngFor="let option of courseList" [value]="option">
+            {{ option.name }}
+          </mat-option>
+        </mat-autocomplete>
+      </div>
+      <span
+        *ngIf="myCode.touched && myCode.value == ''"
+        class="text-danger error"
+        >Teacher required</span
+      >
     </div>
     <br />
     <div class="form-group">
