@@ -9,43 +9,43 @@
     <br />
     <form [formGroup]="myForm" (ngSubmit)="onSubmit()" style="max-width: 400px">
       <br />
-      <div>
-        <div class="row">
-          <div class="col-3">
-            <label for="studentRegNo">Student Reg. No.</label>
-          </div>
-          <div class="col-9">
-            <input
-              type="text"
-              placeholder="search Student.."
-              matInput
-              [formControl]="myControl"
-              [matAutocomplete]="auto"
-              (input)="debounceTime($event)"
-              style="min-width: 290px"
-            />
-            <mat-autocomplete
-              #auto="matAutocomplete"
-              (optionSelected)="changeId()"
-              [displayWith]="displayFn.bind(this)"
-            >
-              <mat-option
-                disabled
-                selected
-                value=""
-                style="background-color: greenyellow"
-              >
-                choose student
-              </mat-option>
-              <mat-option
-                *ngFor="let student of filteredList"
-                [value]="student"
-              >
-                {{ student }}
-              </mat-option>
-            </mat-autocomplete>
-          </div>
+      <div class="row">
+        <div class="col-3">
+          <label for="studentRegNo">Student Reg. No.</label>
         </div>
+        <div class="col-9">
+          <input
+            type="text"
+            placeholder="search Student.."
+            matInput
+            [formControl]="myControl"
+            [matAutocomplete]="auto"
+            (input)="debounceTime($event)"
+            style="min-width: 290px"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="changeId(); changeView()"
+            [displayWith]="displayFn.bind(this)"
+          >
+            <mat-option
+              disabled
+              selected
+              value=""
+              style="background-color: greenyellow"
+            >
+              choose student
+            </mat-option>
+            <mat-option *ngFor="let student of filteredList" [value]="student">
+              {{ student }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <span
+          *ngIf="myControl.touched && myControl.value == ''"
+          class="text-danger error"
+          >student required</span
+        >
       </div>
       <br />
       <div class="form-group">
@@ -105,49 +105,82 @@
         </div>
       </div>
       <br />
-      <div>
-        <div class="row">
-          <div class="col-3">
-            <label for="courseName">Select Course</label>
-          </div>
-          <div class="col-9">
-            <select
-              type="text"
-              class="form-select form-select-sm"
-              aria-label=".form-select-sm example"
-              formControlName="courseName"
-            >
-              <option value="" disabled>Choose Course</option>
-              <option *ngFor="let course of courseList" [value]="course.name">
-                {{ course.name }}
-              </option>
-            </select>
-          </div>
+      <div class="row">
+        <div class="col-3">
+          <label for="courseName">Select Course</label>
         </div>
+        <div class="col-9">
+          <input
+            type="text"
+            placeholder="search course.."
+            matInput
+            [matAutocomplete]="course"
+            style="min-width: 290px"
+            [formControl]="myCourse"
+            (input)="courseDDL($event)"
+          />
+          <mat-autocomplete
+            #course="matAutocomplete"
+            (optionSelected)="changeCourseName()"
+            [displayWith]="displayCourse.bind(this)"
+          >
+            <mat-option
+              disabled
+              selected
+              value=""
+              style="background-color: greenyellow"
+            >
+              choose course
+            </mat-option>
+            <mat-option *ngFor="let option of courseList" [value]="option">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <span
+          *ngIf="myCourse.touched && myCourse.value == ''"
+          class="text-danger error"
+          >course required</span
+        >
       </div>
       <br />
-      <div>
-        <div class="row">
-          <div class="col-3">
-            <label for="grade">Select Grade</label>
-          </div>
-          <div class="col-9">
-            <select
-              type="text"
-              class="form-select form-select-sm"
-              aria-label=".form-select-sm example"
-              id="grade"
-              placeholder="grade"
-              formControlName="gradeLetter"
-              (change)="changeGradeControl()"
-            >
-              <option value="" disabled>Choose Grade</option>
-              <option *ngFor="let grade of gradeList" [value]="grade.grade">
-                {{ grade.grade }}
-              </option>
-            </select>
-          </div>
+      <div class="row">
+        <div class="col-3">
+          <label for="grade">Select Grade</label>
         </div>
+        <div class="col-9">
+          <input
+            type="text"
+            placeholder="search grade.."
+            matInput
+            [matAutocomplete]="grade"
+            style="min-width: 290px"
+            [formControl]="myGrade"
+            (input)="gradeDDL($event)"
+          />
+          <mat-autocomplete
+            #grade="matAutocomplete"
+            (optionSelected)="changeGrade()"
+            [displayWith]="displayGrade.bind(this)"
+          >
+            <mat-option
+              disabled
+              selected
+              value=""
+              style="background-color: greenyellow"
+            >
+              choose grade
+            </mat-option>
+            <mat-option *ngFor="let option of gradeList" [value]="option">
+              {{ option.grade }}
+            </mat-option>
+          </mat-autocomplete>
+        </div>
+        <span
+          *ngIf="myGrade.touched && myGrade.value == ''"
+          class="text-danger error"
+          >grade required</span
+        >
       </div>
       <br />
       <button
