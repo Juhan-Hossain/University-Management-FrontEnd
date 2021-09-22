@@ -18,7 +18,7 @@ export class ViewResultService {
   saveResultUrl: string =
     'https://localhost:44322/api/StudentResult/CreateStudentResult';
   enrolledCourseUrl: string =
-    'https://localhost:44322/api/Courses/EnrolledCoursesByStudentRegNo';
+    'https://localhost:44322/api/Courses/EnrolledCoursesByStdRegDDL';
   StdDDL: string = 'https://localhost:44322/api/Students/LoadStdDDL';
 
   getStudent(): Observable<serviceResponse> {
@@ -27,9 +27,9 @@ export class ViewResultService {
   getStdDDL(query: string): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(this.StdDDL + `?str=${query}`);
   }
-  getCourse(query: string): Observable<serviceResponse> {
+  getCourse(query: string, search: string): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(
-      this.studentCourseUrl + `?stdRegNo=${query}`
+      this.studentCourseUrl + `?stdRegNo=${query}&str=${search}`
     );
   }
   getEnrolledCourse(query: string): Observable<serviceResponse> {

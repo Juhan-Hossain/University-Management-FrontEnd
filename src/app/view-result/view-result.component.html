@@ -1,15 +1,4 @@
 <div class="Container" style="margin: 100px">
-  <!-- <div class="form-outline" style="padding-left: 38px">
-    <label class="form-label" for="form1">Search Student</label>
-    <input
-      type="text"
-      id="form1"
-      class="form-control"
-      placeholder="Search Student..."
-      (input)="filterDropdown($event)"
-      style="max-width: 350px"
-    />
-  </div> -->
   <div class="pdfContainer" id="pdf">
     <h4 class="header">View Result</h4>
     <br />
@@ -50,6 +39,11 @@
               </mat-option>
             </mat-autocomplete>
           </div>
+          <span
+            *ngIf="myControl.touched && myControl.value == 0"
+            class="text-danger error"
+            >student required</span
+          >
         </div>
       </div>
       <br />
