@@ -23,13 +23,11 @@ export class SaveCourseComponent implements OnInit {
     private formBuilder: FormBuilder
   ) {}
 
-  public departmentList: department[] = [];
   public filteredList: department[] = [];
-  public semesterList: any;
-  public isValidFormSubmitted = null;
-  public errors: any;
+  public filteredSemList: any;
   public myForm: FormGroup = new FormGroup({});
   public myControl = new FormControl('');
+  public mySemControl = new FormControl('');
   public myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
@@ -46,8 +44,6 @@ export class SaveCourseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDepartment();
-    this.getSemester();
     this.myFormGroup();
   }
 
@@ -55,17 +51,31 @@ export class SaveCourseComponent implements OnInit {
   public get registerFormControl() {
     return this.myForm.controls;
   }
-
-  // cahnge departmentId by selection
-  public changeDeptId() {
-    this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
+  // cahnge semesterId by selection
+  public changeSemesterId() {
+    this.myForm.controls['semesterId'].setValue(this.mySemControl.value.id);
+  }
+  public displayFn2(option: any): string {
+    return option.name;
   }
 
-  // cahnge semesterId by selection
-  public changeSemesterId(e: any) {
-    this.myForm.controls['semesterId'].setValue(e, {
-      onlySelf: true,
-    });
+  public filterSemDropdown(e: string) {
+    this.filteredSemList = [];
+    this.courseService.getSemester(e).subscribe(
+      (data: serviceResponse) => {
+        this.filteredSemList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.filteredSemList = [];
+      }
+    );
+  }
+  public lastKeyPress1: number = 0;
+  public debounceTime2(e: any) {
+    if (e.timeStamp - this.lastKeyPress1 > 1500) {
+      this.filterSemDropdown(e.target.value);
+      this.lastKeyPress1 = e.timeStamp;
+    }
   }
 
   //add course through value object
@@ -75,6 +85,8 @@ export class SaveCourseComponent implements OnInit {
         this.myFormGroup();
         this.myControl = new FormControl('');
         this.filteredList = [];
+        this.mySemControl = new FormControl('');
+        this.filteredSemList = [];
         Swal.fire(data.message);
       },
       (error: any) => {
@@ -83,30 +95,19 @@ export class SaveCourseComponent implements OnInit {
     );
   }
 
-  public getDepartment() {
-    this.courseService.getDepartment().subscribe((data: any) => {
-      this.departmentList = data.data;
-    });
+  // cahnge departmentId by selection
+  public changeDeptId() {
+    this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
   }
-
-  public getSemester() {
-    this.courseService.getSemester().subscribe((data: any) => {
-      this.semesterList = data.data;
-    });
-  }
-
   public displayFn(option: department): string {
-    console.log('displayFn value------->', option.name);
     return option.name;
   }
 
-  public filterDropdown(e: string) {
+  public filterDeptDropdown(e: string) {
     this.filteredList = [];
-    console.log('e in filterDropdown -------> ', e);
     this.courseService.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
-        console.log('####filteredList####', this.filteredList);
       },
       (er: serviceResponse) => {
         this.filteredList = [];
@@ -116,10 +117,8 @@ export class SaveCourseComponent implements OnInit {
   public lastKeyPress: number = 0;
   public debounceTime(e: any) {
     if (e.timeStamp - this.lastKeyPress > 1500) {
-      this.filterDropdown(e.target.value);
+      this.filterDeptDropdown(e.target.value);
       this.lastKeyPress = e.timeStamp;
-      console.log('$$$Success$$$CALL');
     }
-    console.log('###Failed###');
   }
 }

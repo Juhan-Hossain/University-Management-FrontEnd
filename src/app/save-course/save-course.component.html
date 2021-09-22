@@ -173,37 +173,46 @@
       >
     </div>
     <br />
-
     <div class="form-group">
       <div class="row">
         <div class="col-3">
           <label for="Semester">Semester</label>
         </div>
         <div class="col-9">
-          <select
+          <input
             type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="semesterId"
-            placeholder="Course department"
-            formControlName="semesterId"
+            placeholder="search Semester.."
+            matInput
+            [matAutocomplete]="auto1"
+            style="min-width: 290px"
+            [formControl]="mySemControl"
+            (input)="debounceTime2($event)"
+          />
+          <mat-autocomplete
+            #auto1="matAutocomplete"
+            (optionSelected)="changeSemesterId()"
+            [displayWith]="displayFn2.bind(this)"
           >
-            <option value="" disabled>Choose Semester</option>
-            <option
-              *ngFor="let semester of semesterList"
-              [ngValue]="semester.id"
-              (change)="changeSemesterId($event)"
+            <mat-option
+              disabled
+              selected
+              value=""
+              style="background-color: greenyellow"
             >
-              {{ semester.name }}
-            </option>
-          </select>
+              choose semester
+            </mat-option>
+            <mat-option
+              *ngFor="let id of filteredSemList"
+              [value]="id"
+              style="background-color: springgreen"
+            >
+              {{ id.name }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
       <span
-        *ngIf="
-          registerFormControl.semesterId.touched &&
-          registerFormControl.semesterId.value == ''
-        "
+        *ngIf="mySemControl.touched && mySemControl.value == ''"
         class="text-danger error"
         >Course semester required</span
       >
