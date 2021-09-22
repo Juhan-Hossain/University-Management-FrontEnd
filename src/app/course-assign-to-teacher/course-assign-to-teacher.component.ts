@@ -31,19 +31,17 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     private modalService: NgbModal
   ) {}
 
-  public studentList: student[] = [];
   public courseList: course[] = [];
-  public depatmentList: department[] = [];
   public filteredList: department[] = [];
   public teacherList: any;
-  public selectedDepartment: any;
-  public selectedCourse: course[] = [];
   public selectedTeacher: any;
   public selectedCode: any;
   public closeModal: string | undefined;
   public lastKeyPress: number = 0;
   public myForm: FormGroup = new FormGroup({});
   public myControl = new FormControl('');
+  public myCode = new FormControl('');
+  public myTeacher = new FormControl('');
   public myFormGroup() {
     this.myForm = this.formBuilder.group({
       courseName: new FormControl(),
@@ -63,19 +61,11 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     code: new FormControl('', Validators.required),
   });
   public ngOnInit(): void {
-    this.getDepartments();
     this.myFormGroup();
   }
 
   public get myFormControl() {
     return this.myForm.controls;
-  }
-
-  public getDepartments() {
-    this.courseAssign.getDepartment().subscribe((data: any) => {
-      this.depatmentList = data.data;
-      // this.filteredList = data.data;
-    });
   }
 
   public displayFn(option: department): string {
@@ -84,10 +74,12 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   }
 
   public filterDropdown(e: string) {
-    this.filteredList = [];
-    this.courseList = [];
     this.teacherList = [];
+    this.courseList = [];
     this.myFormGroup();
+    this.filteredList = [];
+    this.myCode = new FormControl('');
+    this.myTeacher = new FormControl('');
     console.log('e in filterDropdown -------> ', e);
     this.courseAssign.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
@@ -111,14 +103,14 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   public addCourse() {
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
-        this.studentList = [];
         this.teacherList = [];
         this.courseList = [];
-        this.depatmentList = [];
         console.log(obj.data);
         this.myFormGroup();
         this.filteredList = [];
-        this.myControl.setValue('');
+        this.myControl = new FormControl('');
+        this.myCode = new FormControl('');
+        this.myTeacher = new FormControl('');
         Swal.fire(obj.message);
       },
       (er: any) => {
@@ -140,48 +132,65 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.addCourse();
     // console.log(this.updatedForm.value);
   }
+  public changeCourseCode() {
+    this.myForm.controls['code'].setValue(this.myCode.value.code);
+  }
+  public displayCourse(option: course): string {
+    return option.name;
+  }
+
+  public filterCourse(e: string) {
+    this.courseList = [];
+    this.courseAssign.getCourse(this.myControl.value.id, e).subscribe(
+      (data: serviceResponse) => {
+        this.courseList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.courseList = [];
+      }
+    );
+  }
+  public courseKey: number = 0;
+  public courseDDL(e: any) {
+    if (e.timeStamp - this.courseKey > 1500) {
+      this.filterCourse(e.target.value);
+      this.courseKey = e.timeStamp;
+    }
+  }
+  public changeTeacherId() {
+    this.myForm.controls['teacherId'].setValue(this.myTeacher.value.id);
+    console.log('teacherList##########------->', this.teacherList);
+  }
+  public displayTeacher(option: course): string {
+    return option.name;
+  }
+
+  public filterTeacher(e: string) {
+    this.teacherList = [];
+    this.courseAssign.getTeacher(this.myControl.value.id, e).subscribe(
+      (data: serviceResponse) => {
+        this.teacherList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.teacherList = [];
+      }
+    );
+  }
+  public teacherKey: number = 0;
+  public teacherDDL(e: any) {
+    if (e.timeStamp - this.teacherKey > 1500) {
+      this.filterTeacher(e.target.value);
+      this.teacherKey = e.timeStamp;
+    }
+  }
   public changeDeptId() {
     this.teacherList = [];
     this.courseList = [];
-    this.depatmentList = [];
     this.myFormGroup();
     this.filteredList = [];
-    console.log('Teacher Id------>', this.myControl.value.id);
-    this.courseAssign.getTeacher(this.myControl.value.id).subscribe(
-      (obj1) => {
-        this.teacherList = obj1.data;
-        if (this.teacherList.length == 0) {
-          Swal.fire("This Dept. Doesn't have any teacher yet!!!");
-          return;
-        }
-        this.selectedTeacher = this.myForm.controls.teacherId.value;
-      },
-      (er1: any) => {
-        console.log(er1);
-        Swal.fire(er1.error.message);
-      }
-    );
-    //---------------------------------
-    this.courseAssign.getCourse(this.myControl.value.id).subscribe(
-      (obj1) => {
-        this.courseList = obj1.data;
-        this.selectedCode = this.myForm.controls.code.value;
-        let selectedcourseName = this.courseList.find(
-          (px: any) => px.code == this.selectedCode
-        )?.name;
-        let selectedCourseCredit = this.courseList.find(
-          (x: any) => x.code == this.selectedCode
-        )?.credit;
-
-        this.myForm.controls.courseName.setValue(selectedcourseName);
-
-        this.myForm.controls.courseCredit.setValue(selectedCourseCredit);
-      },
-      (erMain: any) => {
-        console.log(erMain);
-        Swal.fire(erMain.error.message);
-      }
-    );
+    this.myCode = new FormControl('');
+    this.myTeacher = new FormControl('');
+    this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
   }
   public changeTeacher() {
     let y = this.myForm.controls.teacherId.value;
@@ -199,7 +208,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
 
     console.log(this.myForm.value);
   }
-  public changeCourseControl(x: string) {
+  public changeCourseControl() {
     // this.getDepartments();
     this.selectedCode = this.myForm.controls.code.value;
 
