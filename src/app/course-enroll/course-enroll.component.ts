@@ -34,6 +34,7 @@ export class CourseEnrollComponent implements OnInit {
   public selectedCourse: course[] = [];
   public myForm: FormGroup = new FormGroup({});
   public myControl = new FormControl('');
+  public myCourse = new FormControl('');
   public p = 0;
   public myFormGroup() {
     this.myForm = this.formBuilder.group({
@@ -55,50 +56,67 @@ export class CourseEnrollComponent implements OnInit {
     this.getDepartments();
     this.myFormGroup();
   }
+  public changeCourseName() {
+    this.myForm.controls['courseCode'].setValue(this.myCourse.value.code);
+  }
+  displayCourse(option: course): string {
+    return option.name;
+  }
 
+  public filterCourse(e: string) {
+    this.courseEnroll.getCourse(this.myControl.value, e).subscribe(
+      (data: serviceResponse) => {
+        this.courseList = data.data;
+      },
+      (er: serviceResponse) => {
+        console.log(er.message);
+        this.courseList = [];
+      }
+    );
+  }
+  public courseKey: number = 0;
+  public courseDDL(e: any) {
+    if (e.timeStamp - this.courseKey > 1500) {
+      this.filterCourse(e.target.value);
+      this.courseKey = e.timeStamp;
+    }
+  }
   //get helper method manipulation
   public get myFormControl() {
     return this.myForm.controls;
   }
 
+  public changeView() {
+    let selectedStdDeptId = this.studentList.find(
+      (x: { registrationNumber: string }) =>
+        x.registrationNumber === this.selectedStudent
+    ).departmentId;
+
+    let selectedStdName = this.studentList.find(
+      (x: { registrationNumber: string }) =>
+        x.registrationNumber === this.selectedStudent
+    ).name;
+    let selectedStdEmail = this.studentList.find(
+      (x: { registrationNumber: string }) =>
+        x.registrationNumber === this.selectedStudent
+    ).email;
+
+    let departmentName = this.depatmentList.find(
+      (x: { id: number }) => x.id === selectedStdDeptId
+    ).name;
+
+    this.myForm.controls.department.setValue(departmentName);
+
+    this.myForm.controls.name.setValue(selectedStdName);
+    this.myForm.controls.email.setValue(selectedStdEmail);
+  }
   // cahnge departmentId by selection
   public changeId() {
     this.selectedStudent = this.myControl.value;
     this.myForm.controls.studentRegNo.setValue(this.selectedStudent);
     this.myForm.controls['courseCode'].setValue('');
-    this.courseEnroll.getCourse(this.selectedStudent).subscribe(
-      (obj1) => {
-        this.getDepartments();
-        this.courseList = obj1.data;
-
-        let selectedStdDeptId = this.studentList.find(
-          (x: { registrationNumber: string }) =>
-            x.registrationNumber === this.selectedStudent
-        ).departmentId;
-
-        let selectedStdName = this.studentList.find(
-          (x: { registrationNumber: string }) =>
-            x.registrationNumber === this.selectedStudent
-        ).name;
-        let selectedStdEmail = this.studentList.find(
-          (x: { registrationNumber: string }) =>
-            x.registrationNumber === this.selectedStudent
-        ).email;
-
-        let departmentName = this.depatmentList.find(
-          (x: { id: number }) => x.id === selectedStdDeptId
-        ).name;
-
-        this.myForm.controls.department.setValue(departmentName);
-
-        this.myForm.controls.name.setValue(selectedStdName);
-        this.myForm.controls.email.setValue(selectedStdEmail);
-      },
-      (er1: any) => {
-        console.log(er1);
-        alert(er1.error.message);
-      }
-    );
+    this.myCourse = new FormControl('');
+    this.courseList = [];
   }
   public changeFormControl(x: any) {
     this.myForm.controls.courseId.setValue(x);
@@ -122,7 +140,9 @@ export class CourseEnrollComponent implements OnInit {
     this.myFormGroup();
     this.myForm.controls.studentRegNo.setValue('');
     this.myForm.controls['courseCode'].setValue('');
-    console.log('e in filterDropdown -------> ', e);
+    this.filteredList = [];
+    this.myCourse = new FormControl('');
+    this.courseList = [];
     this.courseEnroll.getStdDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
@@ -159,6 +179,8 @@ export class CourseEnrollComponent implements OnInit {
         this.courseList = [];
         this.filteredList = [];
         console.log('success message', obj.data);
+        this.myCourse = new FormControl('');
+        this.myControl = new FormControl('');
         Swal.fire(obj.message);
       },
       (er: any) => {
