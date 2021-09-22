@@ -99,7 +99,7 @@
         </div>
         <div class="col-9">
           <input
-            type="number"
+            type="tel"
             formControlName="contact"
             class="form-control"
             id="contact"
@@ -124,30 +124,36 @@
           <label for="Designation">Designation</label>
         </div>
         <div class="col-9">
-          <select
+          <input
             type="text"
-            class="form-select form-select-sm"
-            aria-label=".form-select-sm example"
-            id="designationId"
-            placeholder="designation"
-            formControlName="designationId"
+            placeholder="Search Designation.."
+            matInput
+            [matAutocomplete]="auto"
+            style="min-width: 290px"
+            [formControl]="myDesignation"
+            (input)="designationDDL($event)"
+          />
+          <mat-autocomplete
+            #auto="matAutocomplete"
+            (optionSelected)="changeDesignationId()"
+            [displayWith]="designationDisplayFn"
           >
-            <option value="" disabled>Choose Designation</option>
-            <option
-              *ngFor="let designation of designationList"
-              [ngValue]="designation.id"
-              (change)="changeDesignationId($event)"
+            <mat-option
+              disabled
+              selected
+              value=""
+              style="background-color: greenyellow"
             >
-              {{ designation.name }}
-            </option>
-          </select>
+              choose designation
+            </mat-option>
+            <mat-option *ngFor="let option of designationList" [value]="option">
+              {{ option.name }}
+            </mat-option>
+          </mat-autocomplete>
         </div>
       </div>
       <span
-        *ngIf="
-          registerFormControl.designationId.touched &&
-          registerFormControl.designationId.value == ''
-        "
+        *ngIf="myDesignation.touched && myDesignation.value == ''"
         class="text-danger error"
         >teacher designation required</span
       >
@@ -163,13 +169,13 @@
             type="text"
             placeholder="search Department.."
             matInput
-            [matAutocomplete]="auto"
+            [matAutocomplete]="auto1"
             style="min-width: 290px"
             [formControl]="myControl"
             (input)="debounceTime($event)"
           />
           <mat-autocomplete
-            #auto="matAutocomplete"
+            #auto1="matAutocomplete"
             (optionSelected)="changeDeptId()"
             [displayWith]="displayFn.bind(this)"
           >
@@ -231,7 +237,12 @@
     </div>
 
     <br />
-    <button type="submit" class="btn btn-primary" [disabled]="!myForm.valid">
+    <button
+      type="submit"
+      class="btn btn-primary"
+      style="float: right"
+      [disabled]="!myForm.valid"
+    >
       Save
     </button>
   </form>

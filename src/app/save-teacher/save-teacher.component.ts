@@ -30,6 +30,7 @@ export class SaveTeacherComponent implements OnInit {
   public errors: any;
   public myForm: FormGroup = new FormGroup({});
   public myControl = new FormControl('');
+  public myDesignation = new FormControl('');
   public myFormGroup() {
     this.myForm = this.formBuilder.group({
       name: new FormControl('', Validators.required),
@@ -46,8 +47,6 @@ export class SaveTeacherComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getDepartment();
-    this.getDesignation();
     this.myFormGroup();
   }
 
@@ -56,23 +55,35 @@ export class SaveTeacherComponent implements OnInit {
     return this.myForm.controls;
   }
 
-  //get helper method manipulation
-  public get myFormControl() {
-    return this.myControl.get;
-  }
-
-  // cahnge departmentId by selection
-  public changeDeptId() {
-    this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
-  }
-
+  // //get helper method manipulation
+  // public get myFormControl() {
+  //   return this.myControl.get;
+  // }
   // cahnge semesterId by selection
-  public changeDesignationId(e: any) {
-    console.log(e);
-    console.log(this.myForm.value);
-    this.myForm.controls['designationId'].setValue(e, {
-      onlySelf: true,
-    });
+  public changeDesignationId() {
+    this.myForm.controls['designationId'].setValue(this.myDesignation.value.id);
+  }
+  public designationDisplayFn(option: department): string {
+    return option.name;
+  }
+
+  public designationFilter(e: string) {
+    this.designationList = [];
+    this.teacherService.getDesignation(e).subscribe(
+      (data: serviceResponse) => {
+        this.designationList = data.data;
+      },
+      (er: serviceResponse) => {
+        this.designationList = [];
+      }
+    );
+  }
+  public lastKey: number = 0;
+  public designationDDL(e: any) {
+    if (e.timeStamp - this.lastKey > 1500) {
+      this.designationFilter(e.target.value);
+      this.lastKey = e.timeStamp;
+    }
   }
 
   //add course through value object
@@ -80,26 +91,25 @@ export class SaveTeacherComponent implements OnInit {
     this.teacherService.saveTeacher(this.myForm.value).subscribe(
       (data: any) => {
         this.myFormGroup();
-        console.log('data message', data.message);
+        this.filteredList = [];
+        this.designationList = [];
+        this.myControl = new FormControl('');
+        this.myDesignation = new FormControl('');
         Swal.fire(data.message);
       },
       (error: any) => {
-        console.log(error);
         Swal.fire(error.error.message);
       }
     );
   }
-
-  public getDepartment() {
-    this.teacherService.getDepartment().subscribe((data: any) => {
-      this.departmentList = data.data;
-    });
-  }
-
-  public getDesignation() {
-    this.teacherService.getDesignation().subscribe((data: any) => {
-      this.designationList = data.data;
-    });
+  // public getDesignation() {
+  //   this.teacherService.getDesignation().subscribe((data: any) => {
+  //     this.designationList = data.data;
+  //   });
+  // }
+  // cahnge departmentId by selection
+  public changeDeptId() {
+    this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
   }
   public displayFn(option: department): string {
     console.log('displayFn value------->', option.name);
