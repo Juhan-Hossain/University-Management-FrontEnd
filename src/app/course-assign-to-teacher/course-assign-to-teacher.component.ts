@@ -58,7 +58,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   public updatedForm = this.formBuilder.group({
     departmentId: new FormControl('', Validators.required),
     teacherId: new FormControl('', Validators.required),
-    code: new FormControl('', Validators.required),
+    courseId: new FormControl('', Validators.required),
   });
   public ngOnInit(): void {
     this.myFormGroup();
@@ -101,6 +101,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     console.log('###Failed###');
   }
   public addCourse() {
+    console.log('updated form value--->', this.updatedForm.value);
     this.courseAssign.addCourseAssign(this.updatedForm.value).subscribe(
       (obj: any) => {
         this.teacherList = [];
@@ -120,20 +121,21 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     );
   }
   public onConfirm() {
-    this.updatedForm.value['code'] = this.myForm.value['code'];
+    this.updatedForm.value['courseId'] = this.myForm.value['code'];
     this.updatedForm.value['departmentId'] = this.myControl.value.id;
     this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
     this.addCourse();
   }
   public onSubmit() {
-    this.updatedForm.value['code'] = this.myForm.value['code'];
+    this.updatedForm.value['courseId'] = this.myForm.value['code'];
     this.updatedForm.value['departmentId'] = this.myControl.value.id;
     this.updatedForm.value['teacherId'] = this.myForm.value['teacherId'];
     this.addCourse();
     // console.log(this.updatedForm.value);
   }
   public changeCourseCode() {
-    this.myForm.controls['code'].setValue(this.myCode.value.code);
+    console.log('selected course ID@@@@', this.myCode.value.id);
+    this.myForm.controls['code'].setValue(this.myCode.value.id);
   }
   public displayCourse(option: course): string {
     return option.name;
@@ -213,10 +215,10 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.selectedCode = this.myForm.controls.code.value;
 
     let selectedcourseName = this.courseList.find(
-      (px: any) => px.code == this.selectedCode
+      (px: any) => px.id == this.selectedCode
     )?.name;
     let selectedCourseCredit = this.courseList.find(
-      (x: any) => x.code == this.selectedCode
+      (x: any) => x.id == this.selectedCode
     )?.credit;
 
     this.myForm.controls.courseName.setValue(selectedcourseName);
