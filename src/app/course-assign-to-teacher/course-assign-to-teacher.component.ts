@@ -228,7 +228,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
 
   public check(content: any) {
     if (
-      this.myForm.value['remainingCredit'] < this.myForm.value['courseCredit']
+      this.myForm.value['creditToBeTaken'] < this.myForm.value['courseCredit']
     ) {
       this.triggerModal(content);
     } else {
