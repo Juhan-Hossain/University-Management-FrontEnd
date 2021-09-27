@@ -14,6 +14,7 @@ import Swal from 'sweetalert2';
 import { serviceResponse } from '../Models/serviceResponse';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CourseAssignService } from '../services/course-assign.service';
+import { AllocateClassroomService } from '../services/allocate-classroom.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +28,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private courseAssign: CourseAssignService,
+    private allocateClass: AllocateClassroomService,
     private formBuilder: FormBuilder,
     private modalService: NgbModal
   ) {}
@@ -81,7 +83,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.myCode = new FormControl('');
     this.myTeacher = new FormControl('');
     console.log('e in filterDropdown -------> ', e);
-    this.courseAssign.getDeptDDL(e).subscribe(
+    this.allocateClass.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
         console.log('####filteredList####', this.filteredList);
@@ -143,7 +145,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
 
   public filterCourse(e: string) {
     this.courseList = [];
-    this.courseAssign.getCourse(this.myControl.value.id, e).subscribe(
+    this.allocateClass.getCourse(this.myControl.value.id, e).subscribe(
       (data: serviceResponse) => {
         this.courseList = data.data;
       },
