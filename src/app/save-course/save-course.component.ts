@@ -8,6 +8,7 @@ import { CourseService } from '../services/course.service';
 import Swal from 'sweetalert2';
 import { department } from '../Models/department';
 import { serviceResponse } from '../Models/serviceResponse';
+import { RepositoryService } from '../services/repository.service';
 @Component({
   selector: 'app-save-course',
   templateUrl: './save-course.component.html',
@@ -20,6 +21,7 @@ export class SaveCourseComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private courseService: CourseService,
+    private repository: RepositoryService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -61,7 +63,7 @@ export class SaveCourseComponent implements OnInit {
 
   public filterSemDropdown(e: string) {
     this.filteredSemList = [];
-    this.courseService.getSemester(e).subscribe(
+    this.repository.getSemester(e).subscribe(
       (data: serviceResponse) => {
         this.filteredSemList = data.data;
       },
@@ -105,7 +107,7 @@ export class SaveCourseComponent implements OnInit {
 
   public filterDeptDropdown(e: string) {
     this.filteredList = [];
-    this.courseService.getDeptDDL(e).subscribe(
+    this.repository.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
       },

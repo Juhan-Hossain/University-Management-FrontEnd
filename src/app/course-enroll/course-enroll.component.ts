@@ -12,6 +12,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatSelectModule } from '@angular/material/select';
 import { serviceResponse } from '../Models/serviceResponse';
 import { department } from '../Models/department';
+import { RepositoryService } from '../services/repository.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -24,6 +25,7 @@ export class CourseEnrollComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private courseEnroll: CourseEnrollService,
+    private repository: RepositoryService,
     private formBuilder: FormBuilder
   ) {}
   public studentList: any;
@@ -64,7 +66,7 @@ export class CourseEnrollComponent implements OnInit {
   }
 
   public filterCourse(e: string) {
-    this.courseEnroll.getCourse(this.myControl.value, e).subscribe(
+    this.repository.getStdCourse(this.myControl.value, e).subscribe(
       (data: serviceResponse) => {
         this.courseList = data.data;
       },
@@ -124,14 +126,14 @@ export class CourseEnrollComponent implements OnInit {
 
   //add course through value object
   public getStudents() {
-    this.courseEnroll.getStudent().subscribe((data: any) => {
+    this.repository.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
       // this.filteredList = data.data;
     });
     console.log(new Date().toLocaleTimeString());
   }
   public getDepartments() {
-    this.courseEnroll.getDepartment().subscribe((data: any) => {
+    this.repository.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
     });
   }
@@ -143,7 +145,7 @@ export class CourseEnrollComponent implements OnInit {
     this.filteredList = [];
     this.myCourse = new FormControl('');
     this.courseList = [];
-    this.courseEnroll.getStdDDL(e).subscribe(
+    this.repository.getStdDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
       },

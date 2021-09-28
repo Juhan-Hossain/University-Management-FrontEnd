@@ -13,6 +13,7 @@ import Swal from 'sweetalert2';
 import { OverlayPositionBuilder } from '@angular/cdk/overlay';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { serviceResponse } from '../Models/serviceResponse';
+import { RepositoryService } from '../services/repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +27,7 @@ export class AllocateClassroomComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private allocateClassroom: AllocateClassroomService,
+    private repository: RepositoryService,
     private formBuilder: FormBuilder
   ) {}
   public x: number = 0;
@@ -54,17 +56,8 @@ export class AllocateClassroomComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // this.getDepartment();
     this.myFormGroup();
   }
-
-  //fetching department
-  // public getDepartment() {
-  //   this.allocateClassroom.getDepartment().subscribe((data: any) => {
-  //     this.departmentList = data.data;
-  //     this.filteredList = data.data;
-  //   });
-  // }
 
   public changeDayId() {
     this.myForm.controls['dayId'].setValue(this.myDay.value.id);
@@ -74,12 +67,7 @@ export class AllocateClassroomComponent implements OnInit {
   }
 
   public filterDay(e: string) {
-    // this.myFormGroup();
-    // this.courseList = [];
-    // this.roomList = [];
-    // this.dayList = [];
-    // this.filteredList = [];
-    this.allocateClassroom.getDay(e).subscribe(
+    this.repository.getDay(e).subscribe(
       (data: serviceResponse) => {
         this.dayList = data.data;
       },
@@ -104,12 +92,7 @@ export class AllocateClassroomComponent implements OnInit {
   }
 
   public filterRoom(e: string) {
-    // this.myFormGroup();
-    // this.courseList = [];
-    // this.roomList = [];
-    // this.dayList = [];
-    // this.filteredList = [];
-    this.allocateClassroom.getRoom(e).subscribe(
+    this.repository.getRoom(e).subscribe(
       (data: serviceResponse) => {
         this.roomList = data.data;
       },
@@ -133,12 +116,7 @@ export class AllocateClassroomComponent implements OnInit {
   }
 
   public filterCourse(e: string) {
-    // this.myFormGroup();
-    // this.courseList = [];
-    // this.roomList = [];
-    // this.dayList = [];
-    // this.filteredList = [];
-    this.allocateClassroom.getCourse(this.myControl.value.id, e).subscribe(
+    this.repository.getCourse(this.myControl.value.id, e).subscribe(
       (data: serviceResponse) => {
         this.courseList = data.data;
       },
@@ -177,7 +155,7 @@ export class AllocateClassroomComponent implements OnInit {
     this.dayList = [];
     this.filteredList = [];
     console.log('e in filterDropdown -------> ', e);
-    this.allocateClassroom.getDeptDDL(e).subscribe(
+    this.repository.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
         console.log('####filteredList####', this.filteredList);

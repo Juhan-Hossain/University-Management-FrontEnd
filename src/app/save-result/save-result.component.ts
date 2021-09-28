@@ -11,6 +11,7 @@ import { department } from '../Models/department';
 import { studentGrades } from '../Models/studentGrades';
 import Swal from 'sweetalert2';
 import { serviceResponse } from '../Models/serviceResponse';
+import { RepositoryService } from '../services/repository.service';
 @Component({
   selector: 'app-save-result',
   templateUrl: './save-result.component.html',
@@ -20,6 +21,7 @@ export class SaveResultComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private saveResult: SaveResultService,
+    private repository: RepositoryService,
     private formBuilder: FormBuilder
   ) {}
   public studentList: student[] = [];
@@ -57,12 +59,12 @@ export class SaveResultComponent implements OnInit {
 
   //add course through value object
   public getStudents() {
-    this.saveResult.getStudent().subscribe((data: any) => {
+    this.repository.getStudent().subscribe((data: any) => {
       this.studentList = data.data;
     });
   }
   public getDepartments() {
-    this.saveResult.getDepartment().subscribe((data: any) => {
+    this.repository.getDepartment().subscribe((data: any) => {
       this.depatmentList = data.data;
     });
   }
@@ -76,7 +78,7 @@ export class SaveResultComponent implements OnInit {
 
   public filterGrade(e: string) {
     this.gradeList = [];
-    this.saveResult.getGrade(e).subscribe(
+    this.repository.getGrade(e).subscribe(
       (data: serviceResponse) => {
         this.gradeList = data.data;
       },
@@ -101,7 +103,7 @@ export class SaveResultComponent implements OnInit {
   }
 
   public filterCourse(e: string) {
-    this.saveResult.getCourse(this.myControl.value, e).subscribe(
+    this.repository.getEnrolledCourseByStd(this.myControl.value, e).subscribe(
       (data: serviceResponse) => {
         this.courseList = [];
         for (let index = 0; index < data.data.length; index++) {
@@ -134,7 +136,7 @@ export class SaveResultComponent implements OnInit {
     this.gradeList = [];
     this.myGrade = new FormControl('');
 
-    this.saveResult.getStdDDL(e).subscribe(
+    this.repository.getStdDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = [];
         this.filteredList = data.data;

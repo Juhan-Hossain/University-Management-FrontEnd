@@ -15,6 +15,7 @@ import { room } from '../Models/Room';
 import { day } from '../Models/day';
 import { scheduled } from 'rxjs';
 import { serviceResponse } from '../Models/serviceResponse';
+import { RepositoryService } from '../services/repository.service';
 
 interface VM {
   code: string;
@@ -45,7 +46,8 @@ interface VM2 {
 export class ViewAllocatedRoomsComponent implements OnInit {
   constructor(
     private http: HttpClient,
-    private viewAllocatedRooms: ViewAllocatedroomsService
+    private viewAllocatedRooms: ViewAllocatedroomsService,
+    private repository: RepositoryService
   ) {}
 
   public selectedItem: any;
@@ -68,15 +70,13 @@ export class ViewAllocatedRoomsComponent implements OnInit {
   }
 
   public getDepartment() {
-    this.viewAllocatedRooms.getDepartment().subscribe((data: any) => {
+    this.repository.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
-      // this.filteredList = data.data;
     });
   }
   public getRoom() {
     this.viewAllocatedRooms.getRoom().subscribe((data: any) => {
       this.roomList = data.data;
-      console.log('roomlist', this.roomList);
     });
   }
   public getDay() {
@@ -91,7 +91,6 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     this.viewAllocatedRooms.getCourse(this.myControl.value.id).subscribe(
       (x) => {
         this.courseList = x.data;
-        console.log('courseList', this.courseList);
         this.data = x.data.map((course: any) => {
           return {
             code: course.code,
@@ -99,8 +98,6 @@ export class ViewAllocatedRoomsComponent implements OnInit {
             roomAllocations: course.roomAllocationLists,
           };
         });
-
-        console.log('mapped data', this.data);
       },
       (er) => {
         this.data = [];
@@ -110,17 +107,14 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     );
   }
   public displayFn(option: department): string {
-    console.log('displayFn value------->', option.name);
     return option.name;
   }
 
   public filterDropdown(e: string) {
     this.data = [];
-    console.log('e in filterDropdown -------> ', e);
-    this.viewAllocatedRooms.getDeptDDL(e).subscribe(
+    this.repository.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
-        console.log('####filteredList####', this.filteredList);
       },
       (er: serviceResponse) => {
         this.filteredList = [];
@@ -132,9 +126,7 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     if (e.timeStamp - this.lastKeyPress > 1500) {
       this.filterDropdown(e.target.value);
       this.lastKeyPress = e.timeStamp;
-      console.log('$$$Success$$$CALL');
     }
-    console.log('###Failed###');
   }
 
   public getRoomAllocation(courseCode: string) {

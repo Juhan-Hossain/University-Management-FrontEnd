@@ -9,6 +9,7 @@ import Swal from 'sweetalert2';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { department } from '../Models/department';
 import { serviceResponse } from '../Models/serviceResponse';
+import { RepositoryService } from '../services/repository.service';
 
 @Component({
   selector: 'app-register-student',
@@ -22,6 +23,7 @@ export class RegisterStudentComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private registerStudent: RegisterStudentService,
+    private repository: RepositoryService,
     private formBuilder: FormBuilder,
     private modalService: NgbModal
   ) {}
@@ -64,7 +66,6 @@ export class RegisterStudentComponent implements OnInit {
       (obj: any) => {
         this.myFormGroup();
         this.myControl.setValue('');
-        console.log('student Data', obj.data);
         Swal.fire(
           `RegNo: ${obj.data.registrationNumber}`,
           `name: ${obj.data.name},
@@ -79,23 +80,20 @@ export class RegisterStudentComponent implements OnInit {
     );
   }
   public getDepartment() {
-    this.registerStudent.getDepartment().subscribe((data: any) => {
+    this.repository.getDepartment().subscribe((data: any) => {
       this.departmentList = data.data;
     });
   }
 
   public displayFn(option: department): string {
-    console.log('displayFn value------->', option.name);
     return option.name;
   }
 
   public filterDropdown(e: string) {
     this.filteredList = [];
-    console.log('e in filterDropdown -------> ', e);
-    this.registerStudent.getDeptDDL(e).subscribe(
+    this.repository.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
-        console.log('####filteredList####', this.filteredList);
       },
       (er: serviceResponse) => {
         this.filteredList = [];
@@ -107,8 +105,6 @@ export class RegisterStudentComponent implements OnInit {
     if (e.timeStamp - this.lastKeyPress > 1500) {
       this.filterDropdown(e.target.value);
       this.lastKeyPress = e.timeStamp;
-      console.log('$$$Success$$$CALL');
     }
-    console.log('###Failed###');
   }
 }

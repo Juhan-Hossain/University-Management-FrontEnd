@@ -8,6 +8,7 @@ import { TeacherService } from '../services/teacher.service';
 import Swal from 'sweetalert2';
 import { department } from '../Models/department';
 import { serviceResponse } from '../Models/serviceResponse';
+import { RepositoryService } from '../services/repository.service';
 @Injectable({
   providedIn: 'root',
 })
@@ -20,6 +21,7 @@ export class SaveTeacherComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private teacherService: TeacherService,
+    private repository: RepositoryService,
     private formBuilder: FormBuilder
   ) {}
 
@@ -54,11 +56,6 @@ export class SaveTeacherComponent implements OnInit {
   public get registerFormControl() {
     return this.myForm.controls;
   }
-
-  // //get helper method manipulation
-  // public get myFormControl() {
-  //   return this.myControl.get;
-  // }
   // cahnge semesterId by selection
   public changeDesignationId() {
     this.myForm.controls['designationId'].setValue(this.myDesignation.value.id);
@@ -69,7 +66,7 @@ export class SaveTeacherComponent implements OnInit {
 
   public designationFilter(e: string) {
     this.designationList = [];
-    this.teacherService.getDesignation(e).subscribe(
+    this.repository.getDesignation(e).subscribe(
       (data: serviceResponse) => {
         this.designationList = data.data;
       },
@@ -102,27 +99,19 @@ export class SaveTeacherComponent implements OnInit {
       }
     );
   }
-  // public getDesignation() {
-  //   this.teacherService.getDesignation().subscribe((data: any) => {
-  //     this.designationList = data.data;
-  //   });
-  // }
   // cahnge departmentId by selection
   public changeDeptId() {
     this.myForm.controls['departmentId'].setValue(this.myControl.value.id);
   }
   public displayFn(option: department): string {
-    console.log('displayFn value------->', option.name);
     return option.name;
   }
 
   public filterDropdown(e: string) {
     this.filteredList = [];
-    console.log('e in filterDropdown -------> ', e);
-    this.teacherService.getDeptDDL(e).subscribe(
+    this.repository.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
-        console.log('####filteredList####', this.filteredList);
       },
       (er: serviceResponse) => {
         this.filteredList = [];
@@ -134,8 +123,6 @@ export class SaveTeacherComponent implements OnInit {
     if (e.timeStamp - this.lastKeyPress > 1500) {
       this.filterDropdown(e.target.value);
       this.lastKeyPress = e.timeStamp;
-      console.log('$$$Success$$$CALL');
     }
-    console.log('###Failed###');
   }
 }

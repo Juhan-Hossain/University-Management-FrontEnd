@@ -15,6 +15,7 @@ import { serviceResponse } from '../Models/serviceResponse';
 import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CourseAssignService } from '../services/course-assign.service';
 import { AllocateClassroomService } from '../services/allocate-classroom.service';
+import { RepositoryService } from '../services/repository.service';
 
 @Injectable({
   providedIn: 'root',
@@ -29,6 +30,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     private http: HttpClient,
     private courseAssign: CourseAssignService,
     private allocateClass: AllocateClassroomService,
+    private repository: RepositoryService,
     private formBuilder: FormBuilder,
     private modalService: NgbModal
   ) {}
@@ -83,7 +85,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
     this.myCode = new FormControl('');
     this.myTeacher = new FormControl('');
     console.log('e in filterDropdown -------> ', e);
-    this.allocateClass.getDeptDDL(e).subscribe(
+    this.repository.getDeptDDL(e).subscribe(
       (data: serviceResponse) => {
         this.filteredList = data.data;
         console.log('####filteredList####', this.filteredList);
@@ -145,7 +147,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
 
   public filterCourse(e: string) {
     this.courseList = [];
-    this.allocateClass.getCourse(this.myControl.value.id, e).subscribe(
+    this.repository.getCourse(this.myControl.value.id, e).subscribe(
       (data: serviceResponse) => {
         this.courseList = data.data;
       },
@@ -171,7 +173,7 @@ export class CourseAssignTOTeacherComponent implements OnInit {
 
   public filterTeacher(e: string) {
     this.teacherList = [];
-    this.courseAssign.getTeacher(this.myControl.value.id, e).subscribe(
+    this.repository.getTeacher(this.myControl.value.id, e).subscribe(
       (data: serviceResponse) => {
         this.teacherList = data.data;
       },

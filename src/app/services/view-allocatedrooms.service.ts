@@ -8,7 +8,6 @@ import { serviceResponse } from '../Models/serviceResponse';
 })
 export class ViewAllocatedroomsService {
   constructor(private http: HttpClient) {}
-  depturl: string = 'https://localhost:44322/api/Departments';
   RoomByDeptIdUrl: string =
     'https://localhost:44322/api/RoomAllocation/DepartmentId';
   courseurl: string =
@@ -17,18 +16,11 @@ export class ViewAllocatedroomsService {
   dayUrl: string = 'https://localhost:44322/api/Day/GetDays';
   RoomsByCodeUrl: string =
     'https://localhost:44322/api/RoomAllocation/CourseCode';
-  deptDDL: string = 'https://localhost:44322/api/Departments/LoadDeptDDL';
 
   getCourse(query: number): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(
       this.courseurl + `?departmentId=${query}`
     );
-  }
-  getDepartment(): Observable<serviceResponse> {
-    return this.http.get<serviceResponse>(this.depturl);
-  }
-  getDeptDDL(query: string): Observable<serviceResponse> {
-    return this.http.get<serviceResponse>(this.deptDDL + `?str=${query}`);
   }
   getAllocatedRooms(query: number): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(
