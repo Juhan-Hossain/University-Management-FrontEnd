@@ -20,7 +20,7 @@ import { RepositoryService } from '../services/repository.service';
 interface VM {
   code: string;
   name: string;
-  roomAllocations: VM2[];
+  roomAllocations: any[];
 }
 
 interface Room {
@@ -29,10 +29,9 @@ interface Room {
 }
 
 interface VM2 {
-  dayId: number;
-  roomId: string;
-  startTime: string;
-  endTime: string;
+  id: number;
+  course: string;
+  schedule: string;
 }
 
 @Injectable({
@@ -62,6 +61,8 @@ export class ViewAllocatedRoomsComponent implements OnInit {
   public myControl = new FormControl('');
   public count: number = 0;
   public data: VM[] = [];
+  public data2: VM2[] = [];
+  public check: Boolean = false;
 
   public ngOnInit() {
     this.getDepartment();
@@ -88,14 +89,17 @@ export class ViewAllocatedRoomsComponent implements OnInit {
   public print() {
     this.courseList = [];
     this.scheduleInfof = [];
+    console.log('deptId----->', this.myControl.value.id);
+
     this.viewAllocatedRooms.getCourse(this.myControl.value.id).subscribe(
       (x) => {
         this.courseList = x.data;
+        console.log('####ScheduleList', this.roomAllocationList);
         this.data = x.data.map((course: any) => {
           return {
             code: course.code,
             name: course.name,
-            roomAllocations: course.roomAllocationLists,
+            roomAllocations: this.fixSchedule(course.code),
           };
         });
       },
@@ -105,6 +109,7 @@ export class ViewAllocatedRoomsComponent implements OnInit {
         Swal.fire('no dept data found');
       }
     );
+    this.check = false;
   }
   public displayFn(option: department): string {
     return option.name;
@@ -129,34 +134,37 @@ export class ViewAllocatedRoomsComponent implements OnInit {
     }
   }
 
-  public getRoomAllocation(courseCode: string) {
-    this.viewAllocatedRooms.getRoomsByCode(courseCode).subscribe(
+  public getClassSchedule() {
+    this.viewAllocatedRooms.getClassSchedule(this.myControl.value.id).subscribe(
       (obj) => {
-        if (obj.data.length >= 0) {
-          for (let i = 0; i < obj.data.length; i++) {
-            this.roomAllocationList.push(obj.data[i]);
-          }
+        this.roomAllocationList = obj.data;
+        this.data2 = this.roomAllocationList;
+        if (!this.check) {
+          this.check = true;
+          this.print();
         }
       },
-      (er) => {}
+      (er) => {
+        if (!this.check) {
+          this.check = true;
+          this.print();
+        }
+      }
     );
   }
 
-  public fixDay(data: number): string | undefined {
-    let day = this.dayList.find((x: any) => x.id == data)?.dayName;
-
-    return day;
-  }
-  public fixRoom(data: string): string | undefined {
-    let roomno = this.roomList.find((x: any) => x.id == data)?.name;
-    return roomno;
-  }
-
-  public dateConversion(date: any): string {
-    var temp = new Date(date);
-    var hr = temp.getHours();
-    var min = temp.getMinutes();
-    if (hr <= 12) return hr + ':' + min + ' AM';
-    return hr - 12 + ':' + min + ' PM';
+  public fixSchedule(data: string) {
+    if (this.roomAllocationList !== null) {
+      let length = this.roomAllocationList.length;
+      for (let i = 0; i < length; i++) {
+        const element = this.roomAllocationList[i];
+        if (element.course == data) {
+          console.log(element.schedule);
+          return element.schedule;
+        } else return 'Not Scheduled Yet!';
+      }
+    } else {
+      return 'Not Scheduled Yet!';
+    }
   }
 }
