@@ -16,7 +16,14 @@ export class ViewAllocatedroomsService {
   dayUrl: string = 'https://localhost:44322/api/Day/GetDays';
   RoomsByCodeUrl: string =
     'https://localhost:44322/api/RoomAllocation/CourseCode';
+  classSchedule: string =
+    'https://localhost:44322/api/ClassSchedule/GetScheduleByDepartment';
 
+  getClassSchedule(query: number): Observable<serviceResponse> {
+    return this.http.get<serviceResponse>(
+      this.classSchedule + `?departmentId=${query}`
+    );
+  }
   getCourse(query: number): Observable<serviceResponse> {
     return this.http.get<serviceResponse>(
       this.courseurl + `?departmentId=${query}`

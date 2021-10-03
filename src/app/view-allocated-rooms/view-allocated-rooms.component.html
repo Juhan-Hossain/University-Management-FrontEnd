@@ -31,7 +31,7 @@
         />
         <mat-autocomplete
           #auto="matAutocomplete"
-          (optionSelected)="print()"
+          (optionSelected)="getClassSchedule()"
           [displayWith]="displayFn.bind(this)"
         >
           <mat-option
@@ -63,12 +63,7 @@
         <td style="width: 100px">{{ info.code }}</td>
         <td>{{ info.name }}</td>
         <td>
-          <p *ngFor="let room of info.roomAllocations">
-            R. No : {{ fixRoom(room.roomId) }}, {{ fixDay(room.dayId) }},
-            {{ dateConversion(room.startTime) }} -
-            {{ dateConversion(room.endTime) }} ;
-          </p>
-          <p *ngIf="info.roomAllocations.length == 0">Not Scheduled Yet</p>
+          {{ info.roomAllocations }}
         </td>
       </tr>
     </tbody>
